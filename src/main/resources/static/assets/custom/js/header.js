@@ -1,4 +1,4 @@
-var usertype = localStorage.getItem("username");
+var usertype = localStorage.getItem("email");
 
 document.write("<div class='topbar-main'>");
 document.write("<div class='container-fluid colmspadding'>");

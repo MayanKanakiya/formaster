@@ -1,6 +1,6 @@
-var usertype = localStorage.getItem("username");
+var usertype = localStorage.getItem("email");
 
-if (usertype == "admin") {
+if (usertype == "admin@gmail.com") {
     document.write("<div class='navbar-custom'>");
     document.write("<div class='container-fluid colmspadding'>");
     document.write("<div id='navigation'>");

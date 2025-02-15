@@ -18,13 +18,32 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt:0.11.5'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
+/*Spring security*/
+/*JPA*/
+dependencies{
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.data:spring-data-jpa'
+}
+/*Database: Postgresql*/
+dependencies{
+	implementation 'org.postgresql:postgresql'
+	implementation 'org.hibernate:hibernate-core:6.5.2.Final'
+}
+/*Lombok*/
+dependencies{
+	dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
