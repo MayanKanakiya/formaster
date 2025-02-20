@@ -40,9 +40,11 @@ document.write("</a>");
 document.write("<a href='javascript:void(0)' class='dropdown-item notify-item border-0' data-toggle='modal' data-target='.changepasswordmodal'>");
 document.write("<i class='fa fa-key'></i> <span>Change Password</span>");
 document.write("</a>");
-document.write("<a href='/' onclick='javascript:window.localStorage.clear();' class='dropdown-item notify-item border-0'>");
+
+document.write("<a href='javascript:void(0)' class='dropdown-item notify-item border-0' onclick='logoutUser()'>");
 document.write("<i class='fa fa-sign-out'></i> <span>Logout</span>");
 document.write("</a>");
+
 document.write("</div>");
 document.write("</li>");
 document.write("</ul>");
@@ -50,3 +52,23 @@ document.write("</div>");
 document.write("<div class='clearfix'></div>");
 document.write("</div>");
 document.write("</div>");
+function logoutUser() {
+    var csrfToken = document.querySelector('meta[name="_csrf"]');
+    if (!csrfToken) {
+        alert("CSRF token not found! Logout may not work correctly.");
+        return;
+    }
+    
+    var form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/logout";
+    
+    var csrfInput = document.createElement("input");
+    csrfInput.type = "hidden";
+    csrfInput.name = "_csrf";
+    csrfInput.value = csrfToken.content;
+    
+    form.appendChild(csrfInput);
+    document.body.appendChild(form);
+    form.submit();
+}	

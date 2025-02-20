@@ -36,7 +36,7 @@ public class UserEntity {
 	@Column(nullable = true, length = 28)
 	private String validto;
 	@Column(nullable = false, length = 8)
-	private String urole;
+	private int urole;
 	@Column(nullable = true, length = 255)
 	private String image;
 	@Column(nullable = false, length = 8)
@@ -46,11 +46,10 @@ public class UserEntity {
 	@Column(nullable = false, length = 8, columnDefinition = "int default 0")
 	private int modifyby;
 	@Column(nullable = true)
-	private int modifyon;
+	private Timestamp modifyon;
 	@Column(nullable = false, length = 8)
 	private int active;
 	@Column(nullable = false, length = 8, columnDefinition = "int default 0")
 	private int isdelete;
 
-	
 }

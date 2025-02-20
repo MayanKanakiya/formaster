@@ -11,7 +11,8 @@
 	content='no-cache, no-store, must-revalidate' />
 <meta http-equiv='X-UA-Compatible' content='IE=edge' />
 <meta http-equiv='Pragma' content='no-cache'>
-
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <link rel="shortcut icon" href="assets/images/favicon.png">
 <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
@@ -22,21 +23,6 @@
 	type="text/css" />
 <!-- <link href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" /> -->
 <link rel="stylesheet" type="text/css" href="assets/login/login.css">
-
-<script>
-	function login() {
-		if (document.loginForm.email.value == 'admin@gmail.com'
-				&& document.loginForm.password.value == 'admin') {
-			localStorage.setItem("email", "admin@gmail.com");
-			window.location = "master-form";
-		} else if (document.loginForm.email.value == 'client'
-				&& document.loginForm.password.value == 'client') {
-			localStorage.setItem("email", "client");
-			window.location = "fill-forms"
-		}
-	}
-</script>
-
 </head>
 <body>
 	<div class="wrapper fadeInDown">
@@ -44,45 +30,33 @@
 			<div class="fadeIn first">
 				<img src="assets/images/e5logo.png" id="icon" alt="User Icon" />
 			</div>
-			<form name="loginForm" class="loginforms">
-				<input type="text" id="email" class="fadeIn second" name="email"
-					placeholder="Email"> <input type="password" id="password"
-					class="fadeIn third" name="password" placeholder="Password"
-					style="margin-left: 6%;"> <i class="fa fa-eye field-icon"></i>
+			<form action="/loginForm" method="POST" class="loginforms"
+				name="loginForm">
+				<!-- CSRF Token -->
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}"> <input type="text" id="username"
+					class="fadeIn second" name="username" placeholder="Email">
 
-				<!-- <div class="row">
-                    <div class="col-md-12">
-                        <select class="selectpicker" data-style="lineheight12 bg-transfer" style="width: 100%; margin: 5px; margin-left: 3%;">
-                            <option selected="selected" value="">Select Module</option>
-                            <option value="1">ENcheck</option>
-                            <option value="2">GreenCheck</option>
-                            <option value="3">HAScheck</option>
-                            <option value="4">INDcheck</option>
-                            <option value="5">REScheck</option>
-                        </select>
-                    </div>
-                </div> -->
+				<!-- Password Field -->
+				<input type="password" id="password" class="fadeIn third"
+					name="password" placeholder="Password" style="margin-left: 6%;">
+				<i class="fa fa-eye field-icon"></i>
 
-				<!-- <div class="checkbox checkbox-custom pull-left chkbox">
-                    <input id="remember" type="checkbox">
-                    <label for="remember">
-                        Remember me
-                    </label>
-                </div> -->
 				<div class="text-right">
-					<!-- <a href="forgotpassword.html" class="text-dark forpw">Forgot your password ?</a> -->
-					<a href="/" class="text-dark forpw">Forgot your password ?</a>
+					<a href="/" class="text-dark forpw">Forgot your password?</a>
 				</div>
 
 				<div id="msg" class="errormsg mt-0">
 					<span class="errors">Incorrect Login details!</span>
 				</div>
-				<a class="submit-form-button fadeIn fourth" id="LoginBtn"
-					href="javascript:login();">Login</a>
+				<!-- Submit Button -->
+				<a type="submit" class="submit-form-button fadeIn fourth"
+					id="LoginBtn" href="javascript:void(0)">Login</a>
+
 			</form>
+
 		</div>
 	</div>
-
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/popper.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
@@ -91,6 +65,10 @@
 		src="assets/custom/plugins/showpassword/hideShowPassword.min.js"></script>
 	<script src="assets/login/main.js"></script>
 	<script>
+		$('#LoginBtn').click(function() {
+			$('.loginforms').submit()
+		})
+
 		$('#login').focus();
 		$(document).keypress(function(e) {
 			if (e.which == 13) {

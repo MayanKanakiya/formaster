@@ -20,7 +20,7 @@ public class UserDTO {
 	private String gender;
 	private String validfrom;
 	private String validto;
-	private String urole;
+	private int urole;
 	private String image;
 	private int createdby;
 	private Timestamp createdon;
@@ -28,17 +28,17 @@ public class UserDTO {
 	private Timestamp modifyon;
 	private int active;
 	private int isdelete;
-	private Map<Boolean, String> message = new HashMap<>();
+	private Map<String, String> message = new HashMap<>();
 
-	public Map<Boolean, String> getMessage() {
+	public Map<String, String> getMessage() {
 		return message;
 	}
 
-	public void setMessage(Map<Boolean, String> message) {
+	public void setMessage(Map<String, String> message) {
 		this.message = message;
 	}
 
-	public void addMessage(boolean success, String message) {
-		this.message.put(success, message);
+	public void addMessage(String statusCode, String message) {
+		this.message.put(statusCode, message);
 	}
 }
