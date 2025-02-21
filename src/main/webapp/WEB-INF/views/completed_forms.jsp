@@ -19,7 +19,8 @@
     <script src="assets/custom/plugins/theme/mytheme.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/custom/css/import.css">
     <link rel="stylesheet" type="text/css" href="assets/custom/css/responsive.css">
-
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
     <script src="assets/js/modernizr.min.js"></script>
 
 </head>
@@ -28,9 +29,21 @@
     <!-- <div class="preloader"></div> -->
     <!-- Navigation Bar-->
     <header id="topnav">
-        <script src="assets/custom/js/header.js"></script>
         <!-- end topbar-main -->
-
+	<%
+		String userRole = (String) session.getAttribute("userRole");
+		%>
+		<script>
+   		var usertype = "<%=userRole%>";
+		</script>
+			<%
+		String fname = (String) session.getAttribute("fname");
+		%>
+		<script>
+   		var fname = "<%=fname%>";
+			console.log(fname)
+		</script>
+		<script src="assets/custom/js/header.js"></script>
         <script src="assets/custom/js/menu.js"></script>
     </header>
     <!-- End Navigation Bar-->

@@ -1,7 +1,8 @@
 package com.formaster.springSecurityConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,9 +17,19 @@ public class UserPrincipal implements UserDetails {
 		this.userEntity = userEntity;
 	}
 
+	public String getFirstName() {
+		return userEntity.getFname();
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singleton(new SimpleGrantedAuthority("ADMIN"));
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		if (userEntity.getUrole() == 1) {
+			authorities.add(new SimpleGrantedAuthority("ADMIN"));
+		} else {
+			authorities.add(new SimpleGrantedAuthority("CLIENT"));
+		}
+		return authorities;
 	}
 
 	@Override

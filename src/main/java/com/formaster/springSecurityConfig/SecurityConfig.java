@@ -9,6 +9,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,14 +27,13 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(Customizer.withDefaults())
 				/* return http.csrf(csrf -> csrf.disable()) */
-				.authorizeHttpRequests(auth -> auth
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/master-form", "/master-users")
+						.hasAuthority("ADMIN").requestMatchers("/fill-forms", "/completed-forms", "/profile")
+						.hasAnyAuthority("ADMIN", "CLIENT")
 						.requestMatchers("/loginjvalid", "/assets/**", "/js/LoginScript.js", "/WEB-INF/views/index.jsp")
 						.permitAll().anyRequest().authenticated())
-				.formLogin(form -> form.loginPage("/") // Custom login page URL
-						.loginProcessingUrl("/loginForm") // Form action URL
-						.successHandler(customSuccessHandler()) // Redirect on success
-						.failureHandler(customFailureHandler()) // Redirect on failure
-						.permitAll())
+				.formLogin(form -> form.loginPage("/").loginProcessingUrl("/loginForm")
+						.successHandler(customSuccessHandler()).failureHandler(customFailureHandler()).permitAll())
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
 						.deleteCookies("JSESSIONID").permitAll())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)).build();
@@ -42,8 +42,16 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationSuccessHandler customSuccessHandler() {
 		return (request, response, authentication) -> {
-			System.out.println("Login successful! Redirecting...");
-			response.sendRedirect("/master-form");
+			UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+			String role = userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst()
+					.orElse("");
+			request.getSession().setAttribute("userRole", role);
+			request.getSession().setAttribute("fname", userPrincipal.getFirstName());
+			if ("ADMIN".equals(role)) {
+				response.sendRedirect("/master-form");
+			} else {
+				response.sendRedirect("/fill-forms");
+			}
 		};
 	}
 
@@ -51,7 +59,8 @@ public class SecurityConfig {
 	public AuthenticationFailureHandler customFailureHandler() {
 		return (request, response, exception) -> {
 			System.out.println("Login failed! Redirecting to login page...");
-			response.sendRedirect("/?error=true");
+			request.getSession().setAttribute("LoginError", "Invalid Email or Password!");
+			response.sendRedirect("/");
 		};
 	}
 

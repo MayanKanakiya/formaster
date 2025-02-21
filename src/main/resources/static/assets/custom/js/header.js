@@ -1,5 +1,3 @@
-var usertype = localStorage.getItem("email");
-
 document.write("<div class='topbar-main'>");
 document.write("<div class='container-fluid colmspadding'>");
 document.write("<div class='logo'>");
@@ -31,7 +29,7 @@ document.write("<ul class='list-unstyled topbar-right-menu float-right mb-0'>");
 
 document.write("<li class='dropdown notification-list'>");
 document.write("<a class='nav-link dropdown-toggle waves-effect nav-user' data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false'>");
-document.write("<img src='assets/images/users/face.jpg' alt='user' class='rounded-circle'> <span class='ml-1 pro-user-name'>" + usertype + " <i class='mdi mdi-chevron-down'></i> </span>");
+document.write("<img src='assets/images/users/face.jpg' alt='user' class='rounded-circle'> <span class='ml-1 pro-user-name'>" + fname + " <i class='mdi mdi-chevron-down'></i> </span>");
 document.write("</a>");
 document.write("<div class='dropdown-menu dropdown-menu-right profile-dropdown zoomIn animated'>");
 document.write("<a href='/profile' class='dropdown-item notify-item border-0'>");
@@ -53,22 +51,22 @@ document.write("<div class='clearfix'></div>");
 document.write("</div>");
 document.write("</div>");
 function logoutUser() {
-    var csrfToken = document.querySelector('meta[name="_csrf"]');
-    if (!csrfToken) {
-        alert("CSRF token not found! Logout may not work correctly.");
-        return;
-    }
-    
-    var form = document.createElement("form");
-    form.method = "POST";
-    form.action = "/logout";
-    
-    var csrfInput = document.createElement("input");
-    csrfInput.type = "hidden";
-    csrfInput.name = "_csrf";
-    csrfInput.value = csrfToken.content;
-    
-    form.appendChild(csrfInput);
-    document.body.appendChild(form);
-    form.submit();
+	var csrfToken = document.querySelector('meta[name="_csrf"]');
+	if (!csrfToken) {
+		alert("CSRF token not found! Logout may not work correctly.");
+		return;
+	}
+
+	var form = document.createElement("form");
+	form.method = "POST";
+	form.action = "/logout";
+
+	var csrfInput = document.createElement("input");
+	csrfInput.type = "hidden";
+	csrfInput.name = "_csrf";
+	csrfInput.value = csrfToken.content;
+
+	form.appendChild(csrfInput);
+	document.body.appendChild(form);
+	form.submit();
 }	

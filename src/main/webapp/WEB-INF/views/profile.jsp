@@ -21,16 +21,29 @@
 <link rel="stylesheet" type="text/css" href="assets/custom/plugins/switchery/css/switchery.min.css"/>
     
 <script src="assets/js/modernizr.min.js"></script>
-
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 </head>
 
 <body class="background-image-body background1 square scrollbar-dusty-grass square thin">
 <!-- <div class="preloader"></div>       -->
 <!-- Navigation Bar-->
 <header id="topnav">
-<script src="assets/custom/js/header.js"></script>
 <!-- end topbar-main -->
-
+	<%
+		String userRole = (String) session.getAttribute("userRole");
+		%>
+		<script>
+   		var usertype = "<%=userRole%>";
+		</script>
+			<%
+		String fname = (String) session.getAttribute("fname");
+		%>
+		<script>
+   		var fname = "<%=fname%>";
+			console.log(fname)
+		</script>
+		<script src="assets/custom/js/header.js"></script>
 <script src="assets/custom/js/menu.js"></script>
 <!-- end navbar-custom -->
 </header>

@@ -25,6 +25,18 @@
 <link rel="stylesheet" type="text/css" href="assets/login/login.css">
 </head>
 <body>
+	<script>
+		document.addEventListener("DOMContentLoaded",
+				function() {
+					var loginError = "${sessionScope.LoginError}";
+					if (loginError && loginError !== "null"
+							&& loginError.trim() !== "") {
+						alert(loginError);
+	<%session.removeAttribute("LoginError");%>
+		}
+				});
+	</script>
+
 	<div class="wrapper fadeInDown">
 		<div id="formContent">
 			<div class="fadeIn first">
