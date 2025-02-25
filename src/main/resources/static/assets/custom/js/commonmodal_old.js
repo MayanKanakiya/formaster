@@ -111,9 +111,9 @@ document.write("</div>");
 document.write("</div>");
 document.write("</div>");
 
-document.writeln("<script type='text/javascript' src='http://103.106.20.186:9007/riskcheck/assets/plugins/moment/moment.js'></script>");
-document.writeln("<script type='text/javascript' src='http://103.106.20.186:9007/riskcheck/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.js'></script>");
-document.writeln("<script type='text/javascript' src='http://103.106.20.186:9007/riskcheck/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'></script>");
+document.writeln("<script type='text/javascript' src='http://110.226.127.52:9007/riskcheck/assets/plugins/moment/moment.js'></script>");
+document.writeln("<script type='text/javascript' src='http://110.226.127.52:9007/riskcheck/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.js'></script>");
+document.writeln("<script type='text/javascript' src='http://110.226.127.52:9007/riskcheck/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'></script>");
 
 $(document).ready(function(){
 $('#timesheetfromtime').timepicker({

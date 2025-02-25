@@ -26,7 +26,7 @@
 </head>
 
 <body class="background-image-body background1 square scrollbar-dusty-grass square thin">
-    <!-- <div class="preloader"></div> -->
+   <div class="preloader"></div>
     <!-- Navigation Bar-->
     <header id="topnav">
         <!-- end topbar-main -->
@@ -41,7 +41,6 @@
 		%>
 		<script>
    		var fname = "<%=fname%>";
-			console.log(fname)
 		</script>
 		<script src="assets/custom/js/header.js"></script>
         <script src="assets/custom/js/menu.js"></script>

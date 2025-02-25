@@ -11,8 +11,8 @@
 	content='no-cache, no-store, must-revalidate' />
 <meta http-equiv='X-UA-Compatible' content='IE=edge' />
 <meta http-equiv='Pragma' content='no-cache'>
-<meta name="_csrf" content="${_csrf.token}" />
-<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <link rel="shortcut icon" href="assets/images/favicon.png">
 <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
@@ -42,7 +42,7 @@
 			<div class="fadeIn first">
 				<img src="assets/images/e5logo.png" id="icon" alt="User Icon" />
 			</div>
-			<form action="/loginForm" method="POST" class="loginforms"
+			<form action="/loginForm" method="POST"
 				name="loginForm">
 				<!-- CSRF Token -->
 				<input type="hidden" name="${_csrf.parameterName}"
@@ -62,7 +62,7 @@
 					<span class="errors">Incorrect Login details!</span>
 				</div>
 				<!-- Submit Button -->
-				<a type="submit" class="submit-form-button fadeIn fourth"
+				<a class="submit-form-button fadeIn fourth"
 					id="LoginBtn" href="javascript:void(0)">Login</a>
 
 			</form>
@@ -77,11 +77,7 @@
 		src="assets/custom/plugins/showpassword/hideShowPassword.min.js"></script>
 	<script src="assets/login/main.js"></script>
 	<script>
-		$('#LoginBtn').click(function() {
-			$('.loginforms').submit()
-		})
-
-		$('#login').focus();
+		$('#username').focus();
 		$(document).keypress(function(e) {
 			if (e.which == 13) {
 				login();

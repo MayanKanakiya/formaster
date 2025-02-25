@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebSecurity
@@ -30,13 +33,13 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/master-form", "/master-users")
 						.hasAuthority("ADMIN").requestMatchers("/fill-forms", "/completed-forms", "/profile")
 						.hasAnyAuthority("ADMIN", "CLIENT")
-						.requestMatchers("/loginjvalid", "/assets/**", "/js/LoginScript.js", "/WEB-INF/views/index.jsp")
-						.permitAll().anyRequest().authenticated())
+						.requestMatchers("/assets/**", "/js/LoginScript.js", "/WEB-INF/views/index.jsp").permitAll()
+						.requestMatchers(new CustomAjaxRequestMatcher()).permitAll().anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").loginProcessingUrl("/loginForm")
 						.successHandler(customSuccessHandler()).failureHandler(customFailureHandler()).permitAll())
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
 						.deleteCookies("JSESSIONID").permitAll())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)).build();
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)).build();
 	}
 
 	@Bean
@@ -75,6 +78,14 @@ public class SecurityConfig {
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	public class CustomAjaxRequestMatcher implements RequestMatcher {
+		@Override
+		public boolean matches(HttpServletRequest request) {
+			String requestedWithHeader = request.getHeader("X-Requested-With");
+			return "XMLHttpRequest".equals(requestedWithHeader);
+		}
 	}
 
 }

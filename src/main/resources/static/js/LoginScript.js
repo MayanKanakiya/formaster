@@ -1,51 +1,62 @@
-console.log("Login script running")
+console.log("Login script running");
+
+const loginBtn = document.getElementById("LoginBtn");
+const loginForm = document.forms["loginForm"];
 const email = document.getElementById("username");
 const pass = document.getElementById("password");
-const loginBtn = document.getElementById("LoginBtn");
+const errorMsg = document.getElementById('msg');
 
-// Get CSRF token and header name from meta tags
-const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
 
-loginBtn.addEventListener("click", () => {
-	if (email.value.trim().length == 0) {
-		document.getElementById('msg').style.display = 'block';
+function clientSideValidation() {
+	errorMsg.style.display = 'none';
+
+	if (email.value.trim() === "") {
+		errorMsg.style.display = 'block';
 		document.querySelector("#msg .errors").textContent = "Please enter your email";
-		return;
+		return false;
 	}
-	if (pass.value.trim().length == 0) {
-		document.getElementById('msg').style.display = 'block';
+	if (pass.value.trim() === "") {
+		errorMsg.style.display = 'block';
 		document.querySelector("#msg .errors").textContent = "Please enter your password";
+		return false;
+	}
+	return true;
+}
+
+function handleLogin(event) {
+	event.preventDefault();
+
+	if (!clientSideValidation()) {
 		return;
 	}
-	document.getElementById('msg').style.display = 'none';
-	const loginJValid = {
-		email: email.value,
-		pass: pass.value
-	}
+
 	$.ajax({
 		url: '/loginjvalid',
 		method: 'POST',
 		contentType: 'application/json',
-		data: JSON.stringify(loginJValid),
+		data: JSON.stringify({
+			email: email.value,
+			pass: pass.value
+		}),
 		beforeSend: function(xhr) {
-			xhr.setRequestHeader(csrfHeader, csrfToken);
+			xhr.setRequestHeader(header, token);
 		},
-		success: (response) => {
-			console.log("loginJValid Response:", response.message);
+		success: function(response) {
+			console.log("Login validation successful:", response.message);
+			loginForm.submit();
 		},
-		error: (response) => {
+		error: function(response) {
 			if (response.status === 400) {
-				loginBtn.setAttribute("type", "button");
 				const errorResponse = JSON.parse(response.responseText);
-				document.getElementById('msg').style.display = 'block';
+				errorMsg.style.display = 'block';
 				document.querySelector("#msg .errors").textContent = errorResponse.message;
 			} else if (response.status === 500) {
-				loginBtn.setAttribute("type", "button");
-				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				alert("Server error occurred. Try again later.");
 			}
 		}
 	});
-	document.getElementById('msg').style.display = 'none';
-});
+}
+
+loginBtn.addEventListener("click", handleLogin);
