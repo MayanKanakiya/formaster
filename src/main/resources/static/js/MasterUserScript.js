@@ -4,86 +4,176 @@ const mst_ulname = document.getElementById("lname");
 const email = document.getElementById("email");
 const cno = document.getElementById("cno");
 const gender = document.getElementById("gender");
+const userImg = document.getElementById("userImg");
 const validfrom = document.getElementById("valid_from");
 const validto = document.getElementById("valid_to");
 const roles = document.getElementById("roles");
 const userSaveBtn = document.getElementById("userSaveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 
-userSaveBtn.addEventListener("click", () => {
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
+function ClientSideValidation() {
 	if (mst_ufname.value.trim().length == 0) {
 		alert("Please enter first name");
-		return;
+		return false;
 	}
 	if (!/^(?! )[A-Za-z]+( [A-Za-z]+)*$/.test(mst_ufname.value)) {
 		alert("Enter first name without any extra spaces..");
 		mst_ufname.value = '';
-		return;
+		return false;
 	}
 	if (mst_ufname.value.trim().length <= 1) {
 		alert("First name more than 1 characters");
-		return;
+		return false;
 	}
 	if (mst_ulname.value.trim().length == 0) {
 		alert("Please enter last name");
-		return;
+		return false;
 	}
 	if (!/^(?! )[A-Za-z]+( [A-Za-z]+)*$/.test(mst_ulname.value)) {
 		alert("Enter last name without any extra spaces..");
 		mst_ulname.value = '';
-		return;
+		return false;
 	}
 	if (mst_ulname.value.trim().length <= 2) {
 		alert("Last name more than 2 characters");
-		return;
+		return false;
 	}
 	if (email.value.trim().length == 0) {
 		alert("Please enter email")
-		return;
+		return false;
 	}
 	if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value)) {
 		alert("Please enter valid Email...")
-		return;
+		return false;
 	}
 	if (cno.value.trim().length > 0) {
 		if (cno.value.trim().length < 10) {
 			alert("Contact number should be 10 digit");
-			return;
+			return false;
 		}
 	}
 	if (gender.value === "0") {
 		alert("Please select gender");
-		return;
+		return false;
 	}
 	if (validfrom.value.trim().length > 0) {
 		if (!/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.test(validfrom.value)) {
 			alert("Invalid date format. Please use DD/MM/YYYY.");
 			validfrom.value = '';
-			return;
+			return false;
 		}
 	}
 	if (validfrom.value.trim().length > 0) {
 		if (validto.value.trim().length == 0) {
 			alert("Please enter Valid to date")
-			return;
+			return false;
 		}
 	}
 	if (validto.value.trim().lengt > 0) {
 		if (!/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.test(validto.value)) {
 			alert("Invalid date format. Please use DD/MM/YYYY.");
 			validto.value = '';
-			return;
+			return false;
 		}
 	}
 	if (validto.value.trim().length > 0) {
 		if (validfrom.value.trim().length == 0) {
 			alert("Please enter Valid from date")
-			return;
+			return false;
 		}
 	}
 	if (roles.value === "0") {
 		alert("Please select user role");
+		return false;
+	}
+	return true;
+}
+
+userSaveBtn.addEventListener("click", () => {
+	if (!ClientSideValidation()) {
 		return;
+	}
+	const userAddJData = {
+		fname: mst_ufname.value,
+		lname: mst_ulname.value,
+		email: email.value,
+		cno: cno.value,
+		gender: gender.value,
+		validfrom: validfrom.value,
+		validto: validto.value,
+		urole: roles.value,
+		image: userImg.value
+	}
+	$.ajax({
+		url: '/userMstJValid',
+		method: 'POST',
+		contentType: 'application/json',
+		data: JSON.stringify(userAddJData),
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success: function(response) {
+			console.log("User Master server side validation successful:", response.message);
+			const userAddData = new FormData();
+			userAddData.append("fname", mst_ufname.value);
+			userAddData.append("lname", mst_ulname.value);
+			userAddData.append("email", email.value);
+			userAddData.append("cno", cno.value);
+			userAddData.append("gender", gender.value);
+			userAddData.append("validfrom", validfrom.value);
+			userAddData.append("validto", validto.value);
+			userAddData.append("urole", roles.value);
+			// Append image only if selected
+			if (userImg.files.length > 0) {
+				userAddData.append("imageFile", userImg.files[0]);
+			}
+			$.ajax({
+				url: '/addUserMst',
+				method: 'POST',
+				contentType: 'application/json',
+				data: userAddData,
+				processData: false,
+				contentType: false,
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function(response) {
+					alert(response.message);
+					clearInputFiled();
+				},
+				error: function(response) {
+					if (response.status === 400) {
+						const errorResponse = JSON.parse(response.responseText);
+						alert(errorResponse.message);
+					} else if (response.status === 500) {
+						alert("Server error occurred. Try again later.");
+					}
+				}
+			});
+		},
+		error: function(response) {
+			if (response.status === 400) {
+				const errorResponse = JSON.parse(response.responseText);
+				alert(errorResponse.message);
+			} else if (response.status === 500) {
+				alert("Server error occurred. Try again later.");
+			}
+		}
+	});
+});
+userImg.addEventListener('change', () => {
+	if (userImg.files.length > 0) {
+		const fileName = userImg.files[0].name;
+		const idxDot = fileName.lastIndexOf(".") + 1;
+		const extFile = fileName.substr(idxDot).toLowerCase();
+
+		if (!["jpg", "jpeg", "png"].includes(extFile)) {
+			alert("Only jpg/jpeg and png files are allowed!");
+			userImg.value = '';
+		}
 	}
 });
 //Only enter Characters
@@ -110,7 +200,7 @@ cno.addEventListener("input", () => {
 	}
 	if (cno.value.trim().length > 10) {
 		cno.value = cno.value.slice(0, 10);
-	} s
+	}
 });
 validfrom.addEventListener('input', () => {
 	if (!/^[\d\/]*$/.test(validfrom.value)) {

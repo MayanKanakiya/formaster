@@ -21,6 +21,10 @@ public class UserPrincipal implements UserDetails {
 		return userEntity.getFname();
 	}
 
+	public int getLoginUserId() {
+		return userEntity.getId();
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();

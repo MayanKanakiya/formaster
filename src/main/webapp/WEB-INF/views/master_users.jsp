@@ -211,7 +211,7 @@
 																quot; role=&quot;tooltip&quot;
 																x-placement=&quot;right&quot;><div
 																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-header p-0border_radius6&quot;></h3>
+																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
 																</div>" data-title="<img
 																src='assets/images/users/avatar-2.jpg' width='150'
 																height='150' class='border_radius6'>"
@@ -248,7 +248,7 @@
 																quot; role=&quot;tooltip&quot;
 																x-placement=&quot;right&quot;><div
 																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-header p-0border_radius6&quot;></h3>
+																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
 																</div>" data-title="<img
 																src='assets/images/users/avatar-4.jpg' width='150'
 																height='150' class='border_radius6'>"
@@ -287,7 +287,7 @@
 																quot; role=&quot;tooltip&quot;
 																x-placement=&quot;right&quot;><div
 																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-header p-0border_radius6&quot;></h3>
+																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
 																</div>" data-title="<img
 																src='assets/images/users/avatar-8.jpg' width='150'
 																height='150' class='border_radius6'>"
@@ -352,7 +352,8 @@
 									<div class="btn btn-success text-white btn-padding mt-2"
 										style="position: relative; overflow: hidden;">
 										<i class="fa fa-upload mr-2"></i> Upload <input type="file"
-											name="file" style="opacity: 0; right: 0; position: absolute;">
+											name="file" id="userImg" accept=".jpg,.jpeg,.png"
+											style="opacity: 0; right: 0; position: absolute;">
 									</div>
 
 									<div class="btn btn-success text-white btn-padding mt-2 ml-1">
@@ -461,12 +462,11 @@
 							</div>
 
 							<div class="text-center border-top mt-1 pt-2 mb-2">
-							<!-- save_port_details -->
-								<a	
-									class="btn btn-success text-white btn-padding" id="userSaveBtn"><i
-									class="fa fa-floppy-o mr-2"></i>Save</a> <a
-									class="show_port_table btn btn-danger text-white btn-padding ml-1" id="cancelBtn"><i
-									class="fa fa-times mr-2"></i>Cancel</a>
+								<!-- save_port_details -->
+								<a class="btn btn-success text-white btn-padding"
+									id="userSaveBtn"><i class="fa fa-floppy-o mr-2"></i>Save</a> <a
+									class="show_port_table btn btn-danger text-white btn-padding ml-1"
+									id="cancelBtn"><i class="fa fa-times mr-2"></i>Cancel</a>
 							</div>
 						</div>
 					</div>

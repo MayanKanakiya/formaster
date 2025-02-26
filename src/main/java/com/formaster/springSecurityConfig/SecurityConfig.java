@@ -50,6 +50,7 @@ public class SecurityConfig {
 					.orElse("");
 			request.getSession().setAttribute("userRole", role);
 			request.getSession().setAttribute("fname", userPrincipal.getFirstName());
+			request.getSession().setAttribute("currentLogin", userPrincipal.getLoginUserId());
 			if ("ADMIN".equals(role)) {
 				response.sendRedirect("/master-form");
 			} else {
