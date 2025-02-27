@@ -1,4 +1,4 @@
-package com.formaster.user;
+package com.formaster.loginuser;
 
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.formaster.loginuser.UserDTO"%>
+<%@page import="java.io.File"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -176,7 +179,7 @@
 									</div>
 									<div class="col-xl-4 col-lg-4 col-sm-4">
 										<a href="javascript:void(0)"
-											class="btn btn-warning waves-effect float-right btn-padding client_add_btn"><i
+											class="btn btn-warning waves-effect float-right btn-padding client_add_btn" id="addUserBtn"><i
 											class="fa fa-plus"></i> Add Users</a>
 									</div>
 								</div>
@@ -201,7 +204,12 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
+												<%
+												List<UserDTO> userData = (List<UserDTO>) request.getAttribute("userList");
+												if (!userData.isEmpty()) {
+													for (UserDTO udata : userData) {
+												%>
+												<tr id="row-<%=udata.getId()%>">
 													<td class="text-center">
 														<h2 class="table-avatar">
 															<a href="javascript:void(0)" data-toggle="popover"
@@ -211,109 +219,48 @@
 																quot; role=&quot;tooltip&quot;
 																x-placement=&quot;right&quot;><div
 																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
+																<h3 class=&quot;popover-header p-0border_radius6&quot;></h3>
 																</div>" data-title="<img
-																src='assets/images/users/avatar-2.jpg' width='150'
+																src='<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty()) ? udata.getImage(): "/assets/custom/images/noimage.png"%>' width='150'
 																height='150' class='border_radius6'>"
 																data-original-title="" title=""> <img
-																src="assets/images/users/avatar-2.jpg" alt=""
-																class="img-radius avatar"> </a> <span>Amit Amin</span>
+																src="<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty()) ? udata.getImage(): "/assets/custom/images/noimage.png"%>" alt=""
+																class="img-radius avatar"> </a> <span><%=udata.getFname()%>
+																<%=udata.getLname()%> </span>
 														</h2>
 													</td>
-													<td>amit.amin@gmail.com</td>
-													<td>9999900000</td>
-													<td>01-Jan-2020</td>
-													<td>31-Dec-2020</td>
-													<td>Male</td>
-													<td>User</td>
-													<td>Yes</td>
-													<td class="text-center"><a href="javascript:void(0)"
-														data-toggle="tooltip" data-placement="bottom"
-														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
-															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
-												</tr>
+													<td><%=udata.getEmail()%></td>
+													<td><%=udata.getCno() != null && !udata.getCno().isEmpty() ? udata.getCno() : "Null"%></td>
+													<td><%=udata.getValidfrom() != null && !udata.getValidfrom().isEmpty() ? udata.getValidfrom() : "Null"%></td>
+													<td><%=udata.getValidto() != null && !udata.getValidto().isEmpty() ? udata.getValidto() : "Null"%></td>
+													<td><%=udata.getGender()%></td>
+													<td><%=udata.getUrole() == 1 ? "Admin" : "User"%></td>
+													<td><%=udata.getActive() == 1 ? "Yes" : "No"%></td>
 
-												<tr>
-													<td class="text-center">
-														<h2 class="table-avatar">
-															<a href="javascript:void(0)" data-toggle="popover"
-																data-trigger="hover" data-html="true"
-																data-placement="right"
-																data-template="<div class=&quot;popover fade bs-popover-right&
-																quot; role=&quot;tooltip&quot;
-																x-placement=&quot;right&quot;><div
-																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
-																</div>" data-title="<img
-																src='assets/images/users/avatar-4.jpg' width='150'
-																height='150' class='border_radius6'>"
-																data-original-title="" title=""
-																aria-describedby="popover508087"> <img
-																src="assets/images/users/avatar-4.jpg" alt=""
-																class="img-radius avatar"> </a> <span>Bill
-																Rempel</span>
-														</h2>
-													</td>
-													<td>bill.rempel@gmail.com</td>
-													<td>9898900011</td>
-													<td>01-Mar-2020</td>
-													<td>30-Nov-2020</td>
-													<td>Male</td>
-													<td>User</td>
-													<td>Yes</td>
 													<td class="text-center"><a href="javascript:void(0)"
 														data-toggle="tooltip" data-placement="bottom"
 														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
+														class="text-success fa-size client_add_btn editbtn"
+														data-id="<%=udata.getId()%>"><i class="fa fa-pencil"></i></a>
+														<!-- class="delete-user-alert" --> <span><a
+															href="javascript:void(0)"
+															class="text-danger fa-size deletebtn"
 															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
+															data-original-title="Delete" data-id="<%=udata.getId()%>">
+																<i class="fa fa-trash"></i>
+														</a></span></td>
 												</tr>
-
+												<%
+												}
+												} else {
+												%>
 												<tr>
-													<td class="text-center">
-														<h2 class="table-avatar">
-															<a href="javascript:void(0)" data-toggle="popover"
-																data-trigger="hover" data-html="true"
-																data-placement="right"
-																data-template="<div class=&quot;popover fade bs-popover-right&
-																quot; role=&quot;tooltip&quot;
-																x-placement=&quot;right&quot;><div
-																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
-																</div>" data-title="<img
-																src='assets/images/users/avatar-8.jpg' width='150'
-																height='150' class='border_radius6'>"
-																data-original-title="" title=""> <img
-																src="assets/images/users/avatar-8.jpg" alt=""
-																class="img-radius avatar"> </a> <span>Eric
-																Hartwig</span>
-														</h2>
-													</td>
-													<td>eric.hartwig@gmail.com</td>
-													<td>9988717550</td>
-													<td>01-Apr-2020</td>
-													<td>31-Mar-2021</td>
-													<td>Female</td>
-													<td>Admin</td>
-													<td>Yes</td>
-													<td class="text-center"><a href="javascript:void(0)"
-														data-toggle="tooltip" data-placement="bottom"
-														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
-															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
+													<td colspan="9" style="text-align: center;">Table is
+														empty.</td>
 												</tr>
+												<%
+												}
+												%>
 											</tbody>
 										</table>
 									</div>
@@ -345,8 +292,8 @@
 								<div
 									class="col-xl-2 col-lg-3 col-sm-4 col-xs-12 colmspadding text-center">
 									<div>
-										<img src="assets/images/users/default_user.png"
-											class="mt-2 userimg" width="155">
+										<img src="" class="mt-2 userimg" width="155"
+											id="add_edit_userimg">
 									</div>
 
 									<div class="btn btn-success text-white btn-padding mt-2"
@@ -356,7 +303,7 @@
 											style="opacity: 0; right: 0; position: absolute;">
 									</div>
 
-									<div class="btn btn-success text-white btn-padding mt-2 ml-1">
+									<div class="btn btn-success text-white btn-padding mt-2 ml-1" id="removeImgBtn">
 										<i class="fa fa-trash mr-2"></i> Remove
 									</div>
 								</div>
@@ -409,8 +356,8 @@
 													data-style="lineheight12 bg-transfer"
 													data-live-search="true" id="gender">
 													<option value="0" selected="selected">Select</option>
-													<option value="1">Male</option>
-													<option value="2">Female</option>
+													<option value="Male">Male</option>
+													<option value="Female">Female</option>
 												</select>
 											</div>
 										</div>

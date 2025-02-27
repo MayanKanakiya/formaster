@@ -1,4 +1,4 @@
-package com.formaster.user;
+package com.formaster.mstform_createform;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -9,19 +9,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDTO {
-
-	private int id;
-	private String fname;
-	private String lname;
-	private String email;
-	private String pass;
-	private String cno;
-	private String gender;
-	private String validfrom;
-	private String validto;
-	private int urole;
-	private String image;
+public class MstCreateformDTO {
+	private int fid;
+	private String titletxt;
+	private String aliasname;
+	private int module;
+	private int subcharacteristic;
+	private int recurrence;
+	private int startmonth;
+	private int complianceperiod;
+	private String effectivedate;
+	private String textdes;
 	private int createdby;
 	private Timestamp createdon;
 	private int modifyby;

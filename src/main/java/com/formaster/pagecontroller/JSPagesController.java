@@ -1,10 +1,20 @@
 package com.formaster.pagecontroller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.formaster.loginuser.UserDTO;
+import com.formaster.mstform_adduser.MasterFormService;
 
 @Controller
 public class JSPagesController {
+
+	@Autowired
+	MasterFormService formService;
 
 	@GetMapping("/")
 	public String home() {
@@ -27,8 +37,15 @@ public class JSPagesController {
 	}
 
 	@GetMapping("/master-users")
-	public String masterUsers() {
-		return "master_users";
+	public String masterUsers(Model model) {
+		try {
+			List<UserDTO> userList = formService.getAllUserData();
+			model.addAttribute("userList", userList);
+			return "master_users";
+		} catch (Exception e) {
+			System.out.println("Error while fetching user data from the user_entity table" + e.getMessage());
+			return "master_users";
+		}
 	}
 
 	@GetMapping("/profile")

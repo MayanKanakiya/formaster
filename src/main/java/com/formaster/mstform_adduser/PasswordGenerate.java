@@ -1,4 +1,4 @@
-package com.formaster.mstform;
+package com.formaster.mstform_adduser;
 
 import java.security.SecureRandom;
 

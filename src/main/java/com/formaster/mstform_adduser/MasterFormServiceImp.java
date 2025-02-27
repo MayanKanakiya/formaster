@@ -1,15 +1,17 @@
-package com.formaster.mstform;
+package com.formaster.mstform_adduser;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.formaster.user.UserDTO;
+import com.formaster.loginuser.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -218,7 +220,8 @@ public class MasterFormServiceImp implements MasterFormService {
 							File uploadFile = new File(uploadDir, fileName);
 							imageFile.transferTo(uploadFile);
 
-							imageFileName = File.separator + "images" + File.separator + fileName;
+							/* imageFileName = File.separator + "images" + File.separator + fileName; */
+							imageFileName = "/images/" + fileName;
 						} catch (IOException e) {
 							dto.addMessage("500", "Error saving image file.");
 							return dto;
@@ -232,8 +235,9 @@ public class MasterFormServiceImp implements MasterFormService {
 					dto.setPass(hashedPassword);
 					int addUser = formRepository.mstUserAdd(dto.getActive(), dto.getCno(), createdby,
 							dto.getEmail().trim().toLowerCase(), capitalizeFirst(dto.getFname().trim().toLowerCase()),
-							dto.getGender(), imageFileName, capitalizeFirst(dto.getLname().trim().toLowerCase()),
-							dto.getPass(), dto.getUrole(), dto.getValidfrom(), dto.getValidto());
+							dto.getGender().trim().toLowerCase(), imageFileName,
+							capitalizeFirst(dto.getLname().trim().toLowerCase()), dto.getPass(), dto.getUrole(),
+							dto.getValidfrom(), dto.getValidto());
 
 					if (addUser > 0) {
 						emailService.sendEmail(dto.getEmail().trim().toLowerCase(), "ForMaster : your password",
@@ -250,6 +254,61 @@ public class MasterFormServiceImp implements MasterFormService {
 					dto.addMessage("500", "Internal server error while adding your profile");
 					return dto;
 				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			dto.addMessage("500", "Internal server error while checking duplication email");
+			return dto;
+		}
+	}
+
+	@Override
+	public List<UserDTO> getAllUserData() {
+		List<UserDTO> userData = new ArrayList<>();
+		try {
+			List<UserDTO> userDataList = formRepository.getAllUserData();
+			for (UserDTO uData : userDataList) {
+				UserDTO userAllData = new UserDTO(uData.getId(), uData.getFname(), uData.getLname(), uData.getEmail(),
+						uData.getCno(), uData.getGender(), uData.getValidfrom(), uData.getValidto(), uData.getUrole(),
+						uData.getImage(), uData.getCreatedby(), uData.getCreatedon(), uData.getModifyby(),
+						uData.getModifyon(), uData.getActive());
+				userData.add(userAllData);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return userData;
+	}
+
+	@Override
+	public List<UserDTO> fetchUserDataById(int id) {
+		List<UserDTO> userData = new ArrayList<>();
+		try {
+			List<UserDTO> userDataListById = formRepository.fetchUserDataById(id);
+
+			for (UserDTO uData : userDataListById) {
+				UserDTO userAllData = new UserDTO(uData.getId(), uData.getFname(), uData.getLname(), uData.getEmail(),
+						uData.getCno(), uData.getGender(), uData.getValidfrom(), uData.getValidto(), uData.getUrole(),
+						uData.getImage(), uData.getCreatedby(), uData.getCreatedon(), uData.getModifyby(),
+						uData.getModifyon(), uData.getActive());
+				userData.add(userAllData);
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return userData;
+	}
+
+	@Override
+	public UserDTO deleteUserData(UserDTO dto, int id) {
+		try {
+			if (formRepository.deleteUdata(id) > 0) {
+				dto.addMessage("200", "User data deleted successfully!!");
+				return dto;
+			} else {
+				dto.addMessage("400", "Error while deleting user data");
+				return dto;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

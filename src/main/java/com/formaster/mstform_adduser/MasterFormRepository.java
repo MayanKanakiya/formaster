@@ -1,10 +1,13 @@
-package com.formaster.mstform;
+package com.formaster.mstform_adduser;
+
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.formaster.user.UserEntity;
+import com.formaster.loginuser.UserDTO;
+import com.formaster.loginuser.UserEntity;
 
 import jakarta.transaction.Transactional;
 
@@ -17,4 +20,16 @@ public interface MasterFormRepository extends JpaRepository<UserEntity, Integer>
 
 	@Query(value = "select count(*) from user_entity where email=?1", nativeQuery = true)
 	int duplicateEmail(String email);
+
+	@Query(value = "select id,fname,lname,email,cno,gender,validfrom,validto,urole,image,createdby,createdon,modifyby,modifyon,active from user_entity where 1=1 and isdelete=0", nativeQuery = true)
+	List<UserDTO> getAllUserData();
+
+	@Modifying
+	@Transactional
+	@Query(value = "update user_entity set isdelete=1 where id=?1", nativeQuery = true)
+	int deleteUdata(int id);
+
+	@Query(value = "select id,fname,lname,email,cno,gender,validfrom,validto,urole,image,createdby,createdon,modifyby,modifyon,active from user_entity where id=?1", nativeQuery = true)
+	List<UserDTO> fetchUserDataById(int id);
+
 }

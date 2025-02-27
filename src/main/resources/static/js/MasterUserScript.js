@@ -5,6 +5,9 @@ const email = document.getElementById("email");
 const cno = document.getElementById("cno");
 const gender = document.getElementById("gender");
 const userImg = document.getElementById("userImg");
+const add_edit_userimg = document.getElementById("add_edit_userimg");
+const removeImgBtn = document.getElementById("removeImgBtn");
+const addUserBtn = document.getElementById("addUserBtn");
 const validfrom = document.getElementById("valid_from");
 const validto = document.getElementById("valid_to");
 const roles = document.getElementById("roles");
@@ -143,6 +146,7 @@ userSaveBtn.addEventListener("click", () => {
 				success: function(response) {
 					alert(response.message);
 					clearInputFiled();
+					window.location.href = '/master-users';
 				},
 				error: function(response) {
 					if (response.status === 400) {
@@ -277,3 +281,94 @@ function clearInputFiled() {
 	roles.value = "0";
 	$('.selectpicker').selectpicker('refresh');
 }
+$('.deletebtn').on('click', function() {
+	const uid = $(this).data('id');
+	if (confirm("Are you sure want to delete data?")) {
+		$.ajax({
+			url: `/deleteudata/${uid}`,
+			method: 'DELETE',
+			contentType: 'application/json',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(response) {
+				console.log(response.message);
+				$(`#row-${uid}`).remove();
+				alert("User data deleted successfully!!");
+				window.location.href = '/master-users';
+			},
+			error: function(response) {
+				if (response.status === 400) {
+					const errorResponse = JSON.parse(response.responseText);
+					alert(errorResponse.message);
+				} else if (response.status === 500) {
+					alert("Server error occurred. Try again later.");
+				}
+			}
+		});
+	}
+});
+$('.editbtn').on('click', function() {
+	const uid = $(this).data('id');
+	$.ajax({
+		url: `/fetchUData/${uid}`,
+		method: 'POST',
+		contentType: 'application/json',
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success: function(response) {
+			console.log(response);
+			if (response.length > 0) {
+				const user = response[0];
+				mst_ufname.value = user.fname;
+				mst_ulname.value = user.lname;
+				email.value = user.email;
+				cno.value = user.cno;
+				if (user.gender = "male") {
+					gender.value = "Male";
+				} else {
+					gender.value = "Female";
+				}
+				$('.selectpicker').selectpicker('refresh');
+				validfrom.value = user.validfrom;
+				validto.value = user.validto;
+				roles.value = user.urole;
+				$('.selectpicker').selectpicker('refresh');
+				if (user.image) {
+					add_edit_userimg.src = user.image;
+				} else {
+					add_edit_userimg.src = "assets/images/users/default_user.png";
+				}
+			}
+		},
+		error: function(response) {
+			if (response.status === 400) {
+				const errorResponse = JSON.parse(response.responseText);
+				alert(errorResponse.message);
+			} else if (response.status === 500) {
+				alert("Server error occurred. Try again later.");
+			}
+		}
+	});
+});
+addUserBtn.addEventListener("click", () => {
+	add_edit_userimg.src = "assets/images/users/default_user.png";
+	clearInputFiled();
+})
+userImg.addEventListener("change", (event) => {
+	const file = event.target.files[0];
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function(e) {
+			add_edit_userimg.src = e.target.result;
+		};
+		reader.readAsDataURL(file);
+	} else {
+		add_edit_userimg.src = "assets/images/users/default_user.png";
+	}
+});
+removeImgBtn.addEventListener("click", () => {
+	userImg.value = "";
+	add_edit_userimg.src = "assets/images/users/default_user.png";
+});

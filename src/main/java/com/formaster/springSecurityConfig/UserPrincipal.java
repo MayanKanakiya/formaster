@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.formaster.user.UserEntity;
+import com.formaster.loginuser.UserEntity;
 
 public class UserPrincipal implements UserDetails {
 	private UserEntity userEntity;

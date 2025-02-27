@@ -1,4 +1,4 @@
-package com.formaster.mstform;
+package com.formaster.mstform_adduser;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +18,7 @@ public class ImageController {
 	private final String uploadDir = "F:/Emerging Five/formasterUserImg/";
 
 	@GetMapping("/{filename}")
-	public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+	public ResponseEntity<Resource> getImage(@PathVariable("filename") String filename) {
 		try {
 			Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
 			Resource resource = new UrlResource(filePath.toUri());
@@ -31,6 +31,7 @@ public class ImageController {
 				return ResponseEntity.notFound().build();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.internalServerError().build();
 		}
 	}

@@ -1,4 +1,4 @@
-package com.formaster.user;
+package com.formaster.loginuser;
 
 import java.util.Map;
 
