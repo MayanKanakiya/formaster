@@ -1,5 +1,6 @@
 package com.formaster.mstform_adduser;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,5 +32,11 @@ public interface MasterFormRepository extends JpaRepository<UserEntity, Integer>
 
 	@Query(value = "select id,fname,lname,email,cno,gender,validfrom,validto,urole,image,createdby,createdon,modifyby,modifyon,active from user_entity where id=?1", nativeQuery = true)
 	List<UserDTO> fetchUserDataById(int id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update user_entity set fname=?1,lname=?2,email=?3,cno=?4,gender=?5,validfrom=?6,validto=?7,urole=?8,image=?9,modifyby=?10,modifyon=?11 where id=?12", nativeQuery = true)
+	int updateUdata(String fname, String lname, String email, String cno, String gender, String validfrom,
+			String validto, int urole, String image, int modifyby, Timestamp modifyon, int id);
 
 }

@@ -17,4 +17,6 @@ public interface MasterFormService {
 	public List<UserDTO> fetchUserDataById(int id);
 
 	public UserDTO deleteUserData(UserDTO userDTO, int id);
+
+	public UserDTO updateUserData(UserDTO userDTo, int id, MultipartFile imageFile);
 }

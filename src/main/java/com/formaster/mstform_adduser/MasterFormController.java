@@ -64,6 +64,28 @@ public class MasterFormController {
 		}
 	}
 
+	@PostMapping("/updateUserMst")
+	public ResponseEntity<?> MstUserUpdate(@ModelAttribute UserDTO dto,
+			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+		try {
+			System.out.println(imageFile);
+			UserDTO ServiceResponseUserDTO = mstService.updateUserData(dto, dto.getId(), imageFile);
+			if (ServiceResponseUserDTO.getMessage().containsKey("200")) {
+				return ResponseEntity.ok(Map.of("message", ServiceResponseUserDTO.getMessage().get("200")));
+			} else if (ServiceResponseUserDTO.getMessage().containsKey("400")) {
+				return ResponseEntity.badRequest()
+						.body(Map.of("message", ServiceResponseUserDTO.getMessage().get("400")));
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(Map.of("message", ServiceResponseUserDTO.getMessage().get("500")));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("message", "Internal server error controller side: " + e.getMessage()));
+		}
+	}
+
 	@DeleteMapping("/deleteudata/{id}")
 	public ResponseEntity<?> deleteUserData(UserDTO dto, @PathVariable("id") int id) {
 		try {

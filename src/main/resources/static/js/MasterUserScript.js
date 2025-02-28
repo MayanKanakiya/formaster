@@ -13,6 +13,7 @@ const validto = document.getElementById("valid_to");
 const roles = document.getElementById("roles");
 const userSaveBtn = document.getElementById("userSaveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
+const hiddenuid = document.getElementById("hiddenuid");
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
@@ -120,43 +121,79 @@ userSaveBtn.addEventListener("click", () => {
 		},
 		success: function(response) {
 			console.log("User Master server side validation successful:", response.message);
-			const userAddData = new FormData();
-			userAddData.append("fname", mst_ufname.value);
-			userAddData.append("lname", mst_ulname.value);
-			userAddData.append("email", email.value);
-			userAddData.append("cno", cno.value);
-			userAddData.append("gender", gender.value);
-			userAddData.append("validfrom", validfrom.value);
-			userAddData.append("validto", validto.value);
-			userAddData.append("urole", roles.value);
+			const userAddEditData = new FormData();
+			userAddEditData.append("id", hiddenuid.value.trim())
+			userAddEditData.append("fname", mst_ufname.value);
+			userAddEditData.append("lname", mst_ulname.value);
+			userAddEditData.append("email", email.value);
+			userAddEditData.append("cno", cno.value);
+			userAddEditData.append("gender", gender.value);
+			userAddEditData.append("validfrom", validfrom.value);
+			userAddEditData.append("validto", validto.value);
+			userAddEditData.append("urole", roles.value);
 			// Append image only if selected
 			if (userImg.files.length > 0) {
-				userAddData.append("imageFile", userImg.files[0]);
-			}
-			$.ajax({
-				url: '/addUserMst',
-				method: 'POST',
-				contentType: 'application/json',
-				data: userAddData,
-				processData: false,
-				contentType: false,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader(header, token);
-				},
-				success: function(response) {
-					alert(response.message);
-					clearInputFiled();
-					window.location.href = '/master-users';
-				},
-				error: function(response) {
-					if (response.status === 400) {
-						const errorResponse = JSON.parse(response.responseText);
-						alert(errorResponse.message);
-					} else if (response.status === 500) {
-						alert("Server error occurred. Try again later.");
-					}
+				userAddEditData.append("imageFile", userImg.files[0]);
+			} else if (userImg.files.length === 0 && hiddenuid.value.trim().length === 0) {
+				userAddEditData.append("imageFile", "");
+			} else {
+				let imgSrc = add_edit_userimg.src;
+				if (imgSrc.includes("assets/images/users/default_user.png")) {
+					userAddEditData.append("imageFile", "");
 				}
-			});
+			}
+
+			if (hiddenuid.value.trim().length == 0) {
+				$.ajax({
+					url: '/addUserMst',
+					method: 'POST',
+					contentType: 'application/json',
+					data: userAddEditData,
+					processData: false,
+					contentType: false,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function(response) {
+						alert(response.message);
+						clearInputFiled();
+						window.location.href = '/master-users';
+					},
+					error: function(response) {
+						if (response.status === 400) {
+							const errorResponse = JSON.parse(response.responseText);
+							alert(errorResponse.message);
+						} else if (response.status === 500) {
+							alert("Server error occurred while add user. Try again later.");
+						}
+					}
+				});
+			} else if (hiddenuid.value.trim().length > 0) {
+				$.ajax({
+					url: '/updateUserMst',
+					method: 'POST',
+					contentType: 'application/json',
+					data: userAddEditData,
+					processData: false,
+					contentType: false,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function(response) {
+						alert(response.message);
+						clearInputFiled();
+						window.location.href = '/master-users';
+					},
+					error: function(response) {
+						if (response.status === 400) {
+							const errorResponse = JSON.parse(response.responseText);
+							alert(errorResponse.message);
+						} else if (response.status === 500) {
+							alert("Server error occurred while updating user. Try again later.");
+						}
+					}
+				});
+			}
 		},
 		error: function(response) {
 			if (response.status === 400) {
@@ -321,6 +358,7 @@ $('.editbtn').on('click', function() {
 			console.log(response);
 			if (response.length > 0) {
 				const user = response[0];
+				hiddenuid.value = user.id;
 				mst_ufname.value = user.fname;
 				mst_ulname.value = user.lname;
 				email.value = user.email;
@@ -354,6 +392,7 @@ $('.editbtn').on('click', function() {
 });
 addUserBtn.addEventListener("click", () => {
 	add_edit_userimg.src = "assets/images/users/default_user.png";
+	hiddenuid.value = "";
 	clearInputFiled();
 })
 userImg.addEventListener("change", (event) => {

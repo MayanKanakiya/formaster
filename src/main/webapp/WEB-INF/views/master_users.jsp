@@ -320,6 +320,7 @@
 
 									<div class="row pl-2 pr-2 pt-1">
 										<div class="col-xl-3 col-lg-4 col-sm-4 col-xs-12 colmspadding">
+										<input type="hidden" class="form-control" id="hiddenuid">
 											<div class="form-group">
 												<label>First Name<span class="text-danger ml-1">*</span></label>
 												<input type="text" class="form-control" id="fname">

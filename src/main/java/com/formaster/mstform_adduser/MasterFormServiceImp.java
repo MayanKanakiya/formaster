@@ -2,10 +2,12 @@ package com.formaster.mstform_adduser;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -215,13 +217,12 @@ public class MasterFormServiceImp implements MasterFormService {
 							String fileExtension = imageFile.getOriginalFilename()
 									.substring(imageFile.getOriginalFilename().lastIndexOf("."));
 
-							String fileName = "demo_" + createdby + fileExtension;
+							String fileName = UUID.randomUUID().toString() + "_" + createdby + fileExtension;
 
 							File uploadFile = new File(uploadDir, fileName);
 							imageFile.transferTo(uploadFile);
 
-							/* imageFileName = File.separator + "images" + File.separator + fileName; */
-							imageFileName = "/images/" + fileName;
+							imageFileName = File.separator + "images" + File.separator + fileName;
 						} catch (IOException e) {
 							dto.addMessage("500", "Error saving image file.");
 							return dto;
@@ -313,6 +314,52 @@ public class MasterFormServiceImp implements MasterFormService {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			dto.addMessage("500", "Internal server error while checking duplication email");
+			return dto;
+		}
+	}
+
+	@Override
+	public UserDTO updateUserData(UserDTO dto, int id, MultipartFile imageFile) {
+		try {
+			int modifyby = (int) session.getAttribute("currentLogin");
+			String imageFileName = null;
+
+			if (imageFile != null && !imageFile.isEmpty()) {
+				try {
+					String uploadDir = "F:" + File.separator + "Emerging Five" + File.separator + "formasterUserImg";
+					String fileExtension = imageFile.getOriginalFilename()
+							.substring(imageFile.getOriginalFilename().lastIndexOf("."));
+
+					String fileName = UUID.randomUUID().toString() + "_" + modifyby + fileExtension;
+
+					File uploadFile = new File(uploadDir, fileName);
+					imageFile.transferTo(uploadFile);
+
+					imageFileName = File.separator + "images" + File.separator + fileName;
+				} catch (IOException e) {
+					dto.addMessage("500", "Error saving image file.");
+					return dto;
+				}
+			} else {
+				List<UserDTO> existingImg = formRepository.fetchUserDataById(id);
+				for (UserDTO updateUImg : existingImg) {
+					imageFileName = updateUImg.getImage();
+				}
+
+			}
+			if (formRepository.updateUdata(capitalizeFirst(dto.getFname().trim().toLowerCase()),
+					capitalizeFirst(dto.getLname().trim().toLowerCase()), dto.getEmail().trim().toLowerCase(),
+					dto.getCno(), dto.getGender(), dto.getValidfrom(), dto.getValidto(), dto.getUrole(), imageFileName,
+					modifyby, new Timestamp(System.currentTimeMillis()), id) > 0) {
+				dto.addMessage("200", "User data updated successfully!!");
+				return dto;
+			} else {
+				dto.addMessage("400", "Error while updating user data");
+				return dto;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			dto.addMessage("400", "Internal server error while checking updating user data");
 			return dto;
 		}
 	}
