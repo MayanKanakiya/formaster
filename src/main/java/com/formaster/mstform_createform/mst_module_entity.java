@@ -21,7 +21,7 @@ public class mst_module_entity {
 	private String moduleShortName;
 
 	@Column(name = "active")
-	private Integer active;
+	private int active;
 
 	@Column(name = "createdby", nullable = false)
 	private int createdBy;
@@ -30,7 +30,7 @@ public class mst_module_entity {
 	private Timestamp createdOn;
 
 	@Column(name = "modifyby")
-	private Integer modifyBy;
+	private int modifyBy;
 
 	@Column(name = "modifyon")
 	private Timestamp modifyOn;

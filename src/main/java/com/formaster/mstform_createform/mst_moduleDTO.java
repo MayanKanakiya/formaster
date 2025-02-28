@@ -14,10 +14,10 @@ public class mst_moduleDTO {
 	private int moduleId;
 	private String moduleName;
 	private String moduleShortName;
-	private Integer active;
+	private int active;
 	private int createdBy;
 	private Timestamp createdOn;
-	private Integer modifyBy;
+	private int modifyBy;
 	private Timestamp modifyOn;
 	private String ipAddress;
 	private Map<String, String> message = new HashMap<>();
@@ -38,6 +38,10 @@ public class mst_moduleDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	public mst_moduleDTO(String moduleName) {
+		super();
+		this.moduleName = moduleName;
+	}
 
 }

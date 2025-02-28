@@ -122,7 +122,7 @@ userSaveBtn.addEventListener("click", () => {
 		success: function(response) {
 			console.log("User Master server side validation successful:", response.message);
 			const userAddEditData = new FormData();
-			userAddEditData.append("id", hiddenuid.value.trim())
+			userAddEditData.append("id", hiddenuid.value.trim());
 			userAddEditData.append("fname", mst_ufname.value);
 			userAddEditData.append("lname", mst_ulname.value);
 			userAddEditData.append("email", email.value);
@@ -131,7 +131,7 @@ userSaveBtn.addEventListener("click", () => {
 			userAddEditData.append("validfrom", validfrom.value);
 			userAddEditData.append("validto", validto.value);
 			userAddEditData.append("urole", roles.value);
-			// Append image only if selected
+
 			if (userImg.files.length > 0) {
 				userAddEditData.append("imageFile", userImg.files[0]);
 			} else if (userImg.files.length === 0 && hiddenuid.value.trim().length === 0) {
@@ -143,57 +143,33 @@ userSaveBtn.addEventListener("click", () => {
 				}
 			}
 
-			if (hiddenuid.value.trim().length == 0) {
-				$.ajax({
-					url: '/addUserMst',
-					method: 'POST',
-					contentType: 'application/json',
-					data: userAddEditData,
-					processData: false,
-					contentType: false,
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					success: function(response) {
-						alert(response.message);
-						clearInputFiled();
-						window.location.href = '/master-users';
-					},
-					error: function(response) {
-						if (response.status === 400) {
-							const errorResponse = JSON.parse(response.responseText);
-							alert(errorResponse.message);
-						} else if (response.status === 500) {
-							alert("Server error occurred while add user. Try again later.");
-						}
+			const apiUrl = hiddenuid.value.trim().length == 0 ? '/addUserMst' : '/updateUserMst';
+
+			$.ajax({
+				url: apiUrl,
+				method: 'POST',
+				contentType: 'application/json',
+				data: userAddEditData,
+				processData: false,
+				contentType: false,
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function(response) {
+					alert(response.message);
+					clearInputFiled();
+					window.location.href = '/master-users';
+				},
+				error: function(response) {
+					if (response.status === 400) {
+						const errorResponse = JSON.parse(response.responseText);
+						alert(errorResponse.message);
+					} else if (response.status === 500) {
+						alert("Server error occurred while processing user. Try again later.");
 					}
-				});
-			} else if (hiddenuid.value.trim().length > 0) {
-				$.ajax({
-					url: '/updateUserMst',
-					method: 'POST',
-					contentType: 'application/json',
-					data: userAddEditData,
-					processData: false,
-					contentType: false,
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					success: function(response) {
-						alert(response.message);
-						clearInputFiled();
-						window.location.href = '/master-users';
-					},
-					error: function(response) {
-						if (response.status === 400) {
-							const errorResponse = JSON.parse(response.responseText);
-							alert(errorResponse.message);
-						} else if (response.status === 500) {
-							alert("Server error occurred while updating user. Try again later.");
-						}
-					}
-				});
-			}
+				}
+			});
+
 		},
 		error: function(response) {
 			if (response.status === 400) {
@@ -385,7 +361,7 @@ $('.editbtn').on('click', function() {
 				const errorResponse = JSON.parse(response.responseText);
 				alert(errorResponse.message);
 			} else if (response.status === 500) {
-				alert("Server error occurred. Try again later.");
+				alert("Server error occurred while fetching user data.");
 			}
 		}
 	});

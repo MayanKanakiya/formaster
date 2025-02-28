@@ -116,7 +116,7 @@
 									</div>
 									<div class="col-xl-4 col-lg-4 col-sm-4">
 										<a href="javascript:void(0)"
-											class="btn btn-warning waves-effect float-right btn-padding client_add_btn"><i
+											class="btn btn-warning waves-effect float-right btn-padding client_add_btn" id="addFormBtb"><i
 											class="fa fa-plus"></i> Add Form</a>
 									</div>
 								</div>
@@ -310,12 +310,9 @@
 												class="col-xl-2 col-lg-3 col-sm-4 col-xs-12 colmspadding">
 												<div class="form-group">
 													<label>Module <span class="text-danger">*</span></label> <select
-														class="selectpicker" data-style="lineheight12 bg-transfer"
+														class="selectpicker" id="moduleDropdown" data-style="lineheight12 bg-transfer"
 														data-live-search="true">
-														<option value="" selected="selected">Select</option>
-														<option value="1">HASCheck</option>
-														<option value="2">EHS</option>
-														<option value="3">ENCheck</option>
+														<option value="0" selected="selected">Select</option>
 
 													</select>
 												</div>
@@ -1626,6 +1623,7 @@
 		// End Multiselect add table
 	</script>
 <script src="js/MasterCreateformScript.js"></script>
+<script src="js/moduleScript.js"></script>
 </body>
 
 </html>
