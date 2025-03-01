@@ -31,4 +31,15 @@ public class mst_monthDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
+
+	public mst_monthDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public mst_monthDTO(String monthName) {
+		super();
+		this.monthName = monthName;
+	}
+	
 }

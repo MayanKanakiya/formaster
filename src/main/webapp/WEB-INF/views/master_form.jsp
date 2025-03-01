@@ -323,13 +323,8 @@
 													<label>Characteristic <span class="text-danger">*</span></label>
 													<select class="selectpicker"
 														data-style="lineheight12 bg-transfer"
-														data-live-search="true">
+														data-live-search="true" id="characteristicDropdown">
 														<option value="" selected="selected">Select</option>
-														<option value="1">Aboveground Storage Tanks</option>
-														<option value="2">Air Emissions</option>
-														<option value="3">Asbestos</option>
-														<option value="4">Asbestos - Client Specific</option>
-														<option value="5">Chemicals</option>
 													</select>
 												</div>
 											</div>
@@ -340,13 +335,8 @@
 													<label>Sub-Characteristic <span class="text-danger">*</span></label>
 													<select class="selectpicker"
 														data-style="lineheight12 bg-transfer"
-														data-live-search="true">
+														data-live-search="true" id="subcharacteristicDropdown">
 														<option value="" selected="selected">Select</option>
-														<option value="1">Abatement</option>
-														<option value="2">Documentation</option>
-														<option value="3">General</option>
-														<option value="4">Inspection</option>
-														<option value="5">Insurance</option>
 													</select>
 												</div>
 											</div>
@@ -357,17 +347,8 @@
 													<label>Recurrence <span class="text-danger">*</span></label>
 													<select class="selectpicker"
 														data-style="lineheight12 bg-transfer"
-														data-live-search="true">
+														data-live-search="true" id="recurranceDropdown">
 														<option value="" selected="selected">Select</option>
-														<option value="1">Annually</option>
-														<option value="2">Bi-Monthly</option>
-														<option value="3">Every 2 years</option>
-														<option value="4">Every 3 years</option>
-														<option value="5">Every 5 years</option>
-														<option value="6">Monthly</option>
-														<option value="7">One time</option>
-														<option value="8">Quarterly</option>
-														<option value="9">Semi-Annually</option>
 													</select>
 												</div>
 											</div>
@@ -378,20 +359,8 @@
 													<label>Start Month <span class="text-danger">*</span></label>
 													<select class="selectpicker"
 														data-style="lineheight12 bg-transfer"
-														data-live-search="true">
+														data-live-search="true" id="monthDropdown">
 														<option value="" selected="selected">Select</option>
-														<option value="1">January</option>
-														<option value="2">February</option>
-														<option value="3">March</option>
-														<option value="4">April</option>
-														<option value="5">May</option>
-														<option value="6">June</option>
-														<option value="7">July</option>
-														<option value="8">August</option>
-														<option value="9">September</option>
-														<option value="10">October</option>
-														<option value="11">November</option>
-														<option value="12">December</option>
 													</select>
 												</div>
 											</div>

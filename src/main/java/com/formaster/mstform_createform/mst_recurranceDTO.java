@@ -31,4 +31,15 @@ public class mst_recurranceDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
+
+	public mst_recurranceDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public mst_recurranceDTO(String recurranceName) {
+		super();
+		this.recurranceName = recurranceName;
+	}
+	
 }

@@ -32,4 +32,15 @@ public class mst_subcharacteristicDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
+
+	public mst_subcharacteristicDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public mst_subcharacteristicDTO(String subCharacteristicName) {
+		super();
+		this.subCharacteristicName = subCharacteristicName;
+	}
+	
 }

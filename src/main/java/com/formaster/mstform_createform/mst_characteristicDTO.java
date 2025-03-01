@@ -31,4 +31,15 @@ public class mst_characteristicDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
+
+	public mst_characteristicDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public mst_characteristicDTO(String characteristicName) {
+		super();
+		this.characteristicName = characteristicName;
+	}
+	
 }
