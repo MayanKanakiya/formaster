@@ -116,8 +116,8 @@
 									</div>
 									<div class="col-xl-4 col-lg-4 col-sm-4">
 										<a href="javascript:void(0)"
-											class="btn btn-warning waves-effect float-right btn-padding client_add_btn" id="addFormBtb"><i
-											class="fa fa-plus"></i> Add Form</a>
+											class="btn btn-warning waves-effect float-right btn-padding client_add_btn"
+											id="addFormBtb"><i class="fa fa-plus"></i> Add Form</a>
 									</div>
 								</div>
 							</div>
@@ -310,7 +310,8 @@
 												class="col-xl-2 col-lg-3 col-sm-4 col-xs-12 colmspadding">
 												<div class="form-group">
 													<label>Module <span class="text-danger">*</span></label> <select
-														class="selectpicker" id="moduleDropdown" data-style="lineheight12 bg-transfer"
+														class="selectpicker" id="moduleDropdown"
+														data-style="lineheight12 bg-transfer"
 														data-live-search="true">
 														<option value="0" selected="selected">Select</option>
 
@@ -367,8 +368,6 @@
 										</div>
 
 										<div class="row pl-3 pr-3">
-
-
 											<div
 												class="col-xl-4 col-lg-4 col-sm-5 col-xs-12 colmspadding">
 												<div class="row pl-2 pr-2">
@@ -445,81 +444,9 @@
 
 														<tbody>
 															<tr>
-																<td>FS-TRI-OPS-01</td>
+																<td>Q1</td>
 																<td>Emergency Power Systems & Lighting</td>
 																<td>Single choice</td>
-																<td>Yes</td>
-																<td class="text-center"><span data-toggle="modal"
-																	data-target=".addformquestion"><a
-																		href="javascript:void(0)" data-toggle="tooltip"
-																		data-placement="bottom" data-original-title="Edit"
-																		class="text-success fa-size"><i
-																			class="fa fa-pencil"></i></a></span> <span
-																	class="delete-user-alert"><a
-																		href="javascript:void(0)" class="text-danger fa-size"
-																		data-toggle="tooltip" data-placement="bottom"
-																		data-original-title="Delete"><i
-																			class="fa fa-trash"></i></a></span></td>
-															</tr>
-
-															<tr>
-																<td>FS-TRI-OPS-02</td>
-																<td>Fire Alarm & Voice Communication</td>
-																<td>Multiple Choice</td>
-																<td>No</td>
-																<td class="text-center"><span data-toggle="modal"
-																	data-target=".addformquestion"><a
-																		href="javascript:void(0)" data-toggle="tooltip"
-																		data-placement="bottom" data-original-title="Edit"
-																		class="text-success fa-size"><i
-																			class="fa fa-pencil"></i></a></span> <span
-																	class="delete-user-alert"><a
-																		href="javascript:void(0)" class="text-danger fa-size"
-																		data-toggle="tooltip" data-placement="bottom"
-																		data-original-title="Delete"><i
-																			class="fa fa-trash"></i></a></span></td>
-															</tr>
-
-															<tr>
-																<td>FS-TRI-OPS-03</td>
-																<td>Fire Department Access</td>
-																<td>Single Text</td>
-																<td>Yes</td>
-																<td class="text-center"><span data-toggle="modal"
-																	data-target=".addformquestion"><a
-																		href="javascript:void(0)" data-toggle="tooltip"
-																		data-placement="bottom" data-original-title="Edit"
-																		class="text-success fa-size"><i
-																			class="fa fa-pencil"></i></a></span> <span
-																	class="delete-user-alert"><a
-																		href="javascript:void(0)" class="text-danger fa-size"
-																		data-toggle="tooltip" data-placement="bottom"
-																		data-original-title="Delete"><i
-																			class="fa fa-trash"></i></a></span></td>
-															</tr>
-
-															<tr>
-																<td>FS-TRI-OPS-04</td>
-																<td>Fire Separations</td>
-																<td>Single Select</td>
-																<td>No</td>
-																<td class="text-center"><span data-toggle="modal"
-																	data-target=".addformquestion"><a
-																		href="javascript:void(0)" data-toggle="tooltip"
-																		data-placement="bottom" data-original-title="Edit"
-																		class="text-success fa-size"><i
-																			class="fa fa-pencil"></i></a></span> <span
-																	class="delete-user-alert"><a
-																		href="javascript:void(0)" class="text-danger fa-size"
-																		data-toggle="tooltip" data-placement="bottom"
-																		data-original-title="Delete"><i
-																			class="fa fa-trash"></i></a></span></td>
-															</tr>
-
-															<tr>
-																<td>FS-TRI-OPS-05</td>
-																<td>Portable Extinguishers</td>
-																<td>Multi Select</td>
 																<td>Yes</td>
 																<td class="text-center"><span data-toggle="modal"
 																	data-target=".addformquestion"><a
@@ -541,11 +468,12 @@
 
 										<div class="form-actions m-t-5">
 											<div class="text-center">
-												<a
-													class="save_port_details btn btn-success text-white btn-padding ml-1"><i
-													class="fa fa-floppy-o mr-2"></i>Save</a> <a
-													class="show_port_table btn btn-danger text-white btn-padding ml-1"><i
-													class="fa fa-times mr-2"></i>Cancel</a>
+												<a class="btn btn-success text-white btn-padding ml-1"
+													id="saveQueInDBTable"><i class="fa fa-floppy-o mr-2"></i>Save</a><a
+													class="btn btn-danger text-white btn-padding ml-1"
+													data-dismiss="modal" aria-label="Close"> <i
+													class="fa fa-times mr-2"></i>Cancel
+												</a>
 											</div>
 										</div>
 									</div>
@@ -967,7 +895,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade addformquestion" tabindex="-1">
+	<div class="modal fade addformquestion" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -989,7 +917,8 @@
 											<td class="border-0">
 												<div class="form-group mb-0">
 													<input type="text" class="form-control"
-														placeholder="Enter Your Question Label in English">
+														placeholder="Enter Your Question Label in English"
+														disabled id="queLabel">
 												</div>
 											</td>
 
@@ -1001,7 +930,7 @@
 											<td class="border-0">
 												<div class="form-group mb-0">
 													<input type="text" class="form-control"
-														placeholder="Enter Your Question in English">
+														placeholder="Enter Your Question in English" id="queName">
 												</div>
 											</td>
 
@@ -1011,7 +940,7 @@
 											<td class="border-0"><textarea
 													class="form-control textareasize"
 													placeholder="Enter Description in English"
-													style="min-height: 45px !important;"></textarea></td>
+													style="min-height: 45px !important;" id="queDes"></textarea></td>
 
 										</tr>
 										<tr>
@@ -1021,7 +950,8 @@
 											<td class="border-0"><select
 												class="selectpicker anstypecombo"
 												data-style="lineheight12 bg-transfer"
-												data-live-search="true" data-title="Select Answer Type">
+												data-live-search="true" data-title="Select Answer Type"
+												id="queAnswerType">
 													<option value="0">No Answer Required</option>
 													<option value="1">Single Choice</option>
 													<option value="2">Multiple Choice</option>
@@ -1035,33 +965,34 @@
 									</tbody>
 								</table>
 
-								<div class="singlechoicedata" style="display: none;">
-									<hr class="mb-2 mt-2">
-									<table
-										class="table table-striped nowrap mb-0 singlechoicetable">
-										<tbody>
-											<tr>
-												<td class="text-center border-0" width="5%"><i
-													class="fa fa-arrow-right"></i></td>
-												<td class="border-0 p-1">
-													<div class="form-group mb-0">
-														<input type="text" class="form-control"
-															placeholder="Enter an answer choice in English">
-													</div>
-												</td>
+					<div class="singlechoicedata" style="display: none;">
+    <hr class="mb-2 mt-2">
+    <table id="singlechoicetable" class="table table-striped nowrap mb-0">
+        <tbody>
+            <tr>
+                <td class="text-center border-0" width="5%">
+                    <i class="fa fa-arrow-right"></i>
+                </td>
+                <td class="border-0 p-1">
+                    <div class="form-group mb-0">
+                        <input type="text" class="form-control" placeholder="Enter an answer choice in English">
+                    </div>
+                </td>
+                <td class="text-center border-0 p-0" width="3%">
+                    <a href="javascript:void(0)" id="singlechoiceadd">
+                        <i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
+                    </a>
+                </td>
+                <td class="text-center border-0 p-0" width="3%">
+                    <a href="javascript:void(0)" id="singlechoiceremove">
+                        <i class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class="singlechoiceadd"> <i
-														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
-												</a></td>
-												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class=""> <i
-														class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
-												</a></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
 
 								<div class="multichoicedata" style="display: none;">
 									<hr class="mb-2 mt-2">
@@ -1204,8 +1135,6 @@
 													</select>
 												</div>
 											</div>
-
-
 										</div>
 									</div>
 								</div>
@@ -1216,9 +1145,10 @@
 
 				<div class="modal-footer">
 					<a class="btn btn-danger text-white btn-padding float-right ml-1"
-						data-dismiss="modal"><i class="fa fa-times mr-2"></i>Close</a> <a
+						data-dismiss="modal" id="cancelBtnQueInputFiled"><i
+						class="fa fa-times mr-2"></i>Close</a> <a
 						class="btn btn-success text-white btn-padding float-right"
-						data-dismiss="modal"><i class="fa fa-floppy-o mr-2"></i>Save</a>
+						id="saveBtnQueTable"><i class="fa fa-floppy-o mr-2"></i>Save</a>
 				</div>
 			</div>
 		</div>
@@ -1591,8 +1521,8 @@
 						});
 		// End Multiselect add table
 	</script>
-<script src="js/MasterCreateformScript.js"></script>
-<script src="js/moduleScript.js"></script>
+	<script src="js/MasterCreateformScript.js"></script>
+	<script src="js/moduleScript.js"></script>
 </body>
 
 </html>
