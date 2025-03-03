@@ -9,8 +9,7 @@ const reqans = document.getElementById("reqans");
 const validatans = document.getElementById("validatans");
 const singlechoicediv = document.getElementById("singlechoicediv");
 const multichoicediv = document.getElementById("multichoicediv");
-const anwerTypeFormatDiv = document.getElementById("anwerTypeFormatDiv");
-
+const singleSelectDiv = document.getElementById("singleSelectDiv");
 const answerTypeFormat = document.getElementById("answerTypeFormat");
 const saveBtnQueTable = document.getElementById("saveBtnQueTable");
 const saveQueInDBTable = document.getElementById("saveQueInDBTable");
@@ -69,6 +68,24 @@ saveBtnQueTable.addEventListener("click", () => {
 			}
 		}
 	}
+	else if (queAnswerType.value === "4") {
+		if (validatans.checked) {
+			if (answerTypeFormat.value === "") {
+				alert("Please select answer format type, because you checked validation answer format checked box.")
+			} else {
+				/*console.log(answerTypeFormat.value)*/
+				if (answerTypeFormat.value == 0) {
+					console.log("All character")
+				} else if (answerTypeFormat.value == 1) {
+					console.log("Only character")
+				} else if (answerTypeFormat.value == 2) {
+					console.log("Only Alphabet")
+				} else if (answerTypeFormat.value == 3) {
+					console.log("Alphabet & Number")
+				}
+			}
+		}
+	}
 });
 queName.addEventListener("input", () => {
 	if (queName.value.trim().length > 30) {
@@ -107,7 +124,15 @@ function clearInputFiledQueModal() {
 	} else if (queAnswerType.value == "2") {
 		multichoicediv.style.display = "none";
 	} else if (queAnswerType.value == "3") {
-		anwerTypeFormatDiv.style.display = "none";
+		document.querySelectorAll(".hideCheckAnswerFormat").forEach(el => {
+			el.style.display = "none";
+		});
+	} else if (queAnswerType.value == "4") {
+		document.querySelectorAll(".hideCheckAnswerFormat").forEach(el => {
+			el.style.display = "none";
+		});
+	} else if (queAnswerType.value == "5") {
+		singleSelectDiv.style.display = "none";
 	}
 	queAnswerType.value = "";
 	$('.selectpicker').selectpicker('refresh');

@@ -900,7 +900,8 @@
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" id="XQueModalBtn">
+					<button type="button" class="close" data-dismiss="modal"
+						id="XQueModalBtn">
 						<span>x</span><span class="sr-only">Close</span>
 					</button>
 					<h4 class="modal-title">Add/Edit Form Question</h4>
@@ -1022,10 +1023,10 @@
 										</tbody>
 									</table>
 								</div>
-
-								<div class="singleselectdata" style="display: none;">
+								<div class="singleselectdata" id="singleSelectDiv"
+									style="display: none;">
 									<hr class="mb-2 mt-2">
-									<table
+									<table id="singleselecttable"
 										class="table table-striped nowrap mb-0 singleselecttable">
 										<tbody>
 											<tr>
@@ -1037,21 +1038,19 @@
 															placeholder="Enter an answer choice in English">
 													</div>
 												</td>
-
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class="singleselectadd"> <i
+													href="javascript:void(0)" id="singleselectadd"> <i
 														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class=""> <i
+													href="javascript:void(0)" id="singleselectremove"> <i
 														class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
-
-								<div class="multiselectdata" style="display: none;">
+								<div class="multiselectdata" id="multiSelectDiv" style="display: none;">
 									<hr class="mb-2 mt-2">
 									<table class="table table-striped nowrap mb-0 multiselecttable">
 										<tbody>
@@ -1066,11 +1065,11 @@
 												</td>
 
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class="multiselectadd"> <i
+													href="javascript:void(0)" id="multiSelectadd" class="multiselectadd"> <i
 														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class=""> <i
+													href="javascript:void(0)" id="multiSelectremove" > <i
 														class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 											</tr>
@@ -1110,8 +1109,8 @@
 
 								<div class="row">
 									<div
-										class="col-xl-5 col-lg-5 col-sm-5 colmspadding hidetextvalidation"
-										style="display: none;" id="anwerTypeFormatDiv">
+										class="col-xl-5 col-lg-5 col-sm-5 colmspadding hidetextvalidation hideCheckAnswerFormat"
+										style="display: none;">
 										<div class="custom-control custom-checkbox displayblock">
 											<input type="checkbox" class="custom-control-input"
 												id="validatans"> <label
@@ -1122,7 +1121,7 @@
 									</div>
 
 									<div
-										class="col-xl-6 col-lg-6 col-sm-12 colmspadding showanswershouldbe"
+										class="col-xl-6 col-lg-6 col-sm-12 colmspadding showanswershouldbe hideCheckAnswerFormat"
 										style="display: none;">
 										<div class="row pr-2 pl-2">
 											<div class="col-xl-5 col-lg-4 col-sm-6 colmspadding">
@@ -1527,6 +1526,8 @@
 	<script src="js/MasterCreateformScript.js"></script>
 	<script src="js/answerTypeValidationScript/SingleChoice.js"></script>
 	<script src="js/answerTypeValidationScript/MultiChoice.js"></script>
+	<script src="js/answerTypeValidationScript/SingleSelect.js"></script>
+	<script src="js/answerTypeValidationScript/MultiSelect.js"></script>
 	<script src="js/moduleScript.js"></script>
 </body>
 
