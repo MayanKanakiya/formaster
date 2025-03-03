@@ -964,39 +964,36 @@
 										</tr>
 									</tbody>
 								</table>
-
-					<div class="singlechoicedata" style="display: none;">
-    <hr class="mb-2 mt-2">
-    <table id="singlechoicetable" class="table table-striped nowrap mb-0">
-        <tbody>
-            <tr>
-                <td class="text-center border-0" width="5%">
-                    <i class="fa fa-arrow-right"></i>
-                </td>
-                <td class="border-0 p-1">
-                    <div class="form-group mb-0">
-                        <input type="text" class="form-control" placeholder="Enter an answer choice in English">
-                    </div>
-                </td>
-                <td class="text-center border-0 p-0" width="3%">
-                    <a href="javascript:void(0)" id="singlechoiceadd">
-                        <i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
-                    </a>
-                </td>
-                <td class="text-center border-0 p-0" width="3%">
-                    <a href="javascript:void(0)" id="singlechoiceremove">
-                        <i class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
+								<div class="singlechoicedata" style="display: none;">
+									<hr class="mb-2 mt-2">
+									<table id="singlechoicetable"
+										class="table table-striped nowrap mb-0">
+										<tbody>
+											<tr>
+												<td class="text-center border-0" width="5%"><i
+													class="fa fa-arrow-right"></i></td>
+												<td class="border-0 p-1">
+													<div class="form-group mb-0">
+														<input type="text" class="form-control"
+															placeholder="Enter an answer choice in English">
+													</div>
+												</td>
+												<td class="text-center border-0 p-0" width="3%"><a
+													href="javascript:void(0)" id="singlechoiceadd"> <i
+														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
+												</a></td>
+												<td class="text-center border-0 p-0" width="3%"><a
+													href="javascript:void(0)" id="singlechoiceremove"> <i
+														class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
+												</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 
 								<div class="multichoicedata" style="display: none;">
 									<hr class="mb-2 mt-2">
-									<table class="table table-striped nowrap mb-0 multichoicetable">
+									<table id="multichoicetable" class="table table-striped nowrap mb-0 multichoicetable">
 										<tbody>
 											<tr>
 												<td class="text-center border-0" width="5%"><i
@@ -1009,11 +1006,11 @@
 												</td>
 
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class="multichoiceadd"> <i
+													href="javascript:void(0)"  id="multichoiceadd" class="multichoiceadd"> <i
 														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" class=""> <i
+													href="javascript:void(0)" id="multichoiceremove"> <i
 														class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 											</tr>
@@ -1522,6 +1519,8 @@
 		// End Multiselect add table
 	</script>
 	<script src="js/MasterCreateformScript.js"></script>
+	<script src="js/answerTypeValidationScript/SingleChoice.js"></script>
+	<script src="js/answerTypeValidationScript/MultiChoice.js"></script>
 	<script src="js/moduleScript.js"></script>
 </body>
 
