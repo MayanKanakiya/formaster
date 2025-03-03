@@ -4,7 +4,7 @@ function countOptions() {
 }
 
 function addNewRow() {
-	var newRow = `<tr>
+	var newRow = `<tr class="singleChoiceTR">
          <td class='text-center border-0' width='5%'>
              <i class='fa fa-arrow-right' aria-hidden='true'></i>
          </td>
@@ -78,6 +78,7 @@ saveBtnQueTable.addEventListener("click", () => {
 	/*validation for select single choice answer in answer type*/
 	if (queAnswerType.value === "1") {
 		console.log("Single Choice");
+		
 		let count = countOptions();
 
 		if (count < 2) {

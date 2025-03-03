@@ -6,9 +6,16 @@ const queName = document.getElementById("queName");
 const queDes = document.getElementById("queDes");
 const queAnswerType = document.getElementById("queAnswerType");
 const reqans = document.getElementById("reqans");
+const validatans = document.getElementById("validatans");
+const singlechoicediv = document.getElementById("singlechoicediv");
+const multichoicediv = document.getElementById("multichoicediv");
+const anwerTypeFormatDiv = document.getElementById("anwerTypeFormatDiv");
+
+const answerTypeFormat = document.getElementById("answerTypeFormat");
 const saveBtnQueTable = document.getElementById("saveBtnQueTable");
 const saveQueInDBTable = document.getElementById("saveQueInDBTable");
 const cancelBtnQueInputFiled = document.getElementById("cancelBtnQueInputFiled");
+const XQueModalBtn = document.getElementById("XQueModalBtn");
 
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
@@ -41,6 +48,27 @@ saveBtnQueTable.addEventListener("click", () => {
 		alert("Please select answer type");
 		return;
 	}
+	if (queAnswerType.value === "1") {
+		// create one variable for require answer and not
+	} else if (queAnswerType.value === "3") {
+		if (validatans.checked) {
+			if (answerTypeFormat.value === "") {
+				alert("Please select answer format type, because you checked validation answer format checked box.")
+			} else {
+				/*console.log(answerTypeFormat.value)*/
+				if (answerTypeFormat.value == 0) {
+					console.log("All character")
+				} else if (answerTypeFormat.value == 1) {
+					console.log("Only character")
+				} else if (answerTypeFormat.value == 2) {
+					console.log("Only Alphabet")
+				} else if (answerTypeFormat.value == 3) {
+					console.log("Alphabet & Number")
+				}
+
+			}
+		}
+	}
 });
 queName.addEventListener("input", () => {
 	if (queName.value.trim().length > 30) {
@@ -65,3 +93,22 @@ $(".addformquestion").on("show.bs.modal", function() {
 	let nextQuestion = getNextQuestionNumber();
 	$("input[placeholder='Enter Your Question Label in English']").val(nextQuestion);
 });
+cancelBtnQueInputFiled.addEventListener("click", () => {
+	clearInputFiledQueModal();
+});
+XQueModalBtn.addEventListener("click", () => {
+	clearInputFiledQueModal();
+});
+function clearInputFiledQueModal() {
+	queName.value = "";
+	queDes.value = "";
+	if (queAnswerType.value == "1") {
+		singlechoicediv.style.display = "none";
+	} else if (queAnswerType.value == "2") {
+		multichoicediv.style.display = "none";
+	} else if (queAnswerType.value == "3") {
+		anwerTypeFormatDiv.style.display = "none";
+	}
+	queAnswerType.value = "";
+	$('.selectpicker').selectpicker('refresh');
+}

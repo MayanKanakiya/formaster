@@ -9,7 +9,7 @@ function addMultiRow() {
 
     if (count >= 4) return; 
 
-    var newRow = `<tr>
+    var newRow = `<tr class="">
          <td class='text-center border-0' width='5%'>
              <i class='fa fa-arrow-right' aria-hidden='true'></i>
          </td>
@@ -51,7 +51,6 @@ function updateMultiChoiceUI() {
     } else {
         $("#multichoicetable tbody #multichoiceremove").show();
     }
-	console.log(count)
 }
 
 // On answer type change

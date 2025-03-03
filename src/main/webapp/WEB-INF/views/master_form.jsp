@@ -460,6 +460,7 @@
 																		data-original-title="Delete"><i
 																			class="fa fa-trash"></i></a></span></td>
 															</tr>
+
 														</tbody>
 													</table>
 												</div>
@@ -899,7 +900,7 @@
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
+					<button type="button" class="close" data-dismiss="modal" id="XQueModalBtn">
 						<span>x</span><span class="sr-only">Close</span>
 					</button>
 					<h4 class="modal-title">Add/Edit Form Question</h4>
@@ -964,7 +965,8 @@
 										</tr>
 									</tbody>
 								</table>
-								<div class="singlechoicedata" style="display: none;">
+								<div class="singlechoicedata" id="singlechoicediv"
+									style="display: none;">
 									<hr class="mb-2 mt-2">
 									<table id="singlechoicetable"
 										class="table table-striped nowrap mb-0">
@@ -991,9 +993,11 @@
 									</table>
 								</div>
 
-								<div class="multichoicedata" style="display: none;">
+								<div class="multichoicedata" id="multichoicediv"
+									style="display: none;">
 									<hr class="mb-2 mt-2">
-									<table id="multichoicetable" class="table table-striped nowrap mb-0 multichoicetable">
+									<table id="multichoicetable"
+										class="table table-striped nowrap mb-0 multichoicetable">
 										<tbody>
 											<tr>
 												<td class="text-center border-0" width="5%"><i
@@ -1006,7 +1010,8 @@
 												</td>
 
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)"  id="multichoiceadd" class="multichoiceadd"> <i
+													href="javascript:void(0)" id="multichoiceadd"
+													class="multichoiceadd"> <i
 														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 												<td class="text-center border-0 p-0" width="3%"><a
@@ -1106,7 +1111,7 @@
 								<div class="row">
 									<div
 										class="col-xl-5 col-lg-5 col-sm-5 colmspadding hidetextvalidation"
-										style="display: none;">
+										style="display: none;" id="anwerTypeFormatDiv">
 										<div class="custom-control custom-checkbox displayblock">
 											<input type="checkbox" class="custom-control-input"
 												id="validatans"> <label
@@ -1124,7 +1129,8 @@
 												<div class="form-group">
 													<select class="selectpicker answercombo"
 														data-style="lineheight12 bg-transfer"
-														data-live-search="true" data-title="Answer Should Be">
+														data-live-search="true" id="answerTypeFormat"
+														data-title="Answer Should Be">
 														<option value="0">All Character</option>
 														<option value="1">Only Character</option>
 														<option value="2">Only Alphabet</option>
