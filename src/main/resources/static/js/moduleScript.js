@@ -1,5 +1,5 @@
 console.log("Running module script");
-const addFormBtn = document.getElementById("addFormBtb");
+const addFormBtn = document.getElementById("addFormBtn");
 const moduleDropdown = document.getElementById("moduleDropdown");
 const characteristicDropdown = document.getElementById("characteristicDropdown")
 const subcharacteristicDropdown = document.getElementById("subcharacteristicDropdown")
@@ -12,6 +12,7 @@ var header = $("meta[name='_csrf_header']").attr("content");
 
 //Below method for populate module dropdown when page load
 addFormBtn.addEventListener("click", () => {
+	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
 	$.ajax({
 		url: "/populatingDropdown",
 		method: 'POST',

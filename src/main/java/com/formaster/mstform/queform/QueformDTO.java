@@ -1,4 +1,4 @@
-package com.formaster.mstform_createform;
+package com.formaster.mstform.queform;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -9,18 +9,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MstCreateformDTO {
+public class QueformDTO {
+	private int quelabel;
 	private int fid;
-	private String titletxt;
-	private String aliasname;
-	private int module;
-	private int characteristic;
-	private int subcharacteristic;
-	private int recurrence;
-	private int startmonth;
-	private int complianceperiod;
-	private String effectivedate;
-	private String textdes;
+	private String queName;
+	private String queDes;
+	private String queType;
+	private int quereq;
+	private String questions;
 	private int createdby;
 	private Timestamp createdon;
 	private int modifyby;

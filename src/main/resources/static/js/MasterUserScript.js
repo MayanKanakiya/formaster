@@ -76,7 +76,7 @@ function ClientSideValidation() {
 			return false;
 		}
 	}
-	if (validto.value.trim().lengt > 0) {
+	if (validto.value.trim().length > 0) {
 		if (!/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.test(validto.value)) {
 			alert("Invalid date format. Please use DD/MM/YYYY.");
 			validto.value = '';

@@ -1,94 +1,101 @@
 console.log("Answer type: Single select");
+
 function countSingleSelectOptions() {
-	return $("#singleselecttable tbody tr").length;
+    return $("#singleselecttable tbody tr").length;
 }
+
 function addSingleSelectRow() {
-	let rowCount = countSingleSelectOptions();
+    let SingleSelectCountTR = $(".singleSelectTR").length + 1;
 
-	if (rowCount >= 4) {
-		alert("Only 4 answer choices are allowed.");
-		return;
-	}
-
-	var newRow = `<tr>
+    var newRow = `<tr class="singleSelectTR singleSelectTR${SingleSelectCountTR}">
          <td class='text-center border-0' width='5%'>
              <i class='fa fa-arrow-right' aria-hidden='true'></i>
          </td>
          <td class='border-0 p-1'>
              <div class='form-group mb-0'>
-                 <input type='text' class='form-control' placeholder='Enter an answer choice in English'>
+                 <input type='text' class='form-control singleSelectInput' placeholder='Enter an answer choice in English'>
              </div>
          </td>
          <td class='text-center border-0 p-0' width='3%'>
              <a href='javascript:void(0)' id='singleselectadd'>
-                 <i class='fa fa-plus-square-o font_20 m-t-5 text-default'></i>
+                 <i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
              </a>
          </td>
          <td class='text-center border-0 p-0' width='3%'>
              <a href='javascript:void(0)' id='singleselectremove'>
-                 <i class='fa fa-minus-square-o font_20 m-t-5 text-default'></i>
+                 <i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
              </a>
          </td>
      </tr>`;
 
-	$("#singleselecttable tbody").append(newRow);
-
-	if (rowCount + 1 >= 4) {
-		$("#singleselecttable tbody tr:last-child #singleselectadd").hide();
-	}
+    $('#singleselecttable tbody').append(newRow);
 }
 
-$(document).on("click", "#singleselectadd", function(event) {
-	event.preventDefault();
-	event.stopPropagation();
-
-	let count = countSingleSelectOptions();
-
-	if (count >= 4) {
-		alert("Only 4 answer choices are allowed.");
-		return;
-	}
-
-	addSingleSelectRow();
-
-	if (count + 1 >= 4) {
-		$("#singleselecttable tbody tr:last-child #singleselectadd").hide();
-	}
+// ✅ Show/Hide the Single Select section when Answer Type is selected
+queAnswerType.addEventListener("change", function () {
+    if (queAnswerType.value === "5") {
+        $(".singleselectdata").show();
+        $("#singleselecttable tbody").empty();
+        addSingleSelectRow();
+    } else {
+        $(".singleselectdata").hide();
+        $("#singleselecttable tbody").empty();
+    }
 });
 
-// Event Listener for Remove Button
-$(document).on("click", "#singleselectremove", function(event) {
-	event.preventDefault();
-	event.stopPropagation();
+// ✅ Event Listener for Add Button
+$(document).on("click", "#singleselectadd", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-	let count = countSingleSelectOptions();
+    let count = countSingleSelectOptions();
 
-	if (count <= 2) {
-		alert("Please select at least two answer choices.");
-		return;
-	}
+    if (count >= 4) {
+        alert("Only 4 answer choices are allowed.");
+        return;
+    }
 
-	$(this).closest("tr").remove();
+    addSingleSelectRow();
 
-	if (count - 1 < 4) {
-		$("#singleselecttable tbody tr:last-child #singleselectadd").show();
-	}
+    if (count + 1 >= 4) {
+        $("#singleselecttable tbody tr:last-child #singleselectadd").hide();
+    }
 });
 
+// ✅ Event Listener for Remove Button
+$(document).on("click", "#singleselectremove", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let count = countSingleSelectOptions();
+
+    if (count <= 2) {
+        alert("Please select at least two answer choices.");
+        return;
+    }
+
+    $(this).closest("tr").remove();
+
+    if (count - 1 < 4) {
+        $("#singleselecttable tbody tr:last-child #singleselectadd").show();
+    }
+});
+
+// ✅ Validation before saving
 saveBtnQueTable.addEventListener("click", () => {
-	/*validation for select single choice answer in answer type*/
-	if (queAnswerType.value === "5") {
-		console.log("Single select");
+    /* Validation for selecting at least 2 and at most 4 answer choices */
+    if (queAnswerType.value === "5") {
+        console.log("Single Select");
 
-		let rowCount = countSingleSelectOptions();
+        let count = countSingleSelectOptions();
 
-		if (rowCount < 2) {
-			alert("Please select at least two answer choices.");
-			return;
-		}
-		if (rowCount > 4) {
-			alert("Only 4 answer choices are allowed.");
-			return;
-		}
-	}
+        if (count < 2) {
+            alert("Please select at least two answer choices.");
+            return;
+        }
+        if (count > 4) {
+            alert("Only 4 answer choices are allowed.");
+            return;
+        }
+    }
 });

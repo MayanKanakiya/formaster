@@ -117,7 +117,7 @@
 									<div class="col-xl-4 col-lg-4 col-sm-4">
 										<a href="javascript:void(0)"
 											class="btn btn-warning waves-effect float-right btn-padding client_add_btn"
-											id="addFormBtb"><i class="fa fa-plus"></i> Add Form</a>
+											id="addFormBtn"><i class="fa fa-plus"></i> Add Form</a>
 									</div>
 								</div>
 							</div>
@@ -139,86 +139,6 @@
 												<tr>
 													<td>F0RM-01</td>
 													<td>251 Attwell Drive - Operator Form - Monthly</td>
-													<td>Yes</td>
-													<td class="text-center"><a href="javascript:void(0)"
-														data-toggle="tooltip" data-placement="bottom" title=""
-														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span data-toggle="modal"
-														data-target="#all_question_preview"><a
-															href="javascript:void(0)" data-toggle="tooltip"
-															data-placement="bottom" title=""
-															data-original-title="Preview" class="text-info fa-size"><i
-																class="fa fa-eye"></i></a></span> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
-															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
-												</tr>
-
-												<tr>
-													<td>F0RM-02</td>
-													<td>251 Attwell Drive - Operator Form - Semi-Annually</td>
-													<td>Yes</td>
-													<td class="text-center"><a href="javascript:void(0)"
-														data-toggle="tooltip" data-placement="bottom" title=""
-														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span data-toggle="modal"
-														data-target="#all_question_preview"><a
-															href="javascript:void(0)" data-toggle="tooltip"
-															data-placement="bottom" title=""
-															data-original-title="Preview" class="text-info fa-size"><i
-																class="fa fa-eye"></i></a></span> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
-															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
-												</tr>
-
-												<tr>
-													<td>F0RM-03</td>
-													<td>1 Yonge Street - Contractor Form - Annual</td>
-													<td>Yes</td>
-													<td class="text-center"><a href="javascript:void(0)"
-														data-toggle="tooltip" data-placement="bottom" title=""
-														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span data-toggle="modal"
-														data-target="#all_question_preview"><a
-															href="javascript:void(0)" data-toggle="tooltip"
-															data-placement="bottom" title=""
-															data-original-title="Preview" class="text-info fa-size"><i
-																class="fa fa-eye"></i></a></span> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
-															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
-												</tr>
-
-												<tr>
-													<td>F0RM-04</td>
-													<td>1 Yonge Street - Contractor Form - Semi-Annually</td>
-													<td>Yes</td>
-													<td class="text-center"><a href="javascript:void(0)"
-														data-toggle="tooltip" data-placement="bottom" title=""
-														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span data-toggle="modal"
-														data-target="#all_question_preview"><a
-															href="javascript:void(0)" data-toggle="tooltip"
-															data-placement="bottom" title=""
-															data-original-title="Preview" class="text-info fa-size"><i
-																class="fa fa-eye"></i></a></span> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
-															data-toggle="tooltip" data-placement="bottom"
-															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
-													</td>
-												</tr>
-
-												<tr>
-													<td>F0RM-05</td>
-													<td>1 Yonge Street - Operator Form - Quarterly</td>
 													<td>Yes</td>
 													<td class="text-center"><a href="javascript:void(0)"
 														data-toggle="tooltip" data-placement="bottom" title=""
@@ -270,7 +190,7 @@
 												class="col-xl-2 col-lg-2 col-sm-3 col-xs-12 colmspadding">
 												<div class="form-group">
 													<label>Form #</label> <input type="text"
-														class="form-control" readonly="" value="F0RM-01">
+														class="form-control" readonly value="F0RM-01">
 												</div>
 											</div>
 											<div
@@ -278,20 +198,16 @@
 												<div class="form-group">
 													<label>Title Text (English) <span
 														class="text-danger">*</span></label> <input type="text"
-														class="form-control">
+														class="form-control" id="titleTxt">
 												</div>
 											</div>
-
-
 											<div
 												class="col-xl-2 col-lg-2 col-sm-3 col-xs-12 colmspadding">
 												<div class="form-group">
 													<label>Alias Name <span class="text-danger">*</span></label>
-													<input type="text" class="form-control">
+													<input type="text" class="form-control" id="aliasNameTxt">
 												</div>
 											</div>
-
-
 										</div>
 
 										<div class="row pl-3 pr-3">
@@ -304,8 +220,6 @@
 										</div>
 
 										<div class="row pl-3 pr-3 pt-1">
-
-
 											<div
 												class="col-xl-2 col-lg-3 col-sm-4 col-xs-12 colmspadding">
 												<div class="form-group">
@@ -375,7 +289,7 @@
 														<div class="form-group">
 															<label>Compliance Period <span
 																class="text-danger">*</span></label> <input type="text"
-																class="form-control" placeholder="In Months">
+																class="form-control" placeholder="In Months" id="comPeriod">
 														</div>
 													</div>
 
@@ -416,11 +330,9 @@
 														data-toggle="tooltip" data-placement="bottom" title=""
 														data-original-title="View History"><i
 															class="fa fa-history text-info fa-size action"></i></a></span>
-													<textarea class="form-control textareasize"></textarea>
+													<textarea class="form-control textareasize" id="textDes"></textarea>
 												</div>
 											</div>
-
-
 										</div>
 
 										<div class="row pl-3 pr-3 pt-1 mb-1">
@@ -920,7 +832,7 @@
 												<div class="form-group mb-0">
 													<input type="text" class="form-control"
 														placeholder="Enter Your Question Label in English"
-														disabled id="queLabel">
+														disabled id="quelabel">
 												</div>
 											</td>
 
@@ -1130,10 +1042,10 @@
 														data-style="lineheight12 bg-transfer"
 														data-live-search="true" id="answerTypeFormat"
 														data-title="Answer Should Be">
-														<option value="0">All Character</option>
-														<option value="1">Only Character</option>
-														<option value="2">Only Alphabet</option>
-														<option value="3">Alphabet & Number</option>
+														<option value="1">All Character</option>
+														<option value="2">Only Character</option>
+														<option value="3">Only Alphabet</option>
+														<option value="4">Alphabet & Number</option>
 													</select>
 												</div>
 											</div>

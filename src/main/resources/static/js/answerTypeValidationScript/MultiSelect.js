@@ -8,14 +8,14 @@ function addMultiSelectRow() {
 	let count = countMultiSelectOptions();
 
 	if (count >= 4) return;
-
-	var newRow = `<tr class="">
+	let MultiSelectCountTR = $(".multiSelectTR").length + 1;
+	var newRow = `<tr class="multiSelectTR multiSelectTR${MultiSelectCountTR}">
          <td class='text-center border-0' width='5%'>
              <i class='fa fa-arrow-right' aria-hidden='true'></i>
          </td>
          <td class='border-0 p-1'>
              <div class='form-group mb-0'>
-                 <input type='text' class='form-control' placeholder='Enter an answer choice in English'>
+                 <input type='text' class='form-control multiSelectInput' placeholder='Enter an answer choice in English'>
              </div>
          </td>
          <td class='text-center border-0 p-0' width='3%'>

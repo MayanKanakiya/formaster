@@ -4,13 +4,14 @@ function countOptions() {
 }
 
 function addNewRow() {
-	var newRow = `<tr class="singleChoiceTR">
-         <td class='text-center border-0' width='5%'>
-             <i class='fa fa-arrow-right' aria-hidden='true'></i>
-         </td>
+	let SingleChoiceCountTR = $(".singleChoiceTR").length + 1;
+	var newRow = `<tr class="singleChoiceTR singleChoiceTR${SingleChoiceCountTR}">
+	         <td class='text-center border-0' width='5%'>
+	             <i class='fa fa-arrow-right' aria-hidden='true'></i>
+	         </td>
          <td class='border-0 p-1'>
              <div class='form-group mb-0'>
-                 <input type='text' class='form-control' placeholder='Enter an answer choice in English'>
+                 <input type='text' class='form-control singleChoiceInput' placeholder='Enter an answer choice in English'>
              </div>
          </td>
          <td class='text-center border-0 p-0' width='3%'>
@@ -78,7 +79,7 @@ saveBtnQueTable.addEventListener("click", () => {
 	/*validation for select single choice answer in answer type*/
 	if (queAnswerType.value === "1") {
 		console.log("Single Choice");
-		
+
 		let count = countOptions();
 
 		if (count < 2) {

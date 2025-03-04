@@ -26,6 +26,8 @@ public class MstCreateformEntity {
 	@Column(nullable = false, length = 8)
 	private int module;
 	@Column(nullable = false, length = 8)
+	private int characteristic;
+	@Column(nullable = false, length = 8)
 	private int subcharacteristic;
 	@Column(nullable = false, length = 8)
 	private int recurrence;
