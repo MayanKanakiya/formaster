@@ -30,8 +30,6 @@ function addSingleSelectRow() {
 
     $('#singleselecttable tbody').append(newRow);
 }
-
-// ✅ Show/Hide the Single Select section when Answer Type is selected
 queAnswerType.addEventListener("change", function () {
     if (queAnswerType.value === "5") {
         $(".singleselectdata").show();
@@ -42,8 +40,6 @@ queAnswerType.addEventListener("change", function () {
         $("#singleselecttable tbody").empty();
     }
 });
-
-// ✅ Event Listener for Add Button
 $(document).on("click", "#singleselectadd", function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -61,8 +57,6 @@ $(document).on("click", "#singleselectadd", function (event) {
         $("#singleselecttable tbody tr:last-child #singleselectadd").hide();
     }
 });
-
-// ✅ Event Listener for Remove Button
 $(document).on("click", "#singleselectremove", function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -78,24 +72,5 @@ $(document).on("click", "#singleselectremove", function (event) {
 
     if (count - 1 < 4) {
         $("#singleselecttable tbody tr:last-child #singleselectadd").show();
-    }
-});
-
-// ✅ Validation before saving
-saveBtnQueTable.addEventListener("click", () => {
-    /* Validation for selecting at least 2 and at most 4 answer choices */
-    if (queAnswerType.value === "5") {
-        console.log("Single Select");
-
-        let count = countSingleSelectOptions();
-
-        if (count < 2) {
-            alert("Please select at least two answer choices.");
-            return;
-        }
-        if (count > 4) {
-            alert("Only 4 answer choices are allowed.");
-            return;
-        }
     }
 });

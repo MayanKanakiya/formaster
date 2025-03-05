@@ -75,20 +75,3 @@ $(document).on("click", "#singlechoiceremove", function(event) {
 	}
 
 });
-saveBtnQueTable.addEventListener("click", () => {
-	/*validation for select single choice answer in answer type*/
-	if (queAnswerType.value === "1") {
-		console.log("Single Choice");
-
-		let count = countOptions();
-
-		if (count < 2) {
-			alert("Please select at least two answer choices.");
-			return;
-		}
-		if (count > 4) {
-			alert("Only 4 answer choices are allowed.");
-			return;
-		}
-	}
-});

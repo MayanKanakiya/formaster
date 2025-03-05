@@ -1,6 +1,6 @@
 console.log("Master create form script running..")
 const questionTable = document.getElementById("formquestion_datatable");
-const tbody = questionTable.getElementsByTagName("tbody")[0];
+const queTableTbody = $("#formquestion_datatable tbody")
 
 /*ID's selection for question modal*/
 const quelabel = document.getElementById("quelabel");
@@ -35,7 +35,8 @@ saveBtnQueTable.addEventListener("click", () => {
 		alert("Please enter Question name");
 		return;
 	}
-	if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(queName.value)) {
+	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/
+		.test(queName.value)) {
 		alert("Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.");
 		queName.value = '';
 		return;
@@ -48,7 +49,8 @@ saveBtnQueTable.addEventListener("click", () => {
 		alert("Please enter Question description");
 		return;
 	}
-	if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(queDes.value)) {
+	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>/-]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>/-]+)*$/
+		.test(queDes.value)) {
 		alert("Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.");
 		queDes.value = '';
 		return;
@@ -76,6 +78,92 @@ saveBtnQueTable.addEventListener("click", () => {
 				return;
 			}
 		}
+	}
+	if (queAnswerType.value === "1") {
+		console.log("Single Choice");
+
+		let count = countOptions();
+
+		if (count < 2) {
+			alert("Please select at least two answer choices.");
+			return;
+		}
+		if (count > 4) {
+			alert("Only 4 answer choices are allowed.");
+			return;
+		}
+	}
+	if (queAnswerType.value === "2") {
+		console.log("Multiple Choice");
+		let count = countMultiOptions();
+
+		if (count > 4) {
+			alert("Only 4 answer choices are allowed.");
+			return;
+		}
+	}
+	if (queAnswerType.value === "5") {
+		console.log("Single Select");
+
+		let count = countSingleSelectOptions();
+
+		if (count < 2) {
+			alert("Please select at least two answer choices.");
+			return;
+		}
+		if (count > 4) {
+			alert("Only 4 answer choices are allowed.");
+			return;
+		}
+	}
+	if (queAnswerType.value === "6") {
+		console.log("Multi Select");
+		let count = countMultiSelectOptions();
+
+		if (count > 4) {
+			alert("Only 4 answer choices are allowed.");
+			return;
+		}
+	}
+	//This validation for dynamically add input filed
+	function validateChoiceInputs(selector, inputClass) {
+		let isValid = true;
+
+		$(selector).each(function(index) {
+			let inputField = $(this).find(inputClass).val();
+
+			if (inputField.length == 0) {
+				alert(`${index + 1} Question input field cannot be empty`);
+				isValid = false;
+				return false;
+			} else if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(inputField)) {
+				alert(`${index + 1} Question input field should not accept white spaces`);
+				isValid = false;
+				return false;
+			} else if (inputField.length < 4) {
+				alert(`${index + 1} Question must have at least 4 characters`);
+				isValid = false;
+				return false;
+			} else if (inputField.length > 5) {
+				alert(`${index + 1} Question cannot have more than 5 characters`);
+				isValid = false;
+				return false;
+			}
+		});
+
+		return isValid;
+	}
+	if (queAnswerType.value === "1") {
+		if (!validateChoiceInputs(".singleChoiceTR", ".singleChoiceInput")) return;
+	}
+	if (queAnswerType.value === "2") {
+		if (!validateChoiceInputs(".multiChoiceTR", ".multiChoiceInput")) return;
+	}
+	if (queAnswerType.value === "5") {
+		if (!validateChoiceInputs(".singleSelectTR", ".singleSelectInput")) return;
+	}
+	if (queAnswerType.value === "6") {
+		if (!validateChoiceInputs(".multiSelectTR", ".multiSelectInput")) return;
 	}
 
 	let reqanschk = 0;
@@ -127,6 +215,27 @@ saveBtnQueTable.addEventListener("click", () => {
 	} else if (queAnswerType.value === "3") {
 		queData["answerTypeFormat"] = 0;
 	}
+	
+	queTableTbody.empty();
+	let newRow = `	<tr>
+					<td>${queData.quelabel}</td>
+					<td>${queData.queName}</td>
+					<td>${queData.queAnswerType == 1 ? "Single Choice" : queData.queAnswerType == 2 ? "Multi Choice" : queData.queAnswerType == 3 ? "Single Textbox" : queData.queAnswerType == 4 ? "Multiline Textbox" : queData.queAnswerType == 5 ? "Single select dropdown" : queData.queAnswerType == 6 ? "Multi select dropdown" : "Date"}</td>
+					<td>${queData.quereq == 1 ? "Yes" : "No"}</td>
+					<td class="text-center"><span data-toggle="modal"
+						data-target=".addformquestion"><a
+							href="javascript:void(0)" data-toggle="tooltip"
+							data-placement="bottom" data-original-title="Edit"
+							class="text-success fa-size"><i
+								class="fa fa-pencil"></i></a></span> <span
+						class="delete-user-alert"><a
+							href="javascript:void(0)" class="text-danger fa-size"
+							data-toggle="tooltip" data-placement="bottom"
+							data-original-title="Delete"><i
+								class="fa fa-trash"></i></a></span></td>
+						</tr>`;
+	queTableTbody.append(newRow);
+
 	console.log(queData);
 });
 queName.addEventListener("input", () => {
@@ -136,18 +245,16 @@ queName.addEventListener("input", () => {
 });
 queDes.addEventListener("input", () => {
 	if (queDes.value.trim().length > 50) {
-		queDes.value = queDes.value.slice(0, 30);
+		queDes.value = queDes.value.slice(0, 50);
 	}
 });
 
 /*This below code automcatically add question number when click add buttton*/
-let table = $('#formquestion_datatable').DataTable();
 
 function getNextQuestionNumber() {
-	let rowCount = table.rows().count();
-	return "Q" + (rowCount + 1);
+	let rowCount = $("#formquestion_datatable tbody tr").length;
+	return "Q" + (rowCount);
 }
-
 $(".addformquestion").on("show.bs.modal", function() {
 	let nextQuestion = getNextQuestionNumber();
 	$("input[placeholder='Enter Your Question Label in English']").val(nextQuestion);

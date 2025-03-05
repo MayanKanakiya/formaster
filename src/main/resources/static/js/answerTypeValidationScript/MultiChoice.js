@@ -85,16 +85,3 @@ $(document).on("click", "#multichoiceremove", function(event) {
 		updateMultiChoiceUI();
 	}
 });
-
-// Validation on save
-saveBtnQueTable.addEventListener("click", () => {
-	if (queAnswerType.value === "2") {
-		console.log("Multiple Choice");
-		let count = countMultiOptions();
-
-		if (count > 4) {
-			alert("Only 4 answer choices are allowed.");
-			return;
-		}
-	}
-});

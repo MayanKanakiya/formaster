@@ -355,7 +355,7 @@
 														</thead>
 
 														<tbody>
-															<tr>
+															<!-- <tr>
 																<td>Q1</td>
 																<td>Emergency Power Systems & Lighting</td>
 																<td>Single choice</td>
@@ -371,8 +371,7 @@
 																		data-toggle="tooltip" data-placement="bottom"
 																		data-original-title="Delete"><i
 																			class="fa fa-trash"></i></a></span></td>
-															</tr>
-
+															</tr> -->
 														</tbody>
 													</table>
 												</div>
