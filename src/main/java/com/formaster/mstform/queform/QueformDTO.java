@@ -2,6 +2,7 @@ package com.formaster.mstform.queform;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class QueformDTO {
 	private String queDes;
 	private String queType;
 	private int quereq;
-	private String questions;
+	 private List<String> questions;
 	private int createdby;
 	private Timestamp createdon;
 	private int modifyby;

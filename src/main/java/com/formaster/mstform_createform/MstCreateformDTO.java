@@ -2,7 +2,10 @@ package com.formaster.mstform_createform;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.formaster.mstform.queform.QueformDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +30,7 @@ public class MstCreateformDTO {
 	private Timestamp modifyon;
 	private int active;
 	private int isdelete;
+	private List<QueformDTO> queData;
 	private Map<String, String> message = new HashMap<>();
 
 	public Map<String, String> getMessage() {

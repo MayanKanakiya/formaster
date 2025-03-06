@@ -186,11 +186,12 @@
 								<form class="form">
 									<div class="form-body mb-0">
 										<div class="row pl-3 pr-3">
+
 											<div
 												class="col-xl-2 col-lg-2 col-sm-3 col-xs-12 colmspadding">
 												<div class="form-group">
 													<label>Form #</label> <input type="text"
-														class="form-control" readonly value="F0RM-01">
+														class="form-control" readonly value="FORM-${id}">
 												</div>
 											</div>
 											<div
@@ -289,7 +290,8 @@
 														<div class="form-group">
 															<label>Compliance Period <span
 																class="text-danger">*</span></label> <input type="text"
-																class="form-control" placeholder="In Months" id="comPeriod">
+																class="form-control" placeholder="In Months"
+																id="comPeriod">
 														</div>
 													</div>
 
@@ -382,7 +384,7 @@
 											<div class="text-center">
 												<a class="btn btn-success text-white btn-padding ml-1"
 													id="saveQueInDBTable"><i class="fa fa-floppy-o mr-2"></i>Save</a><a
-													class="btn btn-danger text-white btn-padding ml-1"
+													class="btn btn-danger text-white btn-padding ml-1 show_port_table"
 													data-dismiss="modal" aria-label="Close"> <i
 													class="fa fa-times mr-2"></i>Cancel
 												</a>
@@ -961,7 +963,8 @@
 										</tbody>
 									</table>
 								</div>
-								<div class="multiselectdata" id="multiSelectDiv" style="display: none;">
+								<div class="multiselectdata" id="multiSelectDiv"
+									style="display: none;">
 									<hr class="mb-2 mt-2">
 									<table class="table table-striped nowrap mb-0 multiselecttable">
 										<tbody>
@@ -976,11 +979,12 @@
 												</td>
 
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" id="multiSelectadd" class="multiselectadd"> <i
+													href="javascript:void(0)" id="multiSelectadd"
+													class="multiselectadd"> <i
 														class="fa fa-plus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 												<td class="text-center border-0 p-0" width="3%"><a
-													href="javascript:void(0)" id="multiSelectremove" > <i
+													href="javascript:void(0)" id="multiSelectremove"> <i
 														class="fa fa-minus-square-o font_20 m-t-5 text-default"></i>
 												</a></td>
 											</tr>

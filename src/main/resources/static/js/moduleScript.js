@@ -27,6 +27,7 @@ addFormBtn.addEventListener("click", () => {
 			response.modules.forEach(function(moduleData) {
 				const option = document.createElement("option");
 				option.textContent = moduleData.moduleName;
+				option.value = moduleData.moduleId;
 				moduleDropdown.appendChild(option);
 				$('.selectpicker').selectpicker('refresh');
 			});
@@ -34,6 +35,7 @@ addFormBtn.addEventListener("click", () => {
 			response.recurrance.forEach(function(recurranceData) {
 				const option = document.createElement("option");
 				option.textContent = recurranceData.recurranceName;
+				option.value = recurranceData.recurranceId;
 				recurranceDropdown.appendChild(option);
 				$('.selectpicker').selectpicker('refresh');
 			});
@@ -41,6 +43,7 @@ addFormBtn.addEventListener("click", () => {
 			response.month.forEach(function(monthData) {
 				const option = document.createElement("option");
 				option.textContent = monthData.monthName;
+				option.value = monthData.monthId;
 				monthDropdown.appendChild(option);
 				$('.selectpicker').selectpicker('refresh');
 			});
@@ -77,6 +80,7 @@ moduleDropdown.addEventListener("change", () => {
 					const option = document.createElement("option");
 					option.value = characteristicNames;
 					option.textContent = characteristicNames.characteristicName;
+					option.value = characteristicNames.characteristicId;
 					characteristicDropdown.appendChild(option);
 					$('.selectpicker').selectpicker('refresh');
 				});
@@ -113,6 +117,7 @@ characteristicDropdown.addEventListener("change", () => {
 					const option = document.createElement("option");
 					option.value = subcharacteristicNames;
 					option.textContent = subcharacteristicNames.subCharacteristicName;
+					option.value = subcharacteristicNames.subCharacteristicId;
 					subcharacteristicDropdown.appendChild(option);
 					$('.selectpicker').selectpicker('refresh');
 				});

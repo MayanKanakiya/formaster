@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.formaster.loginuser.UserDTO;
 import com.formaster.mstform_adduser.MasterFormService;
+import com.formaster.mstform_createform.MstCreateformRepository;
 
 @Controller
 public class JSPagesController {
 
 	@Autowired
 	MasterFormService formService;
+
+	@Autowired
+	MstCreateformRepository createformRepository;
 
 	@GetMapping("/")
 	public String home() {
@@ -32,8 +36,17 @@ public class JSPagesController {
 	}
 
 	@GetMapping("/master-form")
-	public String masterForm() {
-		return "master_form";
+	public String masterForm(Model model) {
+		try {
+			Integer id = createformRepository.formId();
+			id = (id != null) ? id + 1 : 1;
+			model.addAttribute("id", id);
+			return "master_form";
+		} catch (Exception e) {
+			System.out.println("Error while fetching id from the form" + e.getMessage());
+			return "master_form";
+		}
+
 	}
 
 	@GetMapping("/master-users")

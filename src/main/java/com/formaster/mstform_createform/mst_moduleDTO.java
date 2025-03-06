@@ -39,9 +39,9 @@ public class mst_moduleDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public mst_moduleDTO(String moduleName) {
+	public mst_moduleDTO(int moduleId, String moduleName) {
 		super();
+		this.moduleId = moduleId;
 		this.moduleName = moduleName;
 	}
-
 }

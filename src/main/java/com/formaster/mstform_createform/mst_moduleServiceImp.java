@@ -18,7 +18,7 @@ public class mst_moduleServiceImp implements mst_moduleService {
 		try {
 			List<mst_moduleDTO> userDataList = moduleRepository.getAllModuleData();
 			for (mst_moduleDTO mData : userDataList) {
-				mst_moduleDTO getAllModuleData = new mst_moduleDTO(mData.getModuleName());
+				mst_moduleDTO getAllModuleData = new mst_moduleDTO(mData.getModuleId(), mData.getModuleName());
 				moduleData.add(getAllModuleData);
 			}
 		} catch (Exception e) {
@@ -33,7 +33,8 @@ public class mst_moduleServiceImp implements mst_moduleService {
 		try {
 			List<mst_characteristicDTO> characteristicNameList = moduleRepository.getCharacteristicByModule(moduleName);
 			for (mst_characteristicDTO charName : characteristicNameList) {
-				mst_characteristicDTO getCharNameByModule = new mst_characteristicDTO(charName.getCharacteristicName());
+				mst_characteristicDTO getCharNameByModule = new mst_characteristicDTO(charName.getCharacteristicId(),
+						charName.getCharacteristicName());
 				characteristicName.add(getCharNameByModule);
 			}
 		} catch (Exception e) {
@@ -49,7 +50,7 @@ public class mst_moduleServiceImp implements mst_moduleService {
 			List<mst_subcharacteristicDTO> subCharacteristicNameList = moduleRepository
 					.getSubCharacteristicByCharacteristic(characteristicName);
 			for (mst_subcharacteristicDTO subCharName : subCharacteristicNameList) {
-				mst_subcharacteristicDTO getSubCharNameByChar = new mst_subcharacteristicDTO(
+				mst_subcharacteristicDTO getSubCharNameByChar = new mst_subcharacteristicDTO(subCharName.getSubCharacteristicId(),
 						subCharName.getSubCharacteristicName());
 				subcharacteristicName.add(getSubCharNameByChar);
 			}
@@ -65,7 +66,7 @@ public class mst_moduleServiceImp implements mst_moduleService {
 		try {
 			List<mst_recurranceDTO> userRecurranceList = moduleRepository.getAllRecurrance();
 			for (mst_recurranceDTO rData : userRecurranceList) {
-				mst_recurranceDTO getAllRecurranceData = new mst_recurranceDTO(rData.getRecurranceName());
+				mst_recurranceDTO getAllRecurranceData = new mst_recurranceDTO(rData.getRecurranceId(),rData.getRecurranceName());
 				recurranceData.add(getAllRecurranceData);
 			}
 		} catch (Exception e) {
@@ -80,7 +81,7 @@ public class mst_moduleServiceImp implements mst_moduleService {
 		try {
 			List<mst_monthDTO> userMonthList = moduleRepository.getAllMonth();
 			for (mst_monthDTO mData : userMonthList) {
-				mst_monthDTO getAllMonthData = new mst_monthDTO(mData.getMonthName());
+				mst_monthDTO getAllMonthData = new mst_monthDTO(mData.getMonthId(),mData.getMonthName());
 				monthData.add(getAllMonthData);
 			}
 		} catch (Exception e) {

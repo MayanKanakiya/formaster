@@ -37,9 +37,9 @@ public class mst_recurranceDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public mst_recurranceDTO(String recurranceName) {
+	public mst_recurranceDTO(int recurranceId, String recurranceName) {
 		super();
+		this.recurranceId = recurranceId;
 		this.recurranceName = recurranceName;
 	}
-	
 }

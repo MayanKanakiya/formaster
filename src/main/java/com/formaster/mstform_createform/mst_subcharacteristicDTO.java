@@ -38,9 +38,9 @@ public class mst_subcharacteristicDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public mst_subcharacteristicDTO(String subCharacteristicName) {
+	public mst_subcharacteristicDTO(int subCharacteristicId, String subCharacteristicName) {
 		super();
+		this.subCharacteristicId = subCharacteristicId;
 		this.subCharacteristicName = subCharacteristicName;
-	}
-	
+	}	
 }

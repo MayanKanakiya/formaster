@@ -37,9 +37,12 @@ public class mst_characteristicDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public mst_characteristicDTO(String characteristicName) {
+	public mst_characteristicDTO(int characteristicId, String characteristicName) {
 		super();
+		this.characteristicId = characteristicId;
 		this.characteristicName = characteristicName;
 	}
+
+	
 	
 }

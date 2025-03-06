@@ -2,6 +2,9 @@ console.log("Master create form script running..")
 const questionTable = document.getElementById("formquestion_datatable");
 const queTableTbody = $("#formquestion_datatable tbody")
 
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 /*ID's selection for question modal*/
 const quelabel = document.getElementById("quelabel");
 const queName = document.getElementById("queName");
@@ -30,6 +33,8 @@ const textDes = document.getElementById("textDes");
 let queData;
 //Below object for only available data for full create form
 let formData;
+let questionCounter = 1;
+let queDataArray = [];
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
 		alert("Please enter Question name");
@@ -140,12 +145,12 @@ saveBtnQueTable.addEventListener("click", () => {
 				alert(`${index + 1} Question input field should not accept white spaces`);
 				isValid = false;
 				return false;
-			} else if (inputField.length < 4) {
-				alert(`${index + 1} Question must have at least 4 characters`);
+			} else if (inputField.length < 2) {
+				alert(`${index + 1} Question not aleast 2 characters`);
 				isValid = false;
 				return false;
-			} else if (inputField.length > 5) {
-				alert(`${index + 1} Question cannot have more than 5 characters`);
+			} else if (inputField.length > 15) {
+				alert(`${index + 1} Question cannot have more than 15 characters`);
 				isValid = false;
 				return false;
 			}
@@ -170,53 +175,57 @@ saveBtnQueTable.addEventListener("click", () => {
 	if (reqans.checked) {
 		reqanschk = 1;
 	}
-	queData = {}
 	queData = {
-		quelabel: quelabel.value,
 		queName: queName.value,
 		queDes: queDes.value,
-		queAnswerType: queAnswerType.value,
+		queType: queAnswerType.value,
 		quereq: reqanschk,
 	}
 	if (queAnswerType.value === "1") {
-		queData["options"] = [];
+		queData["questions"] = [];
 		$(".singleChoiceTR").each(function(index) {
-			queData["options"].push($(this).find(".singleChoiceInput").val());
+			queData["questions"].push($(this).find(".singleChoiceInput").val());
 		});
 	}
 	if (queAnswerType.value === "2") {
-		queData["options"] = [];
+		queData["questions"] = [];
 		$(".multiChoiceTR").each(function(index) {
-			queData["options"].push($(this).find(".multiChoiceInput").val());
+			queData["questions"].push($(this).find(".multiChoiceInput").val());
 		});
 	}
 	if (queAnswerType.value === "5") {
-		queData["options"] = [];
+		queData["questions"] = [];
 		$(".singleSelectTR").each(function(index) {
-			queData["options"].push($(this).find(".singleSelectInput").val());
+			queData["questions"].push($(this).find(".singleSelectInput").val());
 		});
 	}
 	if (queAnswerType.value === "6") {
-		queData["options"] = [];
+		queData["questions"] = [];
 		$(".multiSelectTR").each(function(index) {
-			queData["options"].push($(this).find(".multiSelectInput").val());
+			queData["questions"].push($(this).find(".multiSelectInput").val());
 		});
 	}
 	if (queAnswerType.value === "3" || validatans.checked) {
-		console.log(answerTypeFormat.value)
-		queData["answerTypeFormat"] = answerTypeFormat.value
+		queData["questions"] = [];
+		queData["questions"].push(answerTypeFormat.value);
 	} else if (queAnswerType.value === "3") {
-		queData["answerTypeFormat"] = 0;
+		queData["questions"].push(0);
 	}
 
 	if (queAnswerType.value === "4" || validatans.checked) {
-		console.log(answerTypeFormat.value)
-		queData["answerTypeFormat"] = answerTypeFormat.value
+		queData["questions"] = [];
+		queData["questions"].push(answerTypeFormat.value);
 	} else if (queAnswerType.value === "3") {
-		queData["answerTypeFormat"] = 0;
+		queData["questions"].push(0);
 	}
-	
-	queTableTbody.empty();
+	if (queAnswerType.value === "7") {
+		queData["questions"] = [];
+		queData["questions"].push(0);
+	}
+
+	if ($("#formquestion_datatable tbody tr").length > 0) {
+		$("#formquestion_datatable tbody tr.odd:first").remove();
+	}
 	let newRow = `	<tr>
 					<td>${queData.quelabel}</td>
 					<td>${queData.queName}</td>
@@ -234,9 +243,13 @@ saveBtnQueTable.addEventListener("click", () => {
 							data-original-title="Delete"><i
 								class="fa fa-trash"></i></a></span></td>
 						</tr>`;
-	queTableTbody.append(newRow);
 
-	console.log(queData);
+	queTableTbody.append(newRow);
+	queDataArray.push(queData)
+	$('.modal').modal('hide');
+	clearInputFiledQueModal();
+	questionCounter++;
+	/*console.log(queData);*/
 });
 queName.addEventListener("input", () => {
 	if (queName.value.trim().length > 30) {
@@ -252,8 +265,7 @@ queDes.addEventListener("input", () => {
 /*This below code automcatically add question number when click add buttton*/
 
 function getNextQuestionNumber() {
-	let rowCount = $("#formquestion_datatable tbody tr").length;
-	return "Q" + (rowCount);
+	return "Q" + questionCounter;
 }
 $(".addformquestion").on("show.bs.modal", function() {
 	let nextQuestion = getNextQuestionNumber();
@@ -370,10 +382,48 @@ saveQueInDBTable.addEventListener("click", () => {
 		alert("Text description not more than 5 characters");
 		return;
 	}
-	formData = {
-		queData: queData
+	if ($("#formquestion_datatable tbody tr.odd").length > 0 &&
+		$("#formquestion_datatable tbody tr.odd").nextAll("tr").length == 0) {
+		alert("Please enter at least one question");
+	} else {
+		formData = {
+			titletxt: titleTxt.value,
+			aliasname: aliasNameTxt.value,
+			module: moduleDropdown.value,
+			characteristic: characteristicDropdown.value,
+			subcharacteristic: subcharacteristicDropdown.value,
+			recurrence: recurranceDropdown.value,
+			startmonth: monthDropdown.value,
+			complianceperiod: comPeriod.value,
+			effectivedate: date_from.value,
+			textdes: textDes.value,
+			active: activeChk,
+			queData: queDataArray
+		};
+		console.log(formData);
+		clearInputFiledCreateForm()
+		$.ajax({
+			url: "/saveForm",
+			method: 'POST',
+			data: JSON.stringify(formData),
+			contentType: "application/json",
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(response) {
+				console.log(response)
+				alert("Form is save in our database");
+			},
+			error: function(response) {
+				if (response.status === 400) {
+					const errorResponse = JSON.parse(response.responseText);
+					alert(errorResponse.message);
+				} else if (response.status === 500) {
+					alert("Server error occurred while saving create form.");
+				}
+			}
+		});
 	}
-	console.log(formData)
 
 });
 titleTxt.addEventListener("input", () => {
@@ -396,3 +446,30 @@ textDes.addEventListener("input", () => {
 		textDes.value = textDes.value.slice(0, 50);
 	}
 });
+comPeriod.addEventListener('input', () => {
+	if (!/^[0-9]+$/.test(comPeriod.value)) {
+		comPeriod.value = comPeriod.value.slice(0, -1);
+	}
+});
+function clearInputFiledCreateForm() {
+	titleTxt.value = '';
+	aliasNameTxt.value = '';
+	moduleDropdown.value = "0";
+	$('.selectpicker').selectpicker('refresh');
+	characteristicDropdown.value = "0";
+	$('.selectpicker').selectpicker('refresh');
+	subcharacteristicDropdown.value = "0";
+	$('.selectpicker').selectpicker('refresh');
+	recurranceDropdown.value = "0";
+	$('.selectpicker').selectpicker('refresh');
+	monthDropdown.value = "0";
+	$('.selectpicker').selectpicker('refresh');
+	comPeriod.value = '';
+	date_from.value = '';
+	textDes.value = '';
+	queTableTbody.empty();
+	if ($("#formquestion_datatable tbody").length > 0) {
+		$("#formquestion_datatable tbody").append("<tr class='odd'><td style='text-align: center;'>No data available in table</td></tr>");
+	}
+	questionCounter = 1;
+}

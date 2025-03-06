@@ -37,9 +37,10 @@ public class mst_monthDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public mst_monthDTO(String monthName) {
+	public mst_monthDTO(int monthId, String monthName) {
 		super();
+		this.monthId = monthId;
 		this.monthName = monthName;
 	}
-	
+
 }

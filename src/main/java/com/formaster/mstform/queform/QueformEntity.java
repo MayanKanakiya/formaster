@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -14,20 +16,21 @@ import lombok.Data;
 public class QueformEntity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 8, nullable = false)
 	private int quelabel;
 	@Column(length = 8, nullable = false)
 	private int fid;
-	@Column(nullable = false, length = 16)
+	@Column(nullable = false, length = 64)
 	private String queName;
 	@Column(nullable = false, length = 64)
 	private String queDes;
-	@Column(nullable = false, length = 8)
+	@Column(nullable = false, length = 32)
 	private String queType;
 	@Column(nullable = false, length = 8)
 	private int quereq;
-	@Column(nullable = false, length = 225)
-	private String questions;	
+	@Column(columnDefinition = "TEXT")
+	private String questions;
 	@Column(nullable = false, length = 8)
 	private int createdby;
 	@CreationTimestamp
