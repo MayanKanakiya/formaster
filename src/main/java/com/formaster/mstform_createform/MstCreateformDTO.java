@@ -44,4 +44,41 @@ public class MstCreateformDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
+
+	public MstCreateformDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public MstCreateformDTO(int fid, String titletxt, String aliasname, int module, int characteristic,
+			int subcharacteristic, int recurrence, int startmonth, int complianceperiod, String effectivedate,
+			String textdes, int createdby, Timestamp createdon, int modifyby, Timestamp modifyon, int active,
+			List<QueformDTO> queData) {
+		super();
+		this.fid = fid;
+		this.titletxt = titletxt;
+		this.aliasname = aliasname;
+		this.module = module;
+		this.characteristic = characteristic;
+		this.subcharacteristic = subcharacteristic;
+		this.recurrence = recurrence;
+		this.startmonth = startmonth;
+		this.complianceperiod = complianceperiod;
+		this.effectivedate = effectivedate;
+		this.textdes = textdes;
+		this.createdby = createdby;
+		this.createdon = createdon;
+		this.modifyby = modifyby;
+		this.modifyon = modifyon;
+		this.active = active;
+		this.queData = queData;
+	}
+
+	public MstCreateformDTO(int fid, String titletxt, int active) {
+		super();
+		this.fid = fid;
+		this.titletxt = titletxt;
+		this.active = active;
+	}
+
 }

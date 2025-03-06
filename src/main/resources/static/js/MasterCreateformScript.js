@@ -27,6 +27,7 @@ const aliasNameTxt = document.getElementById("aliasNameTxt");
 const comPeriod = document.getElementById("comPeriod");
 const date_from = document.getElementById("date_from");
 const active = document.getElementById("active");
+const cancelBtnFullForm = document.getElementById("cancelBtnFullForm");
 let activeChk = 0;
 const textDes = document.getElementById("textDes");
 //Below object for only available data for only question form
@@ -451,6 +452,36 @@ comPeriod.addEventListener('input', () => {
 		comPeriod.value = comPeriod.value.slice(0, -1);
 	}
 });
+$('.deleteFormBtn').on('click', function() {
+	const uid = $(this).data('id');
+	if (confirm("Are you sure want to delete data?")) {
+		$.ajax({
+			url: `/deletefdata/${uid}`,
+			method: 'DELETE',
+			contentType: 'application/json',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(response) {
+				console.log(response.message);
+				$(`#row-${uid}`).remove();
+				alert("Form data deleted successfully!!");
+				window.location.href = '/master-form';
+			},
+			error: function(response) {
+				if (response.status === 400) {
+					const errorResponse = JSON.parse(response.responseText);
+					alert(errorResponse.message);
+				} else if (response.status === 500) {
+					alert("Server error occurred while deleting form data. Try again later.");
+				}
+			}
+		});
+	}
+});
+cancelBtnFullForm.addEventListener("click", () => {
+	clearInputFiledCreateForm();
+});
 function clearInputFiledCreateForm() {
 	titleTxt.value = '';
 	aliasNameTxt.value = '';
@@ -469,7 +500,7 @@ function clearInputFiledCreateForm() {
 	textDes.value = '';
 	queTableTbody.empty();
 	if ($("#formquestion_datatable tbody").length > 0) {
-		$("#formquestion_datatable tbody").append("<tr class='odd'><td style='text-align: center;'>No data available in table</td></tr>");
+		$("#formquestion_datatable tbody").append("<td valign='top' colspan='5' class='dataTables_empty'>No data available in table</td>");
 	}
 	questionCounter = 1;
 }

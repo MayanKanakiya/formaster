@@ -83,4 +83,21 @@ public class MstCreateformServiceImp implements MstCreateformService {
 		}
 	}
 
+	@Override
+	public MstCreateformDTO deleteFormData(MstCreateformDTO dto, int id) {
+		try {
+			if (createformRepository.deleteFData(id) > 0) {
+				createformRepository.deleteQData(id);
+				dto.addMessage("200", "Form data deleted successfully!!");
+				return dto;
+			} else {
+				dto.addMessage("400", "Error while deleting form data");
+				return dto;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			dto.addMessage("500", "Internal server error while checking duplication email");
+			return dto;
+		}
+	}
 }

@@ -12,8 +12,6 @@ public interface MasterFormService {
 
 	public UserDTO AddUser(UserDTO userDTO, MultipartFile imageFile);
 
-	public List<UserDTO> getAllUserData();
-
 	public List<UserDTO> fetchUserDataById(int id);
 
 	public UserDTO deleteUserData(UserDTO userDTO, int id);

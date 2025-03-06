@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.formaster.mstform_createform.MstCreateformDTO"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -136,25 +138,37 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td>F0RM-01</td>
-													<td>251 Attwell Drive - Operator Form - Monthly</td>
-													<td>Yes</td>
+												<%
+												List<MstCreateformDTO> form = (List<MstCreateformDTO>) request.getAttribute("formDataList");
+												if (form != null) {
+													for (MstCreateformDTO formdto : form) {
+												%>
+												<tr id="row-<%=formdto.getFid()%>">
+													<td>FORM-<%=formdto.getFid()%></td>
+													<td><%=formdto.getTitletxt()%></td>
+													<td><%=formdto.getActive() == 1 ? "Yes" : "No"%></td>
 													<td class="text-center"><a href="javascript:void(0)"
 														data-toggle="tooltip" data-placement="bottom" title=""
 														data-original-title="Edit"
-														class="text-success fa-size client_add_btn"><i
-															class="fa fa-pencil"></i></a> <span data-toggle="modal"
+														class="text-success fa-size client_add_btn editFormBtn" data-id="<%=formdto.getFid()%>"><i
+															class="fa fa-pencil"></i></a>
+															 <span data-toggle="modal"
 														data-target="#all_question_preview"><a
-															href="javascript:void(0)" data-toggle="tooltip"
+															href="javascript:void(0)" data-id="<%=formdto.getFid()%>" data-toggle="tooltip"
 															data-placement="bottom" title=""
-															data-original-title="Preview" class="text-info fa-size"><i
-																class="fa fa-eye"></i></a></span> <span class="delete-user-alert"><a
-															href="javascript:void(0)" class="text-danger fa-size"
+															data-original-title="Preview" class="text-info fa-size viewFormBtn"><i
+																class="fa fa-eye"></i></a></span> 
+																<!-- delete-user-alert -->
+																<span class=""><a
+															href="javascript:void(0)" data-id="<%=formdto.getFid()%>" class="text-danger fa-size deleteFormBtn"
 															data-toggle="tooltip" data-placement="bottom"
 															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
 													</td>
 												</tr>
+												<%
+												}
+												}
+												%>
 											</tbody>
 										</table>
 									</div>
@@ -385,8 +399,8 @@
 												<a class="btn btn-success text-white btn-padding ml-1"
 													id="saveQueInDBTable"><i class="fa fa-floppy-o mr-2"></i>Save</a><a
 													class="btn btn-danger text-white btn-padding ml-1 show_port_table"
-													data-dismiss="modal" aria-label="Close"> <i
-													class="fa fa-times mr-2"></i>Cancel
+													id="cancelBtnFullForm" data-dismiss="modal"
+													aria-label="Close"> <i class="fa fa-times mr-2"></i>Cancel
 												</a>
 											</div>
 										</div>

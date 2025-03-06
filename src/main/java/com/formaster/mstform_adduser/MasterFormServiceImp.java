@@ -264,24 +264,6 @@ public class MasterFormServiceImp implements MasterFormService {
 	}
 
 	@Override
-	public List<UserDTO> getAllUserData() {
-		List<UserDTO> userData = new ArrayList<>();
-		try {
-			List<UserDTO> userDataList = formRepository.getAllUserData();
-			for (UserDTO uData : userDataList) {
-				UserDTO userAllData = new UserDTO(uData.getId(), uData.getFname(), uData.getLname(), uData.getEmail(),
-						uData.getCno(), uData.getGender(), uData.getValidfrom(), uData.getValidto(), uData.getUrole(),
-						uData.getImage(), uData.getCreatedby(), uData.getCreatedon(), uData.getModifyby(),
-						uData.getModifyon(), uData.getActive());
-				userData.add(userAllData);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return userData;
-	}
-
-	@Override
 	public List<UserDTO> fetchUserDataById(int id) {
 		List<UserDTO> userData = new ArrayList<>();
 		try {
@@ -313,7 +295,7 @@ public class MasterFormServiceImp implements MasterFormService {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			dto.addMessage("500", "Internal server error while checking duplication email");
+			dto.addMessage("500", "Internal server error while deleting user data");
 			return dto;
 		}
 	}
