@@ -52,9 +52,7 @@ public class MstCreateformDTO {
 
 	public MstCreateformDTO(int fid, String titletxt, String aliasname, int module, int characteristic,
 			int subcharacteristic, int recurrence, int startmonth, int complianceperiod, String effectivedate,
-			String textdes, int createdby, Timestamp createdon, int modifyby, Timestamp modifyon, int active,
-			List<QueformDTO> queData) {
-		super();
+			int active, String textdes, List<QueformDTO> queData) {
 		this.fid = fid;
 		this.titletxt = titletxt;
 		this.aliasname = aliasname;
@@ -65,12 +63,8 @@ public class MstCreateformDTO {
 		this.startmonth = startmonth;
 		this.complianceperiod = complianceperiod;
 		this.effectivedate = effectivedate;
-		this.textdes = textdes;
-		this.createdby = createdby;
-		this.createdon = createdon;
-		this.modifyby = modifyby;
-		this.modifyon = modifyon;
 		this.active = active;
+		this.textdes = textdes;
 		this.queData = queData;
 	}
 

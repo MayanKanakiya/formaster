@@ -26,4 +26,14 @@ public interface MstCreateformRepository extends JpaRepository<MstCreateformEnti
 	@Query(value = "update queform_entity set isdelete=1 where fid=?1", nativeQuery = true)
 	int deleteQData(int fid);
 
+	@Query(value = "select f.fid,f.titletxt,f.aliasname,f.module,f.characteristic,f.subcharacteristic,f.recurrence,f.startmonth,"
+			+ "f.complianceperiod,f.effectivedate,f.active,f.textdes,q.quelabel,q.que_name,q.que_des,q.que_type,"
+			+ "q.quereq,q.questions from mst_createform_entity as f join queform_entity as q on f.fid=q.fid where f.fid=?1", nativeQuery = true)
+	List<Object[]> getAllFormDataById(int fid);
+
+	@Modifying
+	@Transactional
+	@Query(value = "", nativeQuery = true)
+	int updateFormData(int id);
+
 }

@@ -22,12 +22,14 @@ const cancelBtnQueInputFiled = document.getElementById("cancelBtnQueInputFiled")
 const XQueModalBtn = document.getElementById("XQueModalBtn");
 
 /*ID's selection for form*/
+const formId = document.getElementById("formId");
 const titleTxt = document.getElementById("titleTxt");
 const aliasNameTxt = document.getElementById("aliasNameTxt");
 const comPeriod = document.getElementById("comPeriod");
 const date_from = document.getElementById("date_from");
 const active = document.getElementById("active");
 const cancelBtnFullForm = document.getElementById("cancelBtnFullForm");
+const hiddenId = document.getElementById("hiddenId");
 let activeChk = 0;
 const textDes = document.getElementById("textDes");
 //Below object for only available data for only question form
@@ -177,6 +179,7 @@ saveBtnQueTable.addEventListener("click", () => {
 		reqanschk = 1;
 	}
 	queData = {
+		quelabel: quelabel.value,
 		queName: queName.value,
 		queDes: queDes.value,
 		queType: queAnswerType.value,
@@ -403,29 +406,32 @@ saveQueInDBTable.addEventListener("click", () => {
 		};
 		console.log(formData);
 		clearInputFiledCreateForm()
-		$.ajax({
-			url: "/saveForm",
-			method: 'POST',
-			data: JSON.stringify(formData),
-			contentType: "application/json",
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			success: function(response) {
-				console.log(response)
-				alert("Form is save in our database");
-			},
-			error: function(response) {
-				if (response.status === 400) {
-					const errorResponse = JSON.parse(response.responseText);
-					alert(errorResponse.message);
-				} else if (response.status === 500) {
-					alert("Server error occurred while saving create form.");
+		if (hiddenId.value.trim().length == 0) {
+			$.ajax({
+				url: "/saveForm",
+				method: 'POST',
+				data: JSON.stringify(formData),
+				contentType: "application/json",
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function(response) {
+					console.log(response)
+					alert("Form is save in our database");
+				},
+				error: function(response) {
+					if (response.status === 400) {
+						const errorResponse = JSON.parse(response.responseText);
+						alert(errorResponse.message);
+					} else if (response.status === 500) {
+						alert("Server error occurred while saving create form.");
+					}
 				}
-			}
-		});
-	}
+			});
+		} else {
 
+		}
+	}
 });
 titleTxt.addEventListener("input", () => {
 	if (titleTxt.value.trim().length > 25) {
@@ -478,6 +484,93 @@ $('.deleteFormBtn').on('click', function() {
 			}
 		});
 	}
+});
+$('.editFormBtn').on('click', function() {
+	const uid = $(this).data('id');
+	$.ajax({
+		url: `/fetchFData/${uid}`,
+		method: 'POST',
+		contentType: 'application/json',
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success: function(response) {
+			console.log(response);
+			if (response.length > 0) {
+				let formData = response[0];
+				hiddenId.value = formData.fid;
+				formId.value = "FORM-" + formData.fid;
+				titleTxt.value = formData.titletxt;
+				aliasNameTxt.value = formData.aliasname;
+				setTimeout(() => {
+					$('#moduleDropdown').val(formData.module).trigger('change');
+					$('#recurranceDropdown').val(formData.recurrence).trigger('change');
+					$('#monthDropdown').val(formData.startmonth).trigger('change');
+					$('.selectpicker').selectpicker('refresh');
+					charDropdown(moduleDropdown.options[moduleDropdown.selectedIndex]?.text || "");
+					setTimeout(() => {
+						for (let option of characteristicDropdown.options) {
+							if (option.value == formData.characteristic) {
+								option.selected = true;
+								$('.selectpicker').selectpicker('refresh');
+								break;
+							}
+						}
+						subCharDropdown(characteristicDropdown.options[characteristicDropdown.selectedIndex]?.text || "")
+						setTimeout(() => {
+							for (let option of subcharacteristicDropdown.options) {
+								if (option.value == formData.subcharacteristic) {
+									option.selected = true;
+									$('.selectpicker').selectpicker('refresh');
+									break;
+								}
+							}
+						}, 300);
+					}, 300);
+				}, 200);
+				comPeriod.value = formData.complianceperiod;
+				date_from.value = formData.effectivedate;
+				if (formData.active == 1) {
+					active.checked = true;
+				} else {
+					active.checked = false;
+				}
+				textDes.value = formData.textdes;
+				console.log(formData.queData);
+				if ($("#formquestion_datatable tbody tr").length > 0) {
+					$("#formquestion_datatable tbody tr.odd:first").remove();
+				}
+				formData.queData.forEach((que, index) => {
+					let row = `<tr>
+									<td>Q${index + 1}</td>
+									<td>${que.queName}</td>
+									<td>${que.queAnswerType == 1 ? "Single Choice" : que.queAnswerType == 2 ? "Multi Choice" : que.queAnswerType == 3 ? "Single Textbox" : que.queAnswerType == 4 ? "Multiline Textbox" : que.queAnswerType == 5 ? "Single select dropdown" : que.queAnswerType == 6 ? "Multi select dropdown" : "Date"}</td>
+									<td>${que.quereq == 1 ? "Yes" : "No"}</td>
+									<td class="text-center"><span data-toggle="modal"
+										data-target=".addformquestion"><a
+											href="javascript:void(0)" data-toggle="tooltip"
+											data-placement="bottom" data-original-title="Edit"
+											class="text-success fa-size"><i
+												class="fa fa-pencil"></i></a></span> <span
+										class="delete-user-alert"><a
+											href="javascript:void(0)" class="text-danger fa-size"
+											data-toggle="tooltip" data-placement="bottom"
+											data-original-title="Delete"><i
+												class="fa fa-trash"></i></a></span></td>
+										</tr>`;
+						queTableTbody.append(row);
+				});
+			}
+		},
+		error: function(response) {
+			if (response.status === 400) {
+				const errorResponse = JSON.parse(response.responseText);
+				alert(errorResponse.message);
+			} else if (response.status === 500) {
+				alert("Server error occurred while fetching form data.");
+			}
+		}
+	});
 });
 cancelBtnFullForm.addEventListener("click", () => {
 	clearInputFiledCreateForm();

@@ -1,5 +1,6 @@
 package com.formaster.mstform_createform;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,18 @@ public class mstCreateformController {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 						.body(Map.of("message", ServiceResponseFormDTO.getMessage().get("500")));
 			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("message", "Internal server error controller side: " + e.getMessage()));
+		}
+	}
+
+	@PostMapping("/fetchFData/{id}")
+	public ResponseEntity<?> fetchFData(@PathVariable("id") int id) {
+		try {
+			List<MstCreateformDTO> formDataList = formService.fetchFormDataById(id);
+			return ResponseEntity.ok(formDataList);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

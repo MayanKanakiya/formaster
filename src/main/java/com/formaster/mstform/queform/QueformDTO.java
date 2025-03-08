@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class QueformDTO {
-	private int quelabel;
+	private Integer quelabel;
 	private int fid;
 	private String queName;
 	private String queDes;
@@ -37,4 +37,20 @@ public class QueformDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
+
+	public QueformDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public QueformDTO(int quelabel, String queName, String queDes, String queType, int quereq, List<String> questions) {
+		super();
+		this.quelabel = quelabel;
+		this.queName = queName;
+		this.queDes = queDes;
+		this.queType = queType;
+		this.quereq = quereq;
+		this.questions = questions;
+	}
+	
 }

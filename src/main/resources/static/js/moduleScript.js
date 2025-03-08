@@ -9,10 +9,7 @@ const monthDropdown = document.getElementById("monthDropdown");
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
-
-//Below method for populate module dropdown when page load
-addFormBtn.addEventListener("click", () => {
-	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
+function funPopulateFormDropdown() {
 	$.ajax({
 		url: "/populatingDropdown",
 		method: 'POST',
@@ -57,9 +54,22 @@ addFormBtn.addEventListener("click", () => {
 			}
 		}
 	});
+}
+//Below method for populate module dropdown when page load
+addFormBtn.addEventListener("click", () => {
+	hiddenId.value = '';
+	formId.value = '';
+	formId.value = "FORM-" + id;
+	clearInputFiledCreateForm();
+	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
+	funPopulateFormDropdown();
 });
-moduleDropdown.addEventListener("change", () => {
-	const selectedModuleName = moduleDropdown.options[moduleDropdown.selectedIndex].text;
+$('.editFormBtn').on('click', function() {
+	formId.value = '';
+	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
+	funPopulateFormDropdown();
+});
+function charDropdown(selectedModuleName) {
 	$.ajax({
 		url: "/populateCharacteristicByModuleName",
 		method: 'POST',
@@ -83,6 +93,7 @@ moduleDropdown.addEventListener("change", () => {
 					option.value = characteristicNames.characteristicId;
 					characteristicDropdown.appendChild(option);
 					$('.selectpicker').selectpicker('refresh');
+
 				});
 			}
 		},
@@ -95,9 +106,8 @@ moduleDropdown.addEventListener("change", () => {
 			}
 		}
 	});
-});
-characteristicDropdown.addEventListener("change", () => {
-	const selectedSubCharacteristicName = characteristicDropdown.options[characteristicDropdown.selectedIndex].text;
+}
+function subCharDropdown(selectedSubCharacteristicName) {
 	$.ajax({
 		url: "/populatesubCharacteristicByCharacteristicName",
 		method: 'POST',
@@ -120,6 +130,7 @@ characteristicDropdown.addEventListener("change", () => {
 					option.value = subcharacteristicNames.subCharacteristicId;
 					subcharacteristicDropdown.appendChild(option);
 					$('.selectpicker').selectpicker('refresh');
+
 				});
 			}
 		},
@@ -132,4 +143,12 @@ characteristicDropdown.addEventListener("change", () => {
 			}
 		}
 	});
+}
+moduleDropdown.addEventListener("change", () => {
+	const selectedModuleName = moduleDropdown.options[moduleDropdown.selectedIndex]?.text || "";
+	charDropdown(selectedModuleName);
+});
+characteristicDropdown.addEventListener("change", () => {
+	const selectedSubCharacteristicName = characteristicDropdown.options[characteristicDropdown.selectedIndex]?.text || "";
+	subCharDropdown(selectedSubCharacteristicName);
 });

@@ -1,13 +1,20 @@
 package com.formaster.mstform_createform;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaster.mstform.queform.QueFormRepository;
+import com.formaster.mstform.queform.QueformDTO;
 import com.formaster.mstform.queform.QueformEntity;
 
 import jakarta.servlet.http.HttpSession;
@@ -51,7 +58,6 @@ public class MstCreateformServiceImp implements MstCreateformService {
 			createformRepository.save(formEntity);
 
 			Integer id = createformRepository.formId();
-			/* Integer id = (tempId != null) ? tempId + 1 : 1 */;
 			ObjectMapper objectMapper = new ObjectMapper();
 
 			List<QueformEntity> questions = dto.getQueData().stream().map(qDto -> {
@@ -99,5 +105,84 @@ public class MstCreateformServiceImp implements MstCreateformService {
 			dto.addMessage("500", "Internal server error while checking duplication email");
 			return dto;
 		}
+	}
+
+	@Override
+	public List<MstCreateformDTO> fetchFormDataById(int id) {
+		List<Object[]> formDataListById = createformRepository.getAllFormDataById(id);
+		Map<Integer, MstCreateformDTO> formMap = new LinkedHashMap<>();
+
+		if (formDataListById.isEmpty()) {
+			throw new NoSuchElementException("Form not found with id: " + id);
+		}
+
+		for (Object[] fData : formDataListById) {
+			int fid = (int) fData[0];
+			String titleTxt = (String) fData[1];
+			String aliasName = (String) fData[2];
+			int module = (int) fData[3];
+			int characteristic = (int) fData[4];
+			int subCharacteristic = (int) fData[5];
+			int recurrence = (int) fData[6];
+			int month = (int) fData[7];
+			int compliancePeriod = (int) fData[8];
+			String effectiveDate = (String) fData[9];
+			int active = (int) fData[10];
+			String textDes = (String) fData[11];
+			Integer queLabel = fData[12] != null ? (Integer) fData[12] : null;
+			String queName = (String) fData[13];
+			String queDes = (String) fData[14];
+			String queType = (String) fData[15];
+			int queReq = (int) fData[16];
+			String questionJsonString = (String) fData[17];
+
+			MstCreateformDTO formDTO = formMap.computeIfAbsent(fid, k -> {
+				MstCreateformDTO dto = new MstCreateformDTO();
+				dto.setFid(fid);
+				dto.setTitletxt(titleTxt);
+				dto.setAliasname(aliasName);
+				dto.setModule(module);
+				dto.setCharacteristic(characteristic);
+				dto.setSubcharacteristic(subCharacteristic);
+				dto.setRecurrence(recurrence);
+				dto.setStartmonth(month);
+				dto.setComplianceperiod(compliancePeriod);
+				dto.setEffectivedate(effectiveDate);
+				dto.setActive(active);
+				dto.setTextdes(textDes);
+				dto.setQueData(new ArrayList<>());
+				return dto;
+			});
+
+			if (queLabel != null) {
+				Optional<QueformDTO> existingQuestion = formDTO.getQueData().stream()
+						.filter(q -> q.getQuelabel().equals(queLabel)).findFirst();
+
+				QueformDTO queDTO;
+				if (existingQuestion.isPresent()) {
+					queDTO = existingQuestion.get();
+				} else {
+					List<String> questions = new ArrayList<>();
+					if (questionJsonString != null && !questionJsonString.isEmpty()) {
+						ObjectMapper objectMapper = new ObjectMapper();
+						try {
+							questions = objectMapper.readValue(questionJsonString, new TypeReference<List<String>>() {
+							});
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					queDTO = new QueformDTO(queLabel, queName, queDes, queType, queReq, questions);
+					formDTO.getQueData().add(queDTO);
+				}
+			}
+		}
+		return new ArrayList<>(formMap.values());
+	}
+
+	@Override
+	public MstCreateformDTO updateFormData(MstCreateformDTO createformDTO, int id) {
+
+		return null;
 	}
 }
