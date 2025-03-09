@@ -9,7 +9,7 @@ const monthDropdown = document.getElementById("monthDropdown");
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
-function funPopulateFormDropdown() {
+function populateFormDropdown() {
 	$.ajax({
 		url: "/populatingDropdown",
 		method: 'POST',
@@ -60,14 +60,16 @@ addFormBtn.addEventListener("click", () => {
 	hiddenId.value = '';
 	formId.value = '';
 	formId.value = "FORM-" + id;
+	characteristicDropdown.innerHTML = "";
+	subcharacteristicDropdown.innerHTML = "";
 	clearInputFiledCreateForm();
 	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
-	funPopulateFormDropdown();
+	populateFormDropdown();
 });
 $('.editFormBtn').on('click', function() {
 	formId.value = '';
 	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
-	funPopulateFormDropdown();
+	populateFormDropdown();
 });
 function charDropdown(selectedModuleName) {
 	$.ajax({

@@ -228,9 +228,9 @@ saveBtnQueTable.addEventListener("click", () => {
 	}
 
 	if ($("#formquestion_datatable tbody tr").length > 0) {
-		$("#formquestion_datatable tbody tr.odd:first").remove();
+		$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 	}
-	let newRow = `	<tr>
+	let newRow = `	<tr data-quedata='${JSON.stringify(queData)}'>
 					<td>${queData.quelabel}</td>
 					<td>${queData.queName}</td>
 					<td>${queData.queAnswerType == 1 ? "Single Choice" : queData.queAnswerType == 2 ? "Multi Choice" : queData.queAnswerType == 3 ? "Single Textbox" : queData.queAnswerType == 4 ? "Multiline Textbox" : queData.queAnswerType == 5 ? "Single select dropdown" : queData.queAnswerType == 6 ? "Multi select dropdown" : "Date"}</td>
@@ -239,10 +239,10 @@ saveBtnQueTable.addEventListener("click", () => {
 						data-target=".addformquestion"><a
 							href="javascript:void(0)" data-toggle="tooltip"
 							data-placement="bottom" data-original-title="Edit"
-							class="text-success fa-size"><i
+							class="text-success fa-size queTableEditBtn"><i
 								class="fa fa-pencil"></i></a></span> <span
 						class="delete-user-alert"><a
-							href="javascript:void(0)" class="text-danger fa-size"
+							href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
 							data-toggle="tooltip" data-placement="bottom"
 							data-original-title="Delete"><i
 								class="fa fa-trash"></i></a></span></td>
@@ -265,9 +265,7 @@ queDes.addEventListener("input", () => {
 		queDes.value = queDes.value.slice(0, 50);
 	}
 });
-
 /*This below code automcatically add question number when click add buttton*/
-
 function getNextQuestionNumber() {
 	return "Q" + questionCounter;
 }
@@ -536,29 +534,28 @@ $('.editFormBtn').on('click', function() {
 					active.checked = false;
 				}
 				textDes.value = formData.textdes;
-				console.log(formData.queData);
 				if ($("#formquestion_datatable tbody tr").length > 0) {
-					$("#formquestion_datatable tbody tr.odd:first").remove();
+					$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 				}
 				formData.queData.forEach((que, index) => {
-					let row = `<tr>
+					let row = `<tr data-quedata='${JSON.stringify(que)}'>
 									<td>Q${index + 1}</td>
 									<td>${que.queName}</td>
-									<td>${que.queAnswerType == 1 ? "Single Choice" : que.queAnswerType == 2 ? "Multi Choice" : que.queAnswerType == 3 ? "Single Textbox" : que.queAnswerType == 4 ? "Multiline Textbox" : que.queAnswerType == 5 ? "Single select dropdown" : que.queAnswerType == 6 ? "Multi select dropdown" : "Date"}</td>
+									<td>${que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" : que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" : que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date"}</td>
 									<td>${que.quereq == 1 ? "Yes" : "No"}</td>
 									<td class="text-center"><span data-toggle="modal"
 										data-target=".addformquestion"><a
 											href="javascript:void(0)" data-toggle="tooltip"
 											data-placement="bottom" data-original-title="Edit"
-											class="text-success fa-size"><i
+											class="text-success fa-size queTableEditBtn"><i
 												class="fa fa-pencil"></i></a></span> <span
 										class="delete-user-alert"><a
-											href="javascript:void(0)" class="text-danger fa-size"
+											href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
 											data-toggle="tooltip" data-placement="bottom"
 											data-original-title="Delete"><i
 												class="fa fa-trash"></i></a></span></td>
 										</tr>`;
-						queTableTbody.append(row);
+					queTableTbody.append(row);
 				});
 			}
 		},
@@ -571,6 +568,42 @@ $('.editFormBtn').on('click', function() {
 			}
 		}
 	});
+});
+$(document).on("hide.bs.modal", ".addformquestion", function() {
+	clearInputFiledQueModal();
+});
+$(document).on('click', '.queTableDeleteBtn', function() {
+	alert("Cliked que table delete button");
+});
+$(document).on('click', '.queTableEditBtn', function() {
+	let row = $(this).closest("tr");
+	let queEditData = JSON.parse(row.attr("data-quedata"));
+	console.log(queEditData);
+	setTimeout(() => {
+		$("#quelabel").val(queEditData.quelabel);
+	}, 100);
+	$("#queName").val(queEditData.queName);
+	$("#queDes").val(queEditData.queDes);
+	if (queEditData.queType == "1") {
+		$("#queAnswerType").val("1").trigger("change");
+	} else if (queEditData.queType == "2") {
+		$("#queAnswerType").val("2").trigger("change");
+	} else if (queEditData.queType == "3") {
+		$("#queAnswerType").val("3").trigger("change");
+	} else if (queEditData.queType == "4") {
+		$("#queAnswerType").val("4").trigger("change");
+	} else if (queEditData.queType == "5") {
+		$("#queAnswerType").val("5").trigger("change");
+	} else if (queEditData.queType == "6") {
+		$("#queAnswerType").val("6").trigger("change");
+	} else if (queEditData.queType == "7") {
+		$("#queAnswerType").val("7").trigger("change");
+	}
+	if (queEditData.quereq == 1) {
+		reqans.checked = true;
+	} else {
+		reqans.checked = false;
+	}
 });
 cancelBtnFullForm.addEventListener("click", () => {
 	clearInputFiledCreateForm();
@@ -593,7 +626,7 @@ function clearInputFiledCreateForm() {
 	textDes.value = '';
 	queTableTbody.empty();
 	if ($("#formquestion_datatable tbody").length > 0) {
-		$("#formquestion_datatable tbody").append("<td valign='top' colspan='5' class='dataTables_empty'>No data available in table</td>");
+		$("#formquestion_datatable tbody").append("<tr><td valign='top' colspan='5' class='dataTables_empty'>No data available in table</td></tr>");
 	}
 	questionCounter = 1;
 }
