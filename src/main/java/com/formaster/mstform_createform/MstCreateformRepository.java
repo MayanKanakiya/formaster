@@ -1,5 +1,6 @@
 package com.formaster.mstform_createform;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,13 +19,13 @@ public interface MstCreateformRepository extends JpaRepository<MstCreateformEnti
 
 	@Modifying
 	@Transactional
-	@Query(value = "update mst_createform_entity set isdelete=1 where fid=?1", nativeQuery = true)
-	int deleteFData(int fid);
+	@Query(value = "update mst_createform_entity set isdelete=1, modifyby=?2,modifyon=?3 where fid=?1", nativeQuery = true)
+	int deleteFData(int fid, int modifyby, Timestamp modifyon);
 
 	@Modifying
 	@Transactional
-	@Query(value = "update queform_entity set isdelete=1 where fid=?1", nativeQuery = true)
-	int deleteQData(int fid);
+	@Query(value = "update queform_entity set isdelete=1, modifyby=?2, modifyon=?3 where fid=?1", nativeQuery = true)
+	int deleteQData(int fid, int modifyby, Timestamp modifyon);
 
 	@Query(value = "select f.fid,f.titletxt,f.aliasname,f.module,f.characteristic,f.subcharacteristic,f.recurrence,f.startmonth,"
 			+ "f.complianceperiod,f.effectivedate,f.active,f.textdes,q.quelabel,q.que_name,q.que_des,q.que_type,"

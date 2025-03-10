@@ -1,5 +1,6 @@
 package com.formaster.mstform_createform;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -92,8 +93,9 @@ public class MstCreateformServiceImp implements MstCreateformService {
 	@Override
 	public MstCreateformDTO deleteFormData(MstCreateformDTO dto, int id) {
 		try {
-			if (createformRepository.deleteFData(id) > 0) {
-				createformRepository.deleteQData(id);
+			int createdby = (int) session.getAttribute("currentLogin");
+			if (createformRepository.deleteFData(id, createdby, new Timestamp(System.currentTimeMillis())) > 0) {
+				createformRepository.deleteQData(id, createdby, new Timestamp(System.currentTimeMillis()));
 				dto.addMessage("200", "Form data deleted successfully!!");
 				return dto;
 			} else {

@@ -233,7 +233,7 @@ saveBtnQueTable.addEventListener("click", () => {
 	let newRow = `	<tr data-quedata='${JSON.stringify(queData)}'>
 					<td>${queData.quelabel}</td>
 					<td>${queData.queName}</td>
-					<td>${queData.queAnswerType == 1 ? "Single Choice" : queData.queAnswerType == 2 ? "Multi Choice" : queData.queAnswerType == 3 ? "Single Textbox" : queData.queAnswerType == 4 ? "Multiline Textbox" : queData.queAnswerType == 5 ? "Single select dropdown" : queData.queAnswerType == 6 ? "Multi select dropdown" : "Date"}</td>
+					<td>${queData.queType == 1 ? "Single Choice" : queData.queType == 2 ? "Multi Choice" : queData.queType == 3 ? "Single Textbox" : queData.queType == 4 ? "Multiline Textbox" : queData.queType == 5 ? "Single select dropdown" : queData.queType == 6 ? "Multi select dropdown" : "Date"}</td>
 					<td>${queData.quereq == 1 ? "Yes" : "No"}</td>
 					<td class="text-center"><span data-toggle="modal"
 						data-target=".addformquestion"><a
@@ -299,6 +299,9 @@ function clearInputFiledQueModal() {
 	}
 	queAnswerType.value = "";
 	$('.selectpicker').selectpicker('refresh');
+	validatans.checked = false;
+	answerTypeFormat.value = "0";
+	reqans.checked = false;
 }
 /*main form validation start here*/
 saveQueInDBTable.addEventListener("click", () => {
@@ -538,8 +541,9 @@ $('.editFormBtn').on('click', function() {
 					$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 				}
 				formData.queData.forEach((que, index) => {
-					let row = `<tr data-quedata='${JSON.stringify(que)}'>
-									<td>Q${index + 1}</td>
+					let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
+					let row = `<tr data-quedata='${JSON.stringify(queWithLabel)}'>
+									<td>${queWithLabel.quelabel}</td>
 									<td>${que.queName}</td>
 									<td>${que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" : que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" : que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date"}</td>
 									<td>${que.quereq == 1 ? "Yes" : "No"}</td>
@@ -576,26 +580,175 @@ $(document).on('click', '.queTableDeleteBtn', function() {
 	alert("Cliked que table delete button");
 });
 $(document).on('click', '.queTableEditBtn', function() {
+
 	let row = $(this).closest("tr");
 	let queEditData = JSON.parse(row.attr("data-quedata"));
 	console.log(queEditData);
+
 	setTimeout(() => {
 		$("#quelabel").val(queEditData.quelabel);
 	}, 100);
 	$("#queName").val(queEditData.queName);
 	$("#queDes").val(queEditData.queDes);
+	$("#singlechoicetable tbody").empty();
 	if (queEditData.queType == "1") {
 		$("#queAnswerType").val("1").trigger("change");
+
+		if (queEditData.questions && queEditData.questions.length > 0) {
+			queEditData.questions.forEach((choice, index) => {
+				let SingleChoiceCountTR = index + 1;
+
+				let choiceRow = `
+	                  <tr class="singleChoiceTR singleChoiceTR${SingleChoiceCountTR}">
+	                      <td class='text-center border-0' width='5%'>
+	                          <i class='fa fa-arrow-right' aria-hidden='true'></i>
+	                      </td>
+	                      <td class='border-0 p-1'>
+	                          <div class='form-group mb-0'>
+	                              <input type='text' class='form-control singleChoiceInput' 
+	                                     placeholder='Enter an answer choice in English' 
+	                                     value="${choice}">
+	                          </div>
+	                      </td>
+	                      <td class='text-center border-0 p-0' width='3%'>
+	                          <a href='javascript:void(0)' class='singlechoiceadd'>
+	                              <i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+	                          </a>
+	                      </td>
+	                      <td class='text-center border-0 p-0' width='3%'>
+	                          <a href='javascript:void(0)' class='singlechoiceremove'>
+	                              <i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+	                          </a>
+	                      </td>
+	                  </tr>`;
+
+				$("#singlechoicetable tbody").append(choiceRow);
+			});
+		}
 	} else if (queEditData.queType == "2") {
 		$("#queAnswerType").val("2").trigger("change");
+		if (queEditData.questions && queEditData.questions.length > 0) {
+			queEditData.questions.forEach((choice, index) => {
+				let MultiChoiceCountTR = index + 1;
+
+				let choiceRow = `
+				<tr class="multiChoiceTR multiChoiceTR${MultiChoiceCountTR}">
+				         <td class='text-center border-0' width='5%'>
+				             <i class='fa fa-arrow-right' aria-hidden='true'></i>
+				         </td>
+				         <td class='border-0 p-1'>
+				             <div class='form-group mb-0'>
+				                 <input type='text' class='form-control multiChoiceInput' placeholder='Enter an answer choice in English' value="${choice}">
+				             </div>
+				         </td>
+				         <td class='text-center border-0 p-0' width='3%'>
+				             <a href='javascript:void(0)' id='multichoiceadd'>
+				                 <i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+				             </a>
+				         </td>
+				         <td class='text-center border-0 p-0' width='3%'>
+				             <a href='javascript:void(0)' id='multichoiceremove'>
+				                 <i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+				             </a>
+				         </td>
+				     </tr>`;
+
+				$("#singlechoicetable tbody").append(choiceRow);
+			});
+		}
 	} else if (queEditData.queType == "3") {
 		$("#queAnswerType").val("3").trigger("change");
+		validatans.checked = true;
+		$(".showanswershouldbe").show();
+		if (queEditData.questions.includes("1")) {
+			$("#answerTypeFormat").val("1").trigger("change");
+		} else if (queEditData.questions.includes("2")) {
+			$("#answerTypeFormat").val("2").trigger("change");
+		} else if (queEditData.questions.includes("3")) {
+			$("#answerTypeFormat").val("3").trigger("change");
+		} else if (queEditData.questions.includes("4")) {
+			$("#answerTypeFormat").val("4").trigger("change");
+		}
+		$("#answerTypeFormat").selectpicker("refresh");
 	} else if (queEditData.queType == "4") {
 		$("#queAnswerType").val("4").trigger("change");
+		validatans.checked = true;
+		$(".showanswershouldbe").show();
+		if (queEditData.questions.includes("1")) {
+			$("#answerTypeFormat").val("1").trigger("change");
+		} else if (queEditData.questions.includes("2")) {
+			$("#answerTypeFormat").val("2").trigger("change");
+			$("#answerTypeFormat").selectpicker("refresh");
+		} else if (queEditData.questions.includes("3")) {
+			$("#answerTypeFormat").val("3").trigger("change");
+			$("#answerTypeFormat").selectpicker("refresh");
+		} else if (queEditData.questions.includes("4")) {
+			$("#answerTypeFormat").val("4").trigger("change");
+			$("#answerTypeFormat").selectpicker("refresh");
+		}
+		$("#answerTypeFormat").selectpicker("refresh");
 	} else if (queEditData.queType == "5") {
 		$("#queAnswerType").val("5").trigger("change");
+		if (queEditData.questions && queEditData.questions.length > 0) {
+			queEditData.questions.forEach((choice, index) => {
+				let SingleSelectCountTR = index + 1;
+
+				let choiceRow = `
+					<tr class="singleSelectTR singleSelectTR${SingleSelectCountTR}">
+					         <td class='text-center border-0' width='5%'>
+					             <i class='fa fa-arrow-right' aria-hidden='true'></i>
+					         </td>
+					         <td class='border-0 p-1'>
+					             <div class='form-group mb-0'>
+					                 <input type='text' class='form-control singleSelectInput' placeholder='Enter an answer choice in English' value="${choice}">
+					             </div>
+					         </td>
+					         <td class='text-center border-0 p-0' width='3%'>
+					             <a href='javascript:void(0)' id='singleselectadd'>
+					                 <i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+					             </a>
+					         </td>
+					         <td class='text-center border-0 p-0' width='3%'>
+					             <a href='javascript:void(0)' id='singleselectremove'>
+					                 <i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+					             </a>
+					         </td>
+					     </tr>`;
+
+				$("#singlechoicetable tbody").append(choiceRow);
+			});
+		}
 	} else if (queEditData.queType == "6") {
 		$("#queAnswerType").val("6").trigger("change");
+		if (queEditData.questions && queEditData.questions.length > 0) {
+			queEditData.questions.forEach((choice, index) => {
+				let MultiSelectCountTR = index + 1;
+
+				let choiceRow = `
+				<tr class="multiSelectTR multiSelectTR${MultiSelectCountTR}">
+				         <td class='text-center border-0' width='5%'>
+				             <i class='fa fa-arrow-right' aria-hidden='true'></i>
+				         </td>
+				         <td class='border-0 p-1'>
+				             <div class='form-group mb-0'>
+				                 <input type='text' class='form-control multiSelectInput' placeholder='Enter an answer choice in English' value="${choice}">
+				             </div>
+				         </td>
+				         <td class='text-center border-0 p-0' width='3%'>
+				             <a href='javascript:void(0)' id='multiSelectadd'>
+				                 <i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+				             </a>
+				         </td>
+				         <td class='text-center border-0 p-0' width='3%'>
+				             <a href='javascript:void(0)' id='multiSelectremove'>
+				                 <i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
+				             </a>
+				         </td>
+				     </tr>`;
+
+				$("#singlechoicetable tbody").append(choiceRow);
+			});
+		}
 	} else if (queEditData.queType == "7") {
 		$("#queAnswerType").val("7").trigger("change");
 	}
