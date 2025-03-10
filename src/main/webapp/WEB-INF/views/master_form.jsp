@@ -150,17 +150,18 @@
 													<td class="text-center"><a href="javascript:void(0)"
 														data-toggle="tooltip" data-placement="bottom" title=""
 														data-original-title="Edit"
-														class="text-success fa-size client_add_btn editFormBtn" data-id="<%=formdto.getFid()%>"><i
-															class="fa fa-pencil"></i></a>
-															 <span data-toggle="modal"
+														class="text-success fa-size client_add_btn editFormBtn"
+														data-id="<%=formdto.getFid()%>"><i
+															class="fa fa-pencil"></i></a> <span data-toggle="modal"
 														data-target="#all_question_preview"><a
-															href="javascript:void(0)" data-id="<%=formdto.getFid()%>" data-toggle="tooltip"
-															data-placement="bottom" title=""
-															data-original-title="Preview" class="text-info fa-size viewFormBtn"><i
-																class="fa fa-eye"></i></a></span> 
-																<!-- delete-user-alert -->
-																<span class=""><a
-															href="javascript:void(0)" data-id="<%=formdto.getFid()%>" class="text-danger fa-size deleteFormBtn"
+															href="javascript:void(0)" data-id="<%=formdto.getFid()%>"
+															data-toggle="tooltip" data-placement="bottom" title=""
+															data-original-title="Preview"
+															class="text-info fa-size viewFormBtn"><i
+																class="fa fa-eye"></i></a></span> <!-- delete-user-alert --> <span
+														class=""><a href="javascript:void(0)"
+															data-id="<%=formdto.getFid()%>"
+															class="text-danger fa-size deleteFormBtn"
 															data-toggle="tooltip" data-placement="bottom"
 															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
 													</td>
@@ -200,7 +201,8 @@
 								<form class="form">
 									<div class="form-body mb-0">
 										<div class="row pl-3 pr-3">
-												<input type="text" id="hiddenId" class="form-control" readonly>
+											<input type="text" id="hiddenId" class="form-control"
+												readonly style="display:none;">
 											<div
 												class="col-xl-2 col-lg-2 col-sm-3 col-xs-12 colmspadding">
 												<div class="form-group">
@@ -481,334 +483,17 @@
 						<div class="row pr-2 pl-2">
 							<div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 colmspadding">
 								<p class="mb-1 font-weight-600">
-									<span class="font-weight-700">Form Title:</span> <span>1
-										Yonge Street - Contractor Form - Annual</span>
+									<span class="font-weight-700">Form Title:</span> <span
+										id="previewFtitle"></span>
 								</p>
 
 								<p class="mb-0 font-weight-600">
-									<span class="font-weight-700">Description:</span> <span>Are
-										all portable fire extinguishers visually inspected every
-										month?At minimum, the following list of items should be
-										inspected extinguisher in proper location and mounted.</span>
+									<span class="font-weight-700">Description:</span> <span
+										id="previewFDes"></span>
 								</p>
 							</div>
 						</div>
 					</div>
-
-					<div class="card mb-2 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 1</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0 text-justify">
-										<p class="font-weight-700 mb-1 text-justify">
-											<span class="text-danger">*</span> Emergency Power Systems &
-											Lighting
-										</p>
-										<p class="mb-1">Are the self-contained battery powered
-											emergency lights inspected and tested at least once a month?</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-radio">
-													<input type="radio" id="choice1" name="choicetwo"
-														class="custom-control-input" checked=""> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choice1">Choice 1</label>
-												</div>
-											</div>
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-radio">
-													<input type="radio" id="choice2" name="choicetwo"
-														class="custom-control-input"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choice2">Choice 2</label>
-												</div>
-											</div>
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-radio">
-													<input type="radio" id="choice3" name="choicetwo"
-														class="custom-control-input"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choice3">Choice 3</label>
-												</div>
-											</div>
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-radio">
-													<input type="radio" id="choice4" name="choicetwo"
-														class="custom-control-input"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choice4">Choice 4</label>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card mb-2 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 2</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0">
-										<p class="font-weight-700 mb-1 text-justify">
-											<span class="text-danger">*</span> Fire Alarm & Voice
-											Communication
-										</p>
-										<p class="mb-1 text-justify">Is the status of the trouble
-											signal indicators on the fire panel checked every day?</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-checkbox displayblock">
-													<input type="checkbox" class="custom-control-input"
-														id="choiceckbox1"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choiceckbox1">Choice 1</label>
-												</div>
-											</div>
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-checkbox displayblock">
-													<input type="checkbox" class="custom-control-input"
-														id="choiceckbox2"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choiceckbox2">Choice 2</label>
-												</div>
-											</div>
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-checkbox displayblock">
-													<input type="checkbox" class="custom-control-input"
-														id="choiceckbox3"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choiceckbox3">Choice 3</label>
-												</div>
-											</div>
-											<div
-												class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
-												<div class="custom-control custom-checkbox displayblock">
-													<input type="checkbox" class="custom-control-input"
-														id="choiceckbox4"> <label
-														class="custom-control-label font-weight-300 m-t-5"
-														for="choiceckbox4">Choice 4</label>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card mb-2 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 3</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0">
-										<p class="font-weight-700 mb-1 text-justify">
-											<span class="text-danger">*</span> Fire Department Access
-										</p>
-										<p class="mb-1 text-justify">Is all fire department access
-											for the building(s) and fire protection equipment maintained
-											and kept free of obstructions? This includes, but is not
-											limited to streets, yards, roadways, sprinkler or standpipe
-											connections, caps and access panels.</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-												<input type="text" class="form-control"
-													placeholder="Enter Your Answer">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card mb-2 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 4</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0">
-										<p class="font-weight-700 mb-1 text-justify">
-											<span class="text-danger">*</span> Portable Extinguishers
-										</p>
-										<p class="mb-1 text-justify">Are all portable fire
-											extinguishers visually inspected every month?At minimum, the
-											following list of items should be inspected:- extinguisher in
-											proper location and mounted.- no obstructions to access or
-											visibility.- fullness by pressure gauge reading (in operable
-											range) and/or by hefting. - physical damage.- operating
-											instructions visible.- safety seals and pull-ring in
-											place.The fire extinguisher's tags, checklist or fire log
-											book/records must be initialed and dated after each
-											inspection.</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-												<textarea class="form-control textareasize"
-													placeholder="Enter Your Answer"></textarea>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card mb-2 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 5</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0">
-										<p class="font-weight-700 mb-1 text-justify">Water-Based
-											Fire Protection Systems</p>
-										<p class="mb-1 text-justify">Are all supervisory signal
-											services tested every six months for the items below?- valve
-											supervisory switches- tank water level devices- building and
-											tank water temperature supervisory devices- any other
-											sprinkler system supervisory devices.</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-												<select class="selectpicker"
-													data-style="lineheight12 bg-transfer"
-													data-live-search="true">
-													<option value="" selected="selected">Select</option>
-													<option value="1">Choice 1</option>
-													<option value="2">Choice 2</option>
-													<option value="3">Choice 3</option>
-													<option value="4">Choice 4</option>
-													<option value="4">Choice 5</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card mb-2 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 6</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0">
-										<p class="font-weight-700 mb-1 text-justify">Safety to
-											Life</p>
-										<p class="mb-1 text-justify">Is the status of the trouble
-											signal indicators on the fire panel checked every day?</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-												<select class="selectpicker" multiple
-													data-selected-text-format="count"
-													data-style="btn-light bg-transfer" data-actions-box="true">
-													<option value="1">Choice 1</option>
-													<option value="2">Choice 2</option>
-													<option value="3">Choice 3</option>
-													<option value="4">Choice 4</option>
-													<option value="4">Choice 5</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card mb-0 queshadow">
-						<div class="card-body">
-							<div class="row pl-2 pr-2">
-								<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
-									<span class="question">Q : 7</span>
-								</div>
-
-								<div
-									class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
-									<div class="form-group mb-0">
-										<p class="font-weight-700 mb-1 text-justify">Fire Access</p>
-										<p class="mb-1 text-justify">Is all fire department access
-											for the building(s) and fire protection equipment maintained
-											and kept free of obstructions? This includes, but is not
-											limited to streets, yards, roadways, sprinkler or standpipe
-											connections, caps and access panels.</p>
-									</div>
-
-									<div class="form-group mb-0">
-										<div class="row pl-2 pr-2">
-											<div
-												class="col-xl-3 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-												<div class="input-group date">
-													<input type="text" class="form-control"
-														placeholder="dd/mm/yyyy" id="allpreview_date"> <span
-														class="input-group-addon inputgroups"> <i
-														class="mdi mdi-calendar"></i>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
 				</div>
 
 				<div class="modal-footer bg-white">
@@ -1170,7 +855,9 @@
 		src="assets/custom/plugins/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
 
 	<script src="assets/custom/js/commonmodal.js"></script>
-	<script>var id = ${id}</script>
+	<script>
+		var id = "${id}"
+	</script>
 	<script>
 		$(function() {
 			$("#sortable").sortable();

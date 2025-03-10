@@ -32,6 +32,11 @@ const cancelBtnFullForm = document.getElementById("cancelBtnFullForm");
 const hiddenId = document.getElementById("hiddenId");
 let activeChk = 0;
 const textDes = document.getElementById("textDes");
+
+/*ID's selection for preview question*/
+const previewFtitle = document.getElementById("previewFtitle");
+const previewFDes = document.getElementById("previewFDes");
+const previewQueBody = $("#all_question_preview .modal-body");
 //Below object for only available data for only question form
 let queData;
 //Below object for only available data for full create form
@@ -486,8 +491,9 @@ $('.deleteFormBtn').on('click', function() {
 		});
 	}
 });
-$('.editFormBtn').on('click', function() {
+$(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 	const uid = $(this).data('id');
+	let isEdit = $(this).hasClass("editFormBtn");
 	$.ajax({
 		url: `/fetchFData/${uid}`,
 		method: 'POST',
@@ -497,52 +503,54 @@ $('.editFormBtn').on('click', function() {
 		},
 		success: function(response) {
 			console.log(response);
-			if (response.length > 0) {
-				let formData = response[0];
-				hiddenId.value = formData.fid;
-				formId.value = "FORM-" + formData.fid;
-				titleTxt.value = formData.titletxt;
-				aliasNameTxt.value = formData.aliasname;
-				setTimeout(() => {
-					$('#moduleDropdown').val(formData.module).trigger('change');
-					$('#recurranceDropdown').val(formData.recurrence).trigger('change');
-					$('#monthDropdown').val(formData.startmonth).trigger('change');
-					$('.selectpicker').selectpicker('refresh');
-					charDropdown(moduleDropdown.options[moduleDropdown.selectedIndex]?.text || "");
+			/*Fetch data for form*/
+			if (isEdit) {
+				if (response.length > 0) {
+					let formData = response[0];
+					hiddenId.value = formData.fid;
+					formId.value = "FORM-" + formData.fid;
+					titleTxt.value = formData.titletxt;
+					aliasNameTxt.value = formData.aliasname;
 					setTimeout(() => {
-						for (let option of characteristicDropdown.options) {
-							if (option.value == formData.characteristic) {
-								option.selected = true;
-								$('.selectpicker').selectpicker('refresh');
-								break;
-							}
-						}
-						subCharDropdown(characteristicDropdown.options[characteristicDropdown.selectedIndex]?.text || "")
+						$('#moduleDropdown').val(formData.module).trigger('change');
+						$('#recurranceDropdown').val(formData.recurrence).trigger('change');
+						$('#monthDropdown').val(formData.startmonth).trigger('change');
+						$('.selectpicker').selectpicker('refresh');
+						charDropdown(moduleDropdown.options[moduleDropdown.selectedIndex]?.text || "");
 						setTimeout(() => {
-							for (let option of subcharacteristicDropdown.options) {
-								if (option.value == formData.subcharacteristic) {
+							for (let option of characteristicDropdown.options) {
+								if (option.value == formData.characteristic) {
 									option.selected = true;
 									$('.selectpicker').selectpicker('refresh');
 									break;
 								}
 							}
+							subCharDropdown(characteristicDropdown.options[characteristicDropdown.selectedIndex]?.text || "")
+							setTimeout(() => {
+								for (let option of subcharacteristicDropdown.options) {
+									if (option.value == formData.subcharacteristic) {
+										option.selected = true;
+										$('.selectpicker').selectpicker('refresh');
+										break;
+									}
+								}
+							}, 300);
 						}, 300);
-					}, 300);
-				}, 200);
-				comPeriod.value = formData.complianceperiod;
-				date_from.value = formData.effectivedate;
-				if (formData.active == 1) {
-					active.checked = true;
-				} else {
-					active.checked = false;
-				}
-				textDes.value = formData.textdes;
-				if ($("#formquestion_datatable tbody tr").length > 0) {
-					$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
-				}
-				formData.queData.forEach((que, index) => {
-					let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
-					let row = `<tr data-quedata='${JSON.stringify(queWithLabel)}'>
+					}, 200);
+					comPeriod.value = formData.complianceperiod;
+					date_from.value = formData.effectivedate;
+					if (formData.active == 1) {
+						active.checked = true;
+					} else {
+						active.checked = false;
+					}
+					textDes.value = formData.textdes;
+					if ($("#formquestion_datatable tbody tr").length > 0) {
+						$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
+					}
+					formData.queData.forEach((que, index) => {
+						let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
+						let row = `<tr data-quedata='${JSON.stringify(queWithLabel)}'>
 									<td>${queWithLabel.quelabel}</td>
 									<td>${que.queName}</td>
 									<td>${que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" : que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" : que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date"}</td>
@@ -559,8 +567,279 @@ $('.editFormBtn').on('click', function() {
 											data-original-title="Delete"><i
 												class="fa fa-trash"></i></a></span></td>
 										</tr>`;
-					queTableTbody.append(row);
-				});
+						queTableTbody.append(row);
+					});
+				}
+			}
+			/*Fetch data preview form questions*/
+			else {
+				if (response.length > 0) {
+					let formData = response[0];
+					previewFtitle.innerHTML = formData.titletxt;
+					previewFDes.innerHTML = formData.textdes;
+					if ($("#all_question_preview .modal-body div").length > 0) {
+						$("#all_question_preview .modal-body div.card").remove();
+					}
+					formData.queData.forEach((que, index) => {
+						let queWithLabel = { ...que, quelabel: `Q : ${index + 1}` };
+						if (que.queType == 1) {
+							let row = `
+								<div class="card mb-2 queshadow">
+										<div class="card-body">
+											<div class="row pl-2 pr-2">
+												<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+													<span class="question">${queWithLabel.quelabel}</span>
+												</div>
+												<div
+													class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+													<div class="form-group mb-0 text-justify">
+														<p class="font-weight-700 mb-1 text-justify">
+															<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span>${que.queName}
+														</p>
+														<p class="mb-1">${que.queDes}</p>
+													</div>
+													<div class="form-group mb-0">
+													    <div class="row pl-2 pr-2">
+													        ${que.questions && que.questions.length > 0
+									? que.questions.map((choice, index) => `
+													                <div class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
+													                    <div class="custom-control custom-radio">
+													                        <input type="radio" id="choice${index}" name="choicetwo" class="custom-control-input">
+													                        <label class="custom-control-label font-weight-300 m-t-5" for="choice${index}">
+													                            ${choice}
+													                        </label>
+													                    </div>
+													                </div>
+													            `).join('')
+									: ''
+								}
+													    </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								`;
+							previewQueBody.append(row);
+						} else if (que.queType == 2) {
+							let row = `	<div class="card mb-2 queshadow">
+									<div class="card-body">
+										<div class="row pl-2 pr-2">
+											<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+												<span class="question">${queWithLabel.quelabel}</span>
+											</div>
+
+											<div
+												class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+												<div class="form-group mb-0">
+													<p class="font-weight-700 mb-1 text-justify">
+														<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span> ${que.queName}
+													</p>
+													<p class="mb-1 text-justify">${que.queDes}</p>
+												</div>
+
+												<div class="form-group mb-0">
+													<div class="row pl-2 pr-2">
+													${que.questions && que.questions.length > 0
+									? que.questions.map((choice, index) => `
+														<div
+															class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
+															<div class="custom-control custom-checkbox displayblock">
+																<input type="checkbox" class="custom-control-input"
+																	id="choiceckbox${index}"> <label
+																	class="custom-control-label font-weight-300 m-t-5"
+																	for="choiceckbox${index}">${choice}</label>
+															</div>
+														</div>
+														`).join('')
+									: ''
+								}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>`;
+							previewQueBody.append(row);
+						} else if (que.queType == 3) {
+							let row = `<div class="card mb-2 queshadow">
+												<div class="card-body">
+													<div class="row pl-2 pr-2">
+														<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+															<span class="question">${queWithLabel.quelabel}</span>
+														</div>
+
+														<div
+															class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+															<div class="form-group mb-0">
+																<p class="font-weight-700 mb-1 text-justify">
+																	<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span>${que.queName}
+																</p>
+																<p class="mb-1 text-justify">${que.queDes}</p>
+															</div>
+															<div class="form-group mb-0">
+																<div class="row pl-2 pr-2">
+																	<div
+																		class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+																		<input type="text" class="form-control"
+																			placeholder="Enter Your Answer">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>`;
+							previewQueBody.append(row);
+						} else if (que.queType == 4) {
+							let row = `<div class="card mb-2 queshadow">
+										<div class="card-body">
+											<div class="row pl-2 pr-2">
+												<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+													<span class="question">${queWithLabel.quelabel}</span>
+												</div>
+
+												<div
+													class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+													<div class="form-group mb-0">
+														<p class="font-weight-700 mb-1 text-justify">
+															<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span> ${que.queName}
+														</p>
+														<p class="mb-1 text-justify">${que.queDes}</p>
+													</div>
+
+													<div class="form-group mb-0">
+														<div class="row pl-2 pr-2">
+															<div
+																class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+																<textarea class="form-control textareasize"
+																	placeholder="Enter Your Answer"></textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>`;
+							previewQueBody.append(row);
+						} else if (que.queType == 5) {
+							let row = `<div class="card mb-2 queshadow">
+										<div class="card-body">
+											<div class="row pl-2 pr-2">
+												<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+													<span class="question">${queWithLabel.quelabel}</span>
+												</div>
+
+												<div
+													class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+													<div class="form-group mb-0">
+														<p class="font-weight-700 mb-1 text-justify">
+														<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span> ${que.queName}
+														</p>
+														<p class="mb-1 text-justify">${que.queDes}</p>
+													</div>
+
+													<div class="form-group mb-0">
+														<div class="row pl-2 pr-2">
+															<div
+																class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+																<select class="selectpicker"
+																	data-style="lineheight12 bg-transfer"
+																	data-live-search="true">
+																	<option value="0" selected="selected">Select</option>
+																	${que.questions && que.questions.length > 0
+									? que.questions.map((choice, index) => `
+																	<option value="${index}">${choice}</option>
+																	`).join('')
+									: ''
+								}
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>`;
+							previewQueBody.append(row);
+						} else if (que.queType == 6) {
+							let row = `<div class="card mb-2 queshadow">
+										<div class="card-body">
+											<div class="row pl-2 pr-2">
+												<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+													<span class="question">${queWithLabel.quelabel}</span>
+												</div>
+
+												<div
+													class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+													<div class="form-group mb-0">
+														<p class="font-weight-700 mb-1 text-justify">
+														<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span> ${que.queName}</p>
+														<p class="mb-1 text-justify">${que.queDes}</p>
+													</div>
+
+													<div class="form-group mb-0">
+														<div class="row pl-2 pr-2">
+															<div
+																class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+																<select class="selectpicker" multiple
+																	data-selected-text-format="count"
+																	data-style="btn-light bg-transfer" data-actions-box="true">
+																	<option value="0" selected="selected">Select</option>
+																	${que.questions && que.questions.length > 0
+															? que.questions.map((choice, index) => `	
+																	<option value="${index}">${choice}</option>
+															`).join('')
+															: ''
+																}
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>`;
+							previewQueBody.append(row);
+						} else if (que.queType == 7) {
+							let row = `<div class="card mb-0 queshadow">
+										<div class="card-body">
+											<div class="row pl-2 pr-2">
+												<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
+													<span class="question">${queWithLabel.quelabel}</span>
+												</div>
+
+												<div
+													class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
+													<div class="form-group mb-0">
+														<p class="font-weight-700 mb-1 text-justify">
+														<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span> ${que.queName}
+														</p>
+														<p class="mb-1 text-justify">${que.queDes}</p>
+													</div>
+
+													<div class="form-group mb-0">
+														<div class="row pl-2 pr-2">
+															<div
+																class="col-xl-3 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+																<div class="input-group date">
+																	<input type="text" class="form-control"
+																		placeholder="dd/mm/yyyy" id="allpreview_date"> <span
+																		class="input-group-addon inputgroups"> <i
+																		class="mdi mdi-calendar"></i>
+																	</span>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>`;
+							previewQueBody.append(row);
+						}
+					});
+				}
 			}
 		},
 		error: function(response) {
@@ -580,7 +859,6 @@ $(document).on('click', '.queTableDeleteBtn', function() {
 	alert("Cliked que table delete button");
 });
 $(document).on('click', '.queTableEditBtn', function() {
-
 	let row = $(this).closest("tr");
 	let queEditData = JSON.parse(row.attr("data-quedata"));
 	console.log(queEditData);
