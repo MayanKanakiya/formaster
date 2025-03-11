@@ -15,6 +15,8 @@ const validatans = document.getElementById("validatans");
 const singlechoicediv = document.getElementById("singlechoicediv");
 const multichoicediv = document.getElementById("multichoicediv");
 const singleSelectDiv = document.getElementById("singleSelectDiv");
+const multiSelectDiv = document.getElementById("multiSelectDiv");
+const datePicker = document.getElementById("datePicker");
 const answerTypeFormat = document.getElementById("answerTypeFormat");
 const saveBtnQueTable = document.getElementById("saveBtnQueTable");
 const saveQueInDBTable = document.getElementById("saveQueInDBTable");
@@ -39,9 +41,9 @@ const previewFDes = document.getElementById("previewFDes");
 const previewQueBody = $("#all_question_preview .modal-body");
 //Below object for only available data for only question form
 let queData;
+let editingRow = null;
 //Below object for only available data for full create form
 let formData;
-let questionCounter = 1;
 let queDataArray = [];
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
@@ -235,7 +237,23 @@ saveBtnQueTable.addEventListener("click", () => {
 	if ($("#formquestion_datatable tbody tr").length > 0) {
 		$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 	}
-	let newRow = `	<tr data-quedata='${JSON.stringify(queData)}'>
+	if (editingRow) {
+		editingRow.attr("data-quedata", JSON.stringify(queData));
+		editingRow.find("td:eq(0)").text(queData.quelabel);
+		editingRow.find("td:eq(1)").text(queData.queName);
+		editingRow.find("td:eq(2)").text(
+			queData.queType == 1 ? "Single Choice" :
+				queData.queType == 2 ? "Multi Choice" :
+					queData.queType == 3 ? "Single Textbox" :
+						queData.queType == 4 ? "Multiline Textbox" :
+							queData.queType == 5 ? "Single select dropdown" :
+								queData.queType == 6 ? "Multi select dropdown" : "Date"
+		);
+		editingRow.find("td:eq(3)").text(queData.quereq == 1 ? "Yes" : "No");
+
+		editingRow = null;
+	} else {
+		let newRow = `	<tr data-quedata='${JSON.stringify(queData)}'>
 					<td>${queData.quelabel}</td>
 					<td>${queData.queName}</td>
 					<td>${queData.queType == 1 ? "Single Choice" : queData.queType == 2 ? "Multi Choice" : queData.queType == 3 ? "Single Textbox" : queData.queType == 4 ? "Multiline Textbox" : queData.queType == 5 ? "Single select dropdown" : queData.queType == 6 ? "Multi select dropdown" : "Date"}</td>
@@ -253,11 +271,11 @@ saveBtnQueTable.addEventListener("click", () => {
 								class="fa fa-trash"></i></a></span></td>
 						</tr>`;
 
-	queTableTbody.append(newRow);
+		queTableTbody.append(newRow);
+	}
 	queDataArray.push(queData)
 	$('.modal').modal('hide');
 	clearInputFiledQueModal();
-	questionCounter++;
 	/*console.log(queData);*/
 });
 queName.addEventListener("input", () => {
@@ -272,7 +290,14 @@ queDes.addEventListener("input", () => {
 });
 /*This below code automcatically add question number when click add buttton*/
 function getNextQuestionNumber() {
-	return "Q" + questionCounter;
+	let lastQuestionNumber = 0;
+
+	let lastRow = $("#formquestion_datatable tr:last td:first").text().trim();
+
+	if (lastRow.startsWith("Q")) {
+		lastQuestionNumber = parseInt(lastRow.substring(1)) || 0;
+	}
+	return "Q" + (lastQuestionNumber + 1);
 }
 $(".addformquestion").on("show.bs.modal", function() {
 	let nextQuestion = getNextQuestionNumber();
@@ -301,6 +326,10 @@ function clearInputFiledQueModal() {
 		});
 	} else if (queAnswerType.value == "5") {
 		singleSelectDiv.style.display = "none";
+	} else if (queAnswerType.value == "6") {
+		multiSelectDiv.style.display = "none";
+	} else if (queAnswerType.value == "7") {
+
 	}
 	queAnswerType.value = "";
 	$('.selectpicker').selectpicker('refresh');
@@ -319,8 +348,8 @@ saveQueInDBTable.addEventListener("click", () => {
 		titleTxt.value = '';
 		return;
 	}
-	if (titleTxt.value.trim().length < 15) {
-		alert("Title text not more than 15 characters");
+	if (titleTxt.value.trim().length < 10) {
+		alert("Title text not more than 10 characters");
 		return;
 	}
 	if (aliasNameTxt.value.trim().length == 0) {
@@ -333,7 +362,7 @@ saveQueInDBTable.addEventListener("click", () => {
 		return;
 	}
 	if (aliasNameTxt.value.trim().length < 5) {
-		alert("Alias name not more than 5 characters");
+		alert("Alias name not more than 5 characters");	
 		return;
 	}
 	if (moduleDropdown.value === "0") {
@@ -396,7 +425,11 @@ saveQueInDBTable.addEventListener("click", () => {
 		$("#formquestion_datatable tbody tr.odd").nextAll("tr").length == 0) {
 		alert("Please enter at least one question");
 	} else {
+		queDataArray.forEach(obj => {
+			delete obj.quelabel;
+		});
 		formData = {
+			fid: hiddenId.value,
 			titletxt: titleTxt.value,
 			aliasname: aliasNameTxt.value,
 			module: moduleDropdown.value,
@@ -412,41 +445,39 @@ saveQueInDBTable.addEventListener("click", () => {
 		};
 		console.log(formData);
 		clearInputFiledCreateForm()
-		if (hiddenId.value.trim().length == 0) {
-			$.ajax({
-				url: "/saveForm",
-				method: 'POST',
-				data: JSON.stringify(formData),
-				contentType: "application/json",
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader(header, token);
-				},
-				success: function(response) {
-					console.log(response)
-					alert("Form is save in our database");
-				},
-				error: function(response) {
-					if (response.status === 400) {
-						const errorResponse = JSON.parse(response.responseText);
-						alert(errorResponse.message);
-					} else if (response.status === 500) {
-						alert("Server error occurred while saving create form.");
-					}
+		const url = hiddenId.value.trim().length == 0 ? "/saveForm" : "/updateForm";
+		$.ajax({
+			url: url,
+			method: 'POST',
+			data: JSON.stringify(formData),
+			contentType: "application/json",
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(response) {
+				console.log(response)
+				alert(response.message);
+				window.location.href="/master-form";
+			},
+			error: function(response) {
+				if (response.status === 400) {
+					const errorResponse = JSON.parse(response.responseText);
+					alert(errorResponse.message);
+				} else if (response.status === 500) {
+					alert("Server error occurred while saving create form.");
 				}
-			});
-		} else {
-
-		}
+			}
+		});
 	}
 });
 titleTxt.addEventListener("input", () => {
-	if (titleTxt.value.trim().length > 25) {
-		titleTxt.value = titleTxt.value.slice(0, 25);
+	if (titleTxt.value.trim().length > 15) {
+		titleTxt.value = titleTxt.value.slice(0, 15);
 	}
 });
 aliasNameTxt.addEventListener("input", () => {
 	if (aliasNameTxt.value.trim().length > 10) {
-		aliasNameTxt.value = aliasNameTxt.value.slice(0, 25)
+		aliasNameTxt.value = aliasNameTxt.value.slice(0, 10)
 	}
 })
 date_from.addEventListener('input', () => {
@@ -723,7 +754,7 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 									</div>`;
 							previewQueBody.append(row);
 						} else if (que.queType == 5) {
-							let row = `<div class="card mb-2 queshadow">
+							let row = `<div class="card mb-2 queshadow">	
 										<div class="card-body">
 											<div class="row pl-2 pr-2">
 												<div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
@@ -738,30 +769,28 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 														</p>
 														<p class="mb-1 text-justify">${que.queDes}</p>
 													</div>
-
 													<div class="form-group mb-0">
-														<div class="row pl-2 pr-2">
-															<div
-																class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-																<select class="selectpicker"
-																	data-style="lineheight12 bg-transfer"
-																	data-live-search="true">
-																	<option value="0" selected="selected">Select</option>
-																	${que.questions && que.questions.length > 0
+													    <div class="row pl-2 pr-2">
+													        <div class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+															<select class="selectpicker" data-style="lineheight12 bg-transfer"
+				                                                data-live-search="true">
+				                                                <option value="" selected="selected">Select</option>
+																${que.questions && que.questions.length > 0
 									? que.questions.map((choice, index) => `
-																	<option value="${index}">${choice}</option>
-																	`).join('')
+										                        <option value="${index}">${choice}</option>
+										                    `).join('')
 									: ''
 								}
-																</select>
-															</div>
-														</div>
+				                                            </select>
+													        </div>
+													    </div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>`;
 							previewQueBody.append(row);
+							$('.selectpicker').selectpicker('refresh');
 						} else if (que.queType == 6) {
 							let row = `<div class="card mb-2 queshadow">
 										<div class="card-body">
@@ -777,30 +806,31 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 														<span class="text-danger">${que.quereq == 1 ? "*" : ""}</span> ${que.queName}</p>
 														<p class="mb-1 text-justify">${que.queDes}</p>
 													</div>
-
 													<div class="form-group mb-0">
-														<div class="row pl-2 pr-2">
-															<div
-																class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
-																<select class="selectpicker" multiple
-																	data-selected-text-format="count"
-																	data-style="btn-light bg-transfer" data-actions-box="true">
-																	<option value="0" selected="selected">Select</option>
-																	${que.questions && que.questions.length > 0
-															? que.questions.map((choice, index) => `	
-																	<option value="${index}">${choice}</option>
-															`).join('')
-															: ''
-																}
-																</select>
-															</div>
-														</div>
+													    <div class="row pl-2 pr-2">
+													        <div class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+													            <select class="selectpicker" multiple
+													                data-selected-text-format="count"
+													                data-style="btn-light bg-transfer"
+													                data-actions-box="true">
+													                <option value="0" selected="selected">Select</option>
+													                ${que.questions && que.questions.length > 0
+									? que.questions.map((choice, index) => `
+													                        <option value="${index}">${choice}</option>
+													                    `).join('')
+									: ''
+								}
+													            </select>
+													        </div>
+													    </div>
 													</div>
+
 												</div>
 											</div>
 										</div>
 									</div>`;
 							previewQueBody.append(row);
+							$('.selectpicker').selectpicker('refresh');
 						} else if (que.queType == 7) {
 							let row = `<div class="card mb-0 queshadow">
 										<div class="card-body">
@@ -856,11 +886,20 @@ $(document).on("hide.bs.modal", ".addformquestion", function() {
 	clearInputFiledQueModal();
 });
 $(document).on('click', '.queTableDeleteBtn', function() {
-	alert("Cliked que table delete button");
+	$(this).closest("tr").remove();
+
+	$("#formquestion_datatable tbody tr").each(function(index) {
+		let queData = JSON.parse($(this).attr("data-quedata"));
+
+		queData.quelabel = `Q${index + 1}`;
+
+		$(this).attr("data-quedata", JSON.stringify(queData));
+		$(this).find("td:first").text(`Q${index + 1}`);
+	});
 });
 $(document).on('click', '.queTableEditBtn', function() {
-	let row = $(this).closest("tr");
-	let queEditData = JSON.parse(row.attr("data-quedata"));
+	editingRow = $(this).closest("tr");
+	let queEditData = JSON.parse(editingRow.attr("data-quedata"));
 	console.log(queEditData);
 
 	setTimeout(() => {
@@ -1044,9 +1083,9 @@ function clearInputFiledCreateForm() {
 	aliasNameTxt.value = '';
 	moduleDropdown.value = "0";
 	$('.selectpicker').selectpicker('refresh');
-	characteristicDropdown.value = "0";
+	characteristicDropdown.innerHTML = "";
 	$('.selectpicker').selectpicker('refresh');
-	subcharacteristicDropdown.value = "0";
+	subcharacteristicDropdown.innerHTML = "";
 	$('.selectpicker').selectpicker('refresh');
 	recurranceDropdown.value = "0";
 	$('.selectpicker').selectpicker('refresh');
@@ -1059,5 +1098,4 @@ function clearInputFiledCreateForm() {
 	if ($("#formquestion_datatable tbody").length > 0) {
 		$("#formquestion_datatable tbody").append("<tr><td valign='top' colspan='5' class='dataTables_empty'>No data available in table</td></tr>");
 	}
-	questionCounter = 1;
 }

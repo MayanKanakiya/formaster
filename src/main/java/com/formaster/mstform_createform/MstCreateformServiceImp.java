@@ -81,7 +81,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 			}).collect(Collectors.toList());
 
 			queRepository.saveAll(questions);
-			dto.addMessage("200", "Save form data");
+			dto.addMessage("200", "Form is save in our database");
 			return dto;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -93,15 +93,77 @@ public class MstCreateformServiceImp implements MstCreateformService {
 	@Override
 	public MstCreateformDTO deleteFormData(MstCreateformDTO dto, int id) {
 		try {
-			int createdby = (int) session.getAttribute("currentLogin");
-			if (createformRepository.deleteFData(id, createdby, new Timestamp(System.currentTimeMillis())) > 0) {
-				createformRepository.deleteQData(id, createdby, new Timestamp(System.currentTimeMillis()));
-				dto.addMessage("200", "Form data deleted successfully!!");
-				return dto;
-			} else {
-				dto.addMessage("400", "Error while deleting form data");
+			MstCreateformEntity formEntity = createformRepository.findById(id).orElse(null);
+			if (formEntity == null) {
+				dto.addMessage("404", "Form data not found!");
 				return dto;
 			}
+			int createdby = (int) session.getAttribute("currentLogin");
+
+			formEntity.setIsdelete(1);
+			formEntity.setModifyby(createdby);
+			formEntity.setModifyon(new Timestamp(System.currentTimeMillis()));
+			createformRepository.save(formEntity);
+
+			if (createformRepository.deleteQData(id, createdby, new Timestamp(System.currentTimeMillis())) < 0) {
+				dto.addMessage("404", "Error while deleting question data!");
+				return dto;
+			}
+			dto.addMessage("200", "Form data deleted successfully!!");
+			return dto;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			dto.addMessage("500", "Internal server error while checking duplication email");
+			return dto;
+		}
+	}
+
+	@Override
+	public MstCreateformDTO updateFormData(MstCreateformDTO dto, int id) {
+		try {
+			MstCreateformEntity formEntity = createformRepository.findById(id).orElse(null);
+			if (formEntity == null) {
+				dto.addMessage("404", "Form data not found!");
+				return dto;
+			}
+			int createdby = (int) session.getAttribute("currentLogin");
+			formEntity.setTitletxt(dto.getTitletxt());
+			formEntity.setAliasname(dto.getAliasname());
+			formEntity.setModule(dto.getModule());
+			formEntity.setCharacteristic(dto.getCharacteristic());
+			formEntity.setSubcharacteristic(dto.getSubcharacteristic());
+			formEntity.setRecurrence(dto.getRecurrence());
+			formEntity.setStartmonth(dto.getStartmonth());
+			formEntity.setComplianceperiod(dto.getComplianceperiod());
+			formEntity.setEffectivedate(dto.getEffectivedate());
+			formEntity.setTextdes(dto.getTextdes());
+			formEntity.setActive(dto.getActive());
+			formEntity.setModifyby(createdby);
+			formEntity.setModifyon(new Timestamp(System.currentTimeMillis()));
+			createformRepository.save(formEntity);
+			createformRepository.deleteQData(id, createdby, new Timestamp(System.currentTimeMillis()));
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<QueformEntity> questions = dto.getQueData().stream().map(qDto -> {
+				QueformEntity qData = new QueformEntity();
+				qData.setFid(id);
+				qData.setQueName(qDto.getQueName());
+				qData.setQueDes(qDto.getQueDes());
+				qData.setQueType(qDto.getQueType());
+				qData.setQuereq(qDto.getQuereq());
+				qData.setCreatedby(createdby);
+
+				try {
+					// Convert List<String> to JSON string
+					qData.setQuestions(objectMapper.writeValueAsString(qDto.getQuestions()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				return qData;
+			}).collect(Collectors.toList());
+			queRepository.saveAll(questions);
+			dto.addMessage("200", "Form data updated successfully!!");
+			return dto;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			dto.addMessage("500", "Internal server error while checking duplication email");

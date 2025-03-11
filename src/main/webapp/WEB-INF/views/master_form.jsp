@@ -709,7 +709,7 @@
 
 									<div
 										class="col-xl-6 col-lg-6 col-sm-7 colmspadding hidedatevalidation"
-										style="display: none;">
+										style="display: none;" id="datePicker">
 										<div class="form-group mb-0 row pl-2 pr-2">
 											<label class="mt-1 mb-0 col-md-3 colmspadding">Date
 												Format :</label>

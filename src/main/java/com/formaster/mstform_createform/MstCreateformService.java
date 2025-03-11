@@ -8,5 +8,7 @@ public interface MstCreateformService {
 
 	public MstCreateformDTO deleteFormData(MstCreateformDTO formDTO, int id);
 
+	public MstCreateformDTO updateFormData(MstCreateformDTO createformDTO, int id);
+
 	public List<MstCreateformDTO> fetchFormDataById(int id);
 }

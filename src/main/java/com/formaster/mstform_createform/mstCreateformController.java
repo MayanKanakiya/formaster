@@ -38,6 +38,26 @@ public class mstCreateformController {
 		}
 	}
 
+	@PostMapping("/updateForm")
+	public ResponseEntity<?> updateForm(@RequestBody MstCreateformDTO dto) {
+		try {
+			MstCreateformDTO ServiceResponseFormDTO = formService.updateFormData(dto, dto.getFid());
+			if (ServiceResponseFormDTO.getMessage().containsKey("200")) {
+				return ResponseEntity.ok(Map.of("message", ServiceResponseFormDTO.getMessage().get("200")));
+			} else if (ServiceResponseFormDTO.getMessage().containsKey("400")) {
+				return ResponseEntity.badRequest()
+						.body(Map.of("message", ServiceResponseFormDTO.getMessage().get("400")));
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(Map.of("message", ServiceResponseFormDTO.getMessage().get("500")));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("message", "Internal server error controller side: " + e.getMessage()));
+		}
+	}
+
 	@DeleteMapping("/deletefdata/{id}")
 	public ResponseEntity<?> deleteFormData(MstCreateformDTO dto, @PathVariable("id") int id) {
 		try {
