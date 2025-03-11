@@ -31,6 +31,7 @@ const comPeriod = document.getElementById("comPeriod");
 const date_from = document.getElementById("date_from");
 const active = document.getElementById("active");
 const cancelBtnFullForm = document.getElementById("cancelBtnFullForm");
+const moveBackBtn = document.getElementById("moveBackBtn");
 const hiddenId = document.getElementById("hiddenId");
 let activeChk = 0;
 const textDes = document.getElementById("textDes");
@@ -45,6 +46,7 @@ let editingRow = null;
 //Below object for only available data for full create form
 let formData;
 let queDataArray = [];
+let allQueDataArray = [];
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
 		alert("Please enter Question name");
@@ -250,7 +252,6 @@ saveBtnQueTable.addEventListener("click", () => {
 								queData.queType == 6 ? "Multi select dropdown" : "Date"
 		);
 		editingRow.find("td:eq(3)").text(queData.quereq == 1 ? "Yes" : "No");
-
 		editingRow = null;
 	} else {
 		let newRow = `	<tr data-quedata='${JSON.stringify(queData)}'>
@@ -273,6 +274,12 @@ saveBtnQueTable.addEventListener("click", () => {
 
 		queTableTbody.append(newRow);
 	}
+	$("#formquestion_datatable tbody tr").each(function() {
+		let queData = $(this).attr("data-quedata");
+		if (queData) {
+			allQueDataArray.push(JSON.parse(queData));
+		}
+	});
 	queDataArray.push(queData)
 	$('.modal').modal('hide');
 	clearInputFiledQueModal();
@@ -362,7 +369,7 @@ saveQueInDBTable.addEventListener("click", () => {
 		return;
 	}
 	if (aliasNameTxt.value.trim().length < 5) {
-		alert("Alias name not more than 5 characters");	
+		alert("Alias name not more than 5 characters");
 		return;
 	}
 	if (moduleDropdown.value === "0") {
@@ -425,7 +432,7 @@ saveQueInDBTable.addEventListener("click", () => {
 		$("#formquestion_datatable tbody tr.odd").nextAll("tr").length == 0) {
 		alert("Please enter at least one question");
 	} else {
-		queDataArray.forEach(obj => {
+		allQueDataArray.forEach(obj => {
 			delete obj.quelabel;
 		});
 		formData = {
@@ -441,7 +448,7 @@ saveQueInDBTable.addEventListener("click", () => {
 			effectivedate: date_from.value,
 			textdes: textDes.value,
 			active: activeChk,
-			queData: queDataArray
+			queData: allQueDataArray
 		};
 		console.log(formData);
 		clearInputFiledCreateForm()
@@ -457,7 +464,7 @@ saveQueInDBTable.addEventListener("click", () => {
 			success: function(response) {
 				console.log(response)
 				alert(response.message);
-				window.location.href="/master-form";
+				window.location.href = "/master-form";
 			},
 			error: function(response) {
 				if (response.status === 400) {
@@ -1076,6 +1083,9 @@ $(document).on('click', '.queTableEditBtn', function() {
 	}
 });
 cancelBtnFullForm.addEventListener("click", () => {
+	clearInputFiledCreateForm();
+});
+moveBackBtn.addEventListener("click", () => {
 	clearInputFiledCreateForm();
 });
 function clearInputFiledCreateForm() {
