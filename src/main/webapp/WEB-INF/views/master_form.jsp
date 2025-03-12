@@ -201,7 +201,7 @@
 								<form class="form">
 									<div class="form-body mb-0">
 										<div class="row pl-3 pr-3">
-											<input type="text" id="hiddenId" class="form-control"
+											<input type="hidden" id="hiddenId" class="form-control"
 												readonly style="display:none;">
 											<div
 												class="col-xl-2 col-lg-2 col-sm-3 col-xs-12 colmspadding">

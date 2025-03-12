@@ -75,4 +75,11 @@ public class MstCreateformDTO {
 		this.active = active;
 	}
 
+	public MstCreateformDTO(int fid, String titletxt) {
+		super();
+		this.fid = fid;
+		this.titletxt = titletxt;
+	}
+	
+
 }

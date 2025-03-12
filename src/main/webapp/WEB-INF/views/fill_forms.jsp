@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.formaster.mstform_createform.MstCreateformDTO"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -125,18 +127,18 @@
 											<div class="form-group mb-0">
 												<label class="mb-1">Form Name</label> <select
 													class="selectpicker" data-style="lineheight12 bg-transfer"
-													data-live-search="true">
-													<option value="" selected="selected">Select</option>
-													<option value="1">251 Attwell Drive - Operator
-														Form - Monthly</option>
-													<option value="2">251 Attwell Drive - Operator
-														Form - Semi-Annually</option>
-													<option value="3">1 Yonge Street - Contractor Form
-														- Annual</option>
-													<option value="4">1 Yonge Street - Contractor Form
-														- Semi-Annually</option>
-													<option value="5">1 Yonge Street - Operator Form -
-														Quarterly</option>
+													data-live-search="true" id="fillFormDropdown">
+													<option value="0" selected="selected">Select</option>
+														<%
+												List<MstCreateformDTO> notSubmitedForm = (List<MstCreateformDTO>) request.getAttribute("notSubmitedFormList");
+												if (notSubmitedForm != null) {
+													for (MstCreateformDTO notSubmitedFormDTO : notSubmitedForm) {
+												%>
+													<option value="<%=notSubmitedFormDTO.getFid()%>"><%=notSubmitedFormDTO.getTitletxt()%></option>
+													<%
+												}
+												}
+												%>
 												</select>
 											</div>
 										</div>

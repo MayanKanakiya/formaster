@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.formaster.loginuser.UserDTO;
+import com.formaster.mstform.anwerform.AnswerFormRepository;
 import com.formaster.mstform_adduser.MasterFormRepository;
 import com.formaster.mstform_createform.MstCreateformDTO;
 import com.formaster.mstform_createform.MstCreateformRepository;
@@ -20,6 +21,9 @@ public class JSPagesController {
 	@Autowired
 	MstCreateformRepository createformRepository;
 
+	@Autowired
+	AnswerFormRepository answerFormRepository;
+
 	@GetMapping("/")
 	public String home() {
 		return "index";
@@ -31,8 +35,16 @@ public class JSPagesController {
 	}
 
 	@GetMapping("/fill-forms")
-	public String fillForms() {
-		return "fill_forms";
+	public String fillForms(Model model) {
+		try {
+			List<MstCreateformDTO> notSubmitedFormList = answerFormRepository.getAllFormDataById();
+			model.addAttribute("notSubmitedFormList", notSubmitedFormList);
+			return "fill_forms";
+		} catch (Exception e) {
+			System.out.println("Error while fetching not submited form data from the table" + e.getMessage());
+			return "fill_forms";
+		}
+
 	}
 
 	@GetMapping("/master-form")

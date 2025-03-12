@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaster.mstform.formsubmit.FormSubmitEntity;
+import com.formaster.mstform.formsubmit.FormSubmitRepository;
 import com.formaster.mstform.queform.QueFormRepository;
 import com.formaster.mstform.queform.QueformDTO;
 import com.formaster.mstform.queform.QueformEntity;
@@ -28,6 +30,9 @@ public class MstCreateformServiceImp implements MstCreateformService {
 
 	@Autowired
 	QueFormRepository queRepository;
+	
+	@Autowired
+	FormSubmitRepository formSubmitRepository;
 
 	@Autowired
 	private HttpSession session;
@@ -42,6 +47,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 	@Override
 	public MstCreateformDTO saveForm(MstCreateformDTO dto) {
 		try {
+			//Form table
 			int createdby = (int) session.getAttribute("currentLogin");
 			MstCreateformEntity formEntity = new MstCreateformEntity();
 			formEntity.setTitletxt(dto.getTitletxt());
@@ -58,6 +64,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 			formEntity.setCreatedby(createdby);
 			createformRepository.save(formEntity);
 
+			//Question table
 			Integer id = createformRepository.formId();
 			ObjectMapper objectMapper = new ObjectMapper();
 
@@ -79,8 +86,13 @@ public class MstCreateformServiceImp implements MstCreateformService {
 
 				return qData;
 			}).collect(Collectors.toList());
-
 			queRepository.saveAll(questions);
+			
+			//Form Submit 
+			FormSubmitEntity fSubmitEntity = new FormSubmitEntity();
+			fSubmitEntity.setFid(id);
+			fSubmitEntity.setSubmitedby(createdby);
+			formSubmitRepository.save(fSubmitEntity);
 			dto.addMessage("200", "Form is save in our database");
 			return dto;
 		} catch (Exception e) {
@@ -158,7 +170,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				return qData;
 			}).collect(Collectors.toList());
 			queRepository.saveAll(questions);
