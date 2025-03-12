@@ -45,7 +45,6 @@ let queData;
 let editingRow = null;
 //Below object for only available data for full create form
 let formData;
-let queDataArray = [];
 let allQueDataArray = [];
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
@@ -274,13 +273,12 @@ saveBtnQueTable.addEventListener("click", () => {
 
 		queTableTbody.append(newRow);
 	}
-	$("#formquestion_datatable tbody tr").each(function() {
+	allQueDataArray = [];
+	$("#formquestion_datatable tbody tr[data-quedata]").each(function() {
 		let queData = $(this).attr("data-quedata");
-		if (queData) {
-			allQueDataArray.push(JSON.parse(queData));
-		}
+		allQueDataArray.push(JSON.parse(queData));
 	});
-	queDataArray.push(queData)
+	console.log(allQueDataArray)
 	$('.modal').modal('hide');
 	clearInputFiledQueModal();
 	/*console.log(queData);*/
@@ -586,6 +584,7 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 					if ($("#formquestion_datatable tbody tr").length > 0) {
 						$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 					}
+					allQueDataArray.push(...formData.queData);
 					formData.queData.forEach((que, index) => {
 						let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
 						let row = `<tr data-quedata='${JSON.stringify(queWithLabel)}'>

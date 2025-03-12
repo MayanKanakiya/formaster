@@ -40,7 +40,7 @@
 		<script>
    		var usertype = "<%=userRole%>";
 		</script>
-			<%
+		<%
 		String fname = (String) session.getAttribute("fname");
 		%>
 		<script>
@@ -1018,7 +1018,7 @@
 			formtable.draw();
 		});
 	</script>
-
+	<script src="js/fillFormScript.js"></script>
 </body>
 
 </html>
