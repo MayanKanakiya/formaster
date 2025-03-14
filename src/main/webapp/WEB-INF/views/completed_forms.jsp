@@ -96,62 +96,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- <div class="row">
-                <div class="col-xl-12 col-lg-12 col-sm-12 colmspadding">
-                    <div id="accordion1" role="tablist" aria-multiselectable="true" class="mb-2">
-                        <div class="card collapse-icon accordion-icon-rotate">
-                            <div class="card-header" role="tab" id="headingOne1">
-                                <h5 class="mb-0 mt-0">
-                                    <a data-toggle="collapse" data-parent="#accordion1" href="#collapseOne1"
-                                        class="text-dark atag ml-4" aria-expanded="true" aria-controls="collapseOne1"
-                                        id="searchcollapse">
-                                        Search Criteria
-                                    </a>
-                                </h5>
-                            </div>
-
-                            <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1">
-                                <div class="card-body pl-3 pr-3">
-
-                                    <div class="row">
-                                        <div class="col-xl-3 col-lg-3 col-sm-6 col-xs-12 colmspadding">
-                                            <div class="form-group mb-0">
-                                                <label class="mb-1">Form Name</label>
-                                                <select class="selectpicker" data-style="lineheight12 bg-transfer"
-                                                    data-live-search="true">
-                                                    <option value="" selected="selected">Select</option>
-                                                    <option value="1">251 Attwell Drive - Operator Form - Monthly
-                                                    </option>
-                                                    <option value="2">251 Attwell Drive - Operator Form - Semi-Annually
-                                                    </option>
-                                                    <option value="3">1 Yonge Street - Contractor Form - Annual</option>
-                                                    <option value="4">1 Yonge Street - Contractor Form - Semi-Annually
-                                                    </option>
-                                                    <option value="5">1 Yonge Street - Operator Form - Quarterly
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-2 col-lg-3 col-sm-6 col-xs-12 mb-0 btntop colmspadding">
-                                            <div class="form-group mb-0">
-                                                <a class="save_form_details btn btn-success text-white btn-padding"
-                                                    id="searchbtn"><i class="fa fa-search mr-2"></i>Search</a>
-
-                                                <a
-                                                    class="show-details-table btn btn-danger text-white btn-padding ml-1"><i
-                                                        class="fa fa-refresh mr-2"></i>Reset</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-sm-12 colmspadding">
                     <div class="card">
