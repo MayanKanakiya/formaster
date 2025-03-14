@@ -917,8 +917,8 @@
 				</div>
 
 				<div class="modal-footer bg-white">
-					<a class="btn btn-success float-right btn-padding"
-						data-dismiss="modal"><i class="fa fa-times mr-2"></i>Close</a> <a
+					<a class="btn btn-danger text-white btn-padding float-right ml-1"
+						data-dismiss="modal" id="closeBtn"><i class="fa fa-times mr-2"></i>Close</a> <a
 						class="btn btn-success float-right btn-padding mr-2"
 						data-dismiss="modal"><i class="fa fa-floppy-o mr-2"></i>Save</a> <a
 						class="btn btn-success float-right btn-padding mr-2"

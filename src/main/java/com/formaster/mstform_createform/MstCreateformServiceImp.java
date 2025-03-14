@@ -21,6 +21,7 @@ import com.formaster.mstform.queform.QueformDTO;
 import com.formaster.mstform.queform.QueformEntity;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class MstCreateformServiceImp implements MstCreateformService {
@@ -30,7 +31,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 
 	@Autowired
 	QueFormRepository queRepository;
-	
+
 	@Autowired
 	FormSubmitRepository formSubmitRepository;
 
@@ -45,9 +46,10 @@ public class MstCreateformServiceImp implements MstCreateformService {
 	}
 
 	@Override
+	@Transactional
 	public MstCreateformDTO saveForm(MstCreateformDTO dto) {
 		try {
-			//Form table
+			// Form table
 			int createdby = (int) session.getAttribute("currentLogin");
 			MstCreateformEntity formEntity = new MstCreateformEntity();
 			formEntity.setTitletxt(dto.getTitletxt());
@@ -64,7 +66,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 			formEntity.setCreatedby(createdby);
 			createformRepository.save(formEntity);
 
-			//Question table
+			// Question table
 			Integer id = createformRepository.formId();
 			ObjectMapper objectMapper = new ObjectMapper();
 
@@ -87,8 +89,8 @@ public class MstCreateformServiceImp implements MstCreateformService {
 				return qData;
 			}).collect(Collectors.toList());
 			queRepository.saveAll(questions);
-			
-			//Form Submit 
+
+			// Form Submit
 			FormSubmitEntity fSubmitEntity = new FormSubmitEntity();
 			fSubmitEntity.setFid(id);
 			fSubmitEntity.setSubmitedby(createdby);
@@ -103,6 +105,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 	}
 
 	@Override
+	@Transactional
 	public MstCreateformDTO deleteFormData(MstCreateformDTO dto, int id) {
 		try {
 			MstCreateformEntity formEntity = createformRepository.findById(id).orElse(null);
@@ -131,6 +134,7 @@ public class MstCreateformServiceImp implements MstCreateformService {
 	}
 
 	@Override
+	@Transactional
 	public MstCreateformDTO updateFormData(MstCreateformDTO dto, int id) {
 		try {
 			MstCreateformEntity formEntity = createformRepository.findById(id).orElse(null);

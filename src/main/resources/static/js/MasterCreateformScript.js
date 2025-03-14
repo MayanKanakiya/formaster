@@ -914,6 +914,9 @@ $(document).on('click', '.queTableEditBtn', function() {
 	$("#queName").val(queEditData.queName);
 	$("#queDes").val(queEditData.queDes);
 	$("#singlechoicetable tbody").empty();
+	$("#multichoicetable tbody").empty();
+	$("#singleselecttable tbody").empty();
+	$("#multiSelectDiv .multiselecttable tbody").empty();
 	if (queEditData.queType == "1") {
 		$("#queAnswerType").val("1").trigger("change");
 
@@ -934,12 +937,12 @@ $(document).on('click', '.queTableEditBtn', function() {
 	                          </div>
 	                      </td>
 	                      <td class='text-center border-0 p-0' width='3%'>
-	                          <a href='javascript:void(0)' class='singlechoiceadd'>
+	                          <a href='javascript:void(0)'id='singlechoiceadd'>
 	                              <i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
 	                          </a>
 	                      </td>
 	                      <td class='text-center border-0 p-0' width='3%'>
-	                          <a href='javascript:void(0)' class='singlechoiceremove'>
+	                          <a href='javascript:void(0)' id='singlechoiceremove'>
 	                              <i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i>
 	                          </a>
 	                      </td>
@@ -976,7 +979,7 @@ $(document).on('click', '.queTableEditBtn', function() {
 				         </td>
 				     </tr>`;
 
-				$("#singlechoicetable tbody").append(choiceRow);
+				$("#multichoicetable tbody").append(choiceRow);
 			});
 		}
 	} else if (queEditData.queType == "3") {
@@ -1038,7 +1041,7 @@ $(document).on('click', '.queTableEditBtn', function() {
 					         </td>
 					     </tr>`;
 
-				$("#singlechoicetable tbody").append(choiceRow);
+				$("#singleselecttable tbody").append(choiceRow);
 			});
 		}
 	} else if (queEditData.queType == "6") {
@@ -1069,7 +1072,7 @@ $(document).on('click', '.queTableEditBtn', function() {
 				         </td>
 				     </tr>`;
 
-				$("#singlechoicetable tbody").append(choiceRow);
+				$("#multiSelectDiv .multiselecttable tbody").append(choiceRow);
 			});
 		}
 	} else if (queEditData.queType == "7") {
