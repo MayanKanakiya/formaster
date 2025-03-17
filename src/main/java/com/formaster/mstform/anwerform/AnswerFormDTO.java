@@ -14,13 +14,15 @@ public class AnswerFormDTO {
 
 	private int answerid;
 	private int quelabel;
-	private List<String> answers;
+	private String answer;
 	private int createdby;
 	private Timestamp createdon;
 	private int modifyby;
 	private Timestamp modifyon;
 	private int active;
 	private int isdelete;
+	private int fid;
+	private List<AnswerFormDTO> answersList;
 	private Map<String, String> message = new HashMap<>();
 
 	public Map<String, String> getMessage() {

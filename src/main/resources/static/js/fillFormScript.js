@@ -381,11 +381,11 @@ resetDropdown.addEventListener("click", () => {
 	clearFillForm();
 });
 $(document).on("click", "#submitBtn", function() {
-	console.log("Answer Array with values:", answerArray);
+	/*console.log("Answer Array with values:", answerArray);*/
 	let storedAnswers = [];
 
 	for (let i = 0; i < answerArray.length; i++) {
-		let obj = { quelabel: answerArray[i].quelabel, answer: "" };
+		let obj = { quelabel: answerArray[i].quelabel, answer: "", fid: fillFormDropdown.value };
 
 		if (answerArray[i].queType == "7") {
 			let dateValue = $("#date_from").val();
@@ -552,7 +552,7 @@ $(document).on("click", "#submitBtn", function() {
 	$.ajax({
 		url: "/saveAnswer",
 		method: 'POST',
-		data: JSON.stringify({ answerData: storedAnswers }),
+		data: JSON.stringify({ answersList: storedAnswers }),
 		contentType: "application/json",
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
