@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.formaster.loginuser.UserDTO;
 import com.formaster.mstform.anwerform.AnswerFormRepository;
+import com.formaster.mstform.formsubmit.FormSubmitRepository;
 import com.formaster.mstform_adduser.MasterFormRepository;
 import com.formaster.mstform_createform.MstCreateformDTO;
 import com.formaster.mstform_createform.MstCreateformRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class JSPagesController {
@@ -24,14 +27,27 @@ public class JSPagesController {
 	@Autowired
 	AnswerFormRepository answerFormRepository;
 
+	@Autowired
+	FormSubmitRepository formSubmitRepository;
+
+	@Autowired
+	private HttpSession session;
+
 	@GetMapping("/")
 	public String home() {
 		return "index";
 	}
 
 	@GetMapping("/completed-forms")
-	public String completedForms() {
-		return "completed_forms";
+	public String completedForms(Model model) {
+		try {
+			int createdby = (int) session.getAttribute("currentLogin");
+			List<Object[]> formCompletedData = formSubmitRepository.getSubmitFData(createdby);
+			model.addAttribute("formCompletedData", formCompletedData);
+			return "completed_forms";
+		} catch (Exception e) {
+			return "completed_forms";
+		}
 	}
 
 	@GetMapping("/fill-forms")

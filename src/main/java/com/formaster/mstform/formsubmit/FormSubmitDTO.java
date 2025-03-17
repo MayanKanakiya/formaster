@@ -28,5 +28,4 @@ public class FormSubmitDTO {
 	public void addMessage(String statusCode, String message) {
 		this.message.put(statusCode, message);
 	}
-
 }

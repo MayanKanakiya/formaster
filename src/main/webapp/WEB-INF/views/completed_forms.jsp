@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="java.util.List"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -117,80 +120,37 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <%! String formattedDate; %>
+								       <% 
+								           List<Object[]> formCompletedData = (List<Object[]>) request.getAttribute("formCompletedData");
+								           Date currentDate = new Date();
+								           SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+								           
+								           if (formCompletedData != null) {
+								               for (Object[] row : formCompletedData) {
+								            	   Date submittedDate = (Date) row[0];
+								                   formattedDate = formatter.format(submittedDate);
+								       %>
                                             <tr>
-                                                <td>25-07-2020</td>
-                                                <td>F0RM-01</td>
-                                                <td>251 Attwell Drive - Operator Form - Monthly</td>
-                                                <td>Eric Hartwig</td>
+                                                <td><%= formattedDate %></td>
+                                                <td>F0RM-<%= row[1] %></td>
+                                                <td><%= row[2] %></td>
+                                                <td><%= row[3] %> <%= row[4] %></td>
                                                 <td class="text-center">
                                                     <span data-toggle="modal" data-target="#all_question_preview"><a
                                                             href="javascript:void(0)" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
+                                                            data-placement="bottom" data-id="<%= row[1] %>" title=""
                                                             data-original-title="Preview"
                                                             class="text-info fa-size"><i
                                                                 class="fa fa-eye"></i></a></span>
                                                 </td>
                                             </tr>
-
-                                            <tr>
-                                                <td>19-07-2020</td>
-                                                <td>F0RM-02</td>
-                                                <td>251 Attwell Drive - Operator Form - Semi-Annually</td>
-                                                <td>Bill Rempel</td>
-                                                <td class="text-center">
-                                                    <span data-toggle="modal" data-target="#all_question_preview"><a
-                                                            href="javascript:void(0)" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Preview"
-                                                            class="text-info fa-size"><i
-                                                                class="fa fa-eye"></i></a></span>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>12-07-2020</td>
-                                                <td>F0RM-03</td>
-                                                <td>1 Yonge Street - Contractor Form - Annual</td>
-                                                <td>Amit Amin</td>
-                                                <td class="text-center">
-                                                    <span data-toggle="modal" data-target="#all_question_preview"><a
-                                                            href="javascript:void(0)" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Preview"
-                                                            class="text-info fa-size"><i
-                                                                class="fa fa-eye"></i></a></span>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>08-07-2020</td>
-                                                <td>F0RM-04</td>
-                                                <td>1 Yonge Street - Contractor Form - Semi-Annually</td>
-                                                <td>Eric Hartwig</td>
-                                                <td class="text-center">
-                                                    <span data-toggle="modal" data-target="#all_question_preview"><a
-                                                            href="javascript:void(0)" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Preview"
-                                                            class="text-info fa-size"><i
-                                                                class="fa fa-eye"></i></a></span>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>01-07-2020</td>
-                                                <td>F0RM-05</td>
-                                                <td>1 Yonge Street - Operator Form - Quarterly</td>
-                                                <td>Bill Rempel</td>
-                                                <td class="text-center">
-                                                    <span data-toggle="modal" data-target="#all_question_preview"><a
-                                                            href="javascript:void(0)" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Preview"
-                                                            class="text-info fa-size"><i
-                                                                class="fa fa-eye"></i></a></span>
-                                                </td>
-                                            </tr>
+                                            <%
+                                           }
+            } else { 
+        %>
+            <tr><td colspan="5">No data found</td></tr>
+        <% } %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -218,7 +178,7 @@
                             <div class="row pr-3 pl-3">
                                 <div class="col-xl-4 col-lg-4 col-sm-4 colmspadding">
                                     <p class="compact mb-1"><span class="font-weight-700">Completed Date</span>
-                                        <span class="displayblock font-medium-2">01-07-2020</span>
+                                        <span class="displayblock font-medium-2"><%= formattedDate %></span>
                                     </p>
                                 </div>
                             </div>
