@@ -24,4 +24,9 @@ public class FormSubmitDTO {
 	public void setMessage(Map<String, String> message) {
 		this.message = message;
 	}
+
+	public void addMessage(String statusCode, String message) {
+		this.message.put(statusCode, message);
+	}
+
 }
