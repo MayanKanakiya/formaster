@@ -48,9 +48,9 @@ function populateFormDropdown() {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred populate module names into dropdown box.");
+				showAlertFailure('Server error occurred populate module names into dropdown box.')
 			}
 		}
 	});
@@ -102,9 +102,9 @@ function charDropdown(selectedModuleName) {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred populate characteristic name into dropdown box.");
+				showAlertFailure('Server error occurred populate characteristic name into dropdown box.')
 			}
 		}
 	});
@@ -139,9 +139,9 @@ function subCharDropdown(selectedSubCharacteristicName) {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred populate subcharacteristic name into dropdown box.");
+				showAlertFailure('Server error occurred populate subcharacteristic name into dropdown box.')
 			}
 		}
 	});

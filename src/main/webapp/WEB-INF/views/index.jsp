@@ -72,6 +72,8 @@
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/popper.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="/assets/custom/plugins/jquery_toastr/jquery.toast.min.js"></script>
+	<script src="js/ToastScript.js"></script>
 	<!-- <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script> -->
 	<script
 		src="assets/custom/plugins/showpassword/hideShowPassword.min.js"></script>

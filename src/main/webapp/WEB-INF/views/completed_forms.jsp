@@ -232,6 +232,7 @@
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/waves.js"></script>
 	<script src="assets/js/jquery.slimscroll.js"></script>
+	<script src="/assets/custom/plugins/jquery_toastr/jquery.toast.min.js"></script>
 
 	<!-- Required datatable js -->
 	<script
@@ -325,6 +326,7 @@
 		});
 	</script>
 	<script src="js/CompletedFormScript.js"></script>
+	<script src="js/ToastScript.js"></script>
 </body>
 
 </html>

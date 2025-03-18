@@ -11,7 +11,7 @@ let isValid = true;
 let answerData;
 searchbtn.addEventListener("click", () => {
 	if (fillFormDropdown.value == 0) {
-		alert("Please select form name");
+		showAlertFailure('Please select form name');
 		return;
 	} else {
 		$.ajax({
@@ -357,9 +357,9 @@ searchbtn.addEventListener("click", () => {
 			error: function(response) {
 				if (response.status === 400) {
 					const errorResponse = JSON.parse(response.responseText);
-					alert(errorResponse.message);
+					showAlertFailure(errorResponse.message)
 				} else if (response.status === 500) {
-					alert("Server error occurred while fetching form data.");
+					showAlertFailure('Server error occurred while fetching form data.')
 				}
 			}
 		});
@@ -391,13 +391,13 @@ $(document).on("click", "#submitBtn", function() {
 			let dateValue = $("#date_from").val();
 			if (answerArray[i].quereq == 1) {
 				if (dateValue.length === 0) {
-					alert("Date cannot be empty!");
+					showAlertFailure('Date cannot be empty!');
 					return false;
 				}
 
 				let datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
 				if (!datePattern.test(dateValue)) {
-					alert("Please enter a valid date in dd/mm/yyyy format!");
+					showAlertFailure('Please enter a valid date in dd/mm/yyyy format!');
 					return false;
 				}
 			}
@@ -407,7 +407,7 @@ $(document).on("click", "#submitBtn", function() {
 			let selectedOption = $("input[name='choiceRadio']:checked").val();
 			if (answerArray[i].quereq == 1) {
 				if (!selectedOption) {
-					alert("Please select one radio button!");
+					showAlertFailure('Please select one radio button!');
 					return false;
 				}
 			}
@@ -424,7 +424,7 @@ $(document).on("click", "#submitBtn", function() {
 			});
 			if (answerArray[i].quereq == 1) {
 				if (selectedCheckboxes.length === 0) {
-					alert("Please select at least one checkbox!");
+					showAlertFailure('Please select at least one checkbox!');
 					return false;
 				}
 			}
@@ -440,7 +440,7 @@ $(document).on("click", "#submitBtn", function() {
 				textValue = textInputs[index].value.trim();
 				if (answerArray[i].quereq == 1) {
 					if (!textValue) {
-						alert(`Input text cannot empty`);
+						showAlertFailure(`Input text cannot empty`);
 						return false;
 					}
 
@@ -464,7 +464,7 @@ $(document).on("click", "#submitBtn", function() {
 							pattern = /^[\s\S]+$/;
 					}
 					if (!pattern.test(textValue)) {
-						alert(`Please enter text into specify format`);
+						showAlertFailure(`Please enter text into specify format`);
 						return false;
 					}
 				}
@@ -479,7 +479,7 @@ $(document).on("click", "#submitBtn", function() {
 				textareaValue = textareas[index].value.trim();
 				if (answerArray[i].quereq == 1) {
 					if (!textareaValue) {
-						alert(`Textarea input cannot be empty!`);
+						showAlertFailure(`Textarea input cannot be empty!`);
 						return false;
 					}
 
@@ -504,7 +504,7 @@ $(document).on("click", "#submitBtn", function() {
 					}
 
 					if (!pattern.test(textareaValue)) {
-						alert(`Please enter text into specify format`);
+						showAlertFailure(`Please enter text into specify format`);
 						return false;
 					}
 				}
@@ -517,7 +517,7 @@ $(document).on("click", "#submitBtn", function() {
 			let selectedValue = selectElement.value;
 			if (answerArray[i].quereq == 1) {
 				if (selectedValue === "0") {
-					alert("Please select dropdown");
+					showAlertFailure("Please select dropdown");
 					return false;
 				}
 			}
@@ -540,7 +540,7 @@ $(document).on("click", "#submitBtn", function() {
 			}
 			if (answerArray[i].quereq == 1) {
 				if (selectedItems.value === "0") {
-					alert("Please select(multiple select) valid dropdown option!");
+					showAlertFailure("Please select(multiple select) valid dropdown option!");
 					return false;
 				}
 			}
@@ -559,15 +559,17 @@ $(document).on("click", "#submitBtn", function() {
 		},
 		success: function(response) {
 			console.log(response)
-			alert(response.message);
-			window.location.href = "/fill-forms";
+			showAlertSuccess('response.message')
+			setTimeout(() => {
+				window.location.href = "/fill-forms";
+			}, 4000);
 		},
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred while saving create form.");
+				showAlertFailure('Server error occurred while saving create form.')
 			}
 		}
 	});

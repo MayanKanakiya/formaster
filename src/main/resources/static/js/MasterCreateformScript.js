@@ -48,41 +48,41 @@ let formData;
 let allQueDataArray = [];
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
-		alert("Please enter Question name");
+		showAlertFailure('Please enter Question name');
 		return;
 	}
 	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/
 		.test(queName.value)) {
-		alert("Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.");
+		showAlertFailure('Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.');
 		queName.value = '';
 		return;
 	}
 	if (queName.value.trim().length < 15) {
-		alert("Question name more than 15 characters");
+		showAlertFailure('Question name more than 15 characters');
 		return false;
 	}
 	if (queDes.value.trim().length == 0) {
-		alert("Please enter Question description");
+		showAlertFailure('Please enter Question description');
 		return;
 	}
 	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>/-]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>/-]+)*$/
 		.test(queDes.value)) {
-		alert("Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.");
+		showAlertFailure('Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.');
 		queDes.value = '';
 		return;
 	}
 	if (queDes.value.trim().length < 15) {
-		alert("Question description more than 15 characters");
+		showAlertFailure('Question description more than 15 characters');
 		return false;
 	}
 	if (queAnswerType.value === "0" || queAnswerType.value === "") {
-		alert("Please select answer type");
+		showAlertFailure('Please select answer type');
 		return;
 	}
 	if (queAnswerType.value === "3") {
 		if (validatans.checked) {
 			if (answerTypeFormat.value === "") {
-				alert("Please select answer format type, because you checked validation answer format checked box.")
+				showAlertFailure('Please select answer format type, because you checked validation answer format checked box.')
 				return;
 			}
 		}
@@ -90,7 +90,7 @@ saveBtnQueTable.addEventListener("click", () => {
 	else if (queAnswerType.value === "4") {
 		if (validatans.checked) {
 			if (answerTypeFormat.value === "") {
-				alert("Please select answer format type, because you checked validation answer format checked box.")
+				showAlertFailure('Please select answer format type, because you checked validation answer format checked box.')
 				return;
 			}
 		}
@@ -101,11 +101,11 @@ saveBtnQueTable.addEventListener("click", () => {
 		let count = countOptions();
 
 		if (count < 2) {
-			alert("Please select at least two answer choices.");
+			showAlertFailure('Please select at least two answer choices.');
 			return;
 		}
 		if (count > 4) {
-			alert("Only 4 answer choices are allowed.");
+			showAlertFailure('Only 4 answer choices are allowed.');
 			return;
 		}
 	}
@@ -114,7 +114,7 @@ saveBtnQueTable.addEventListener("click", () => {
 		let count = countMultiOptions();
 
 		if (count > 4) {
-			alert("Only 4 answer choices are allowed.");
+			showAlertFailure('Only 4 answer choices are allowed.');
 			return;
 		}
 	}
@@ -124,11 +124,11 @@ saveBtnQueTable.addEventListener("click", () => {
 		let count = countSingleSelectOptions();
 
 		if (count < 2) {
-			alert("Please select at least two answer choices.");
+			showAlertFailure('Please select at least two answer choices.');
 			return;
 		}
 		if (count > 4) {
-			alert("Only 4 answer choices are allowed.");
+			showAlertFailure('Only 4 answer choices are allowed.');
 			return;
 		}
 	}
@@ -137,7 +137,7 @@ saveBtnQueTable.addEventListener("click", () => {
 		let count = countMultiSelectOptions();
 
 		if (count > 4) {
-			alert("Only 4 answer choices are allowed.");
+			showAlertFailure('Only 4 answer choices are allowed.');
 			return;
 		}
 	}
@@ -149,19 +149,19 @@ saveBtnQueTable.addEventListener("click", () => {
 			let inputField = $(this).find(inputClass).val();
 
 			if (inputField.length == 0) {
-				alert(`${index + 1} Question input field cannot be empty`);
+				showAlertFailure(`${index + 1} Question input field cannot be empty`);
 				isValid = false;
 				return false;
 			} else if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(inputField)) {
-				alert(`${index + 1} Question input field should not accept white spaces`);
+				showAlertFailure(`${index + 1} Question input field should not accept white spaces`);
 				isValid = false;
 				return false;
 			} else if (inputField.length < 2) {
-				alert(`${index + 1} Question not aleast 2 characters`);
+				showAlertFailure(`${index + 1} Question not aleast 2 characters`);
 				isValid = false;
 				return false;
 			} else if (inputField.length > 15) {
-				alert(`${index + 1} Question cannot have more than 15 characters`);
+				showAlertFailure(`${index + 1} Question cannot have more than 15 characters`);
 				isValid = false;
 				return false;
 			}
@@ -345,67 +345,67 @@ function clearInputFiledQueModal() {
 /*main form validation start here*/
 saveQueInDBTable.addEventListener("click", () => {
 	if (titleTxt.value.trim().length == 0) {
-		alert("Please enter form title");
+		showAlertFailure('Please enter form title');
 		return;
 	}
 	if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(titleTxt.value)) {
-		alert("Enter a valid title text without extra spaces at the beginning or end. Only one space is allowed between words.");
+		showAlertFailure('Enter a valid title text without extra spaces at the beginning or end. Only one space is allowed between words.');
 		titleTxt.value = '';
 		return;
 	}
 	if (titleTxt.value.trim().length < 2) {
-		alert("Title text more then 2 characters");
+		showAlertFailure('Title text more then 2 characters');
 		return;
 	}
 	if (aliasNameTxt.value.trim().length == 0) {
-		alert("Please enter alias name")
+		showAlertFailure('Please enter alias name')
 		return;
 	}
 	if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(aliasNameTxt.value)) {
-		alert("Enter a valid title text without extra spaces at the beginning or end. Only one space is allowed between words.");
+		showAlertFailure('Enter a valid title text without extra spaces at the beginning or end. Only one space is allowed between words.');
 		aliasNameTxt.value = '';
 		return;
 	}
 	if (aliasNameTxt.value.trim().length < 5) {
-		alert("Alias name not more than 5 characters");
+		showAlertFailure('Alias name not more than 5 characters');
 		return;
 	}
 	if (moduleDropdown.value === "0") {
-		alert("Please select module");
+		showAlertFailure('Please select module');
 		return;
 	}
 	if (characteristicDropdown.value === "0") {
-		alert("Please select characteristic");
+		showAlertFailure('Please select characteristic');
 		return;
 	}
 	if (subcharacteristicDropdown.value === "0") {
-		alert("Please select subcharacteristic");
+		showAlertFailure('Please select subcharacteristic');
 		return;
 	}
 	if (recurranceDropdown.value === "0") {
-		alert("Please select recurrance");
+		showAlertFailure('Please select recurrance');
 		return;
 	}
 	if (monthDropdown.value === "0") {
-		alert("Please select month");
+		showAlertFailure('Please select month');
 		return;
 	}
 	if (comPeriod.value.trim().length == 0) {
-		alert("Please select compilance month");
+		showAlertFailure('Please select compilance month');
 		return;
 	}
 	if (!/^\d{2}$/.test(comPeriod.value)) {
-		alert("Please enter month like 01 or 12.");
+		showAlertFailure('Please enter month like 01 or 12.');
 		comPeriod.value = '';
 		return;
 	}
 	if (date_from.value.trim().length == 0) {
-		alert("Please enter effective date. Date format should be DD/MM/YYYY.");
+		showAlertFailure('Please enter effective date. Date format should be DD/MM/YYYY.');
 		return;
 	}
 	if (date_from.value.trim().length > 0) {
 		if (!/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.test(date_from.value)) {
-			alert("Invalid date format. Please use DD/MM/YYYY.");
+			showAlertFailure('Invalid date format. Please use DD/MM/YYYY.');
 			date_from.value = '';
 			return false;
 		}
@@ -414,21 +414,21 @@ saveQueInDBTable.addEventListener("click", () => {
 		activeChk = 1;
 	}
 	if (textDes.value.trim().length == 0) {
-		alert("Please select text description");
+		showAlertFailure('Please select text description');
 		return;
 	}
 	if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(textDes.value)) {
-		alert("Enter a valid text description without extra spaces at the beginning or end. Only one space is allowed between words.");
+		showAlertFailure('Enter a valid text description without extra spaces at the beginning or end. Only one space is allowed between words.');
 		textDes.value = '';
 		return;
 	}
 	if (textDes.value.trim().length < 10) {
-		alert("Text description not more than 5 characters");
+		showAlertFailure('Text description not more than 5 characters');
 		return;
 	}
 	if ($("#formquestion_datatable tbody tr.odd").length > 0 &&
 		$("#formquestion_datatable tbody tr.odd").nextAll("tr").length == 0) {
-		alert("Please enter at least one question");
+		showAlertFailure('Please enter at least one question');
 	} else {
 		allQueDataArray.forEach(obj => {
 			delete obj.quelabel;
@@ -461,15 +461,17 @@ saveQueInDBTable.addEventListener("click", () => {
 			},
 			success: function(response) {
 				console.log(response)
-				alert(response.message);
-				window.location.href = "/master-form";
+				showAlertSuccess(response.message)
+				setTimeout(() => {
+					window.location.href = "/master-form";
+				}, 4000);
 			},
 			error: function(response) {
 				if (response.status === 400) {
 					const errorResponse = JSON.parse(response.responseText);
-					alert(errorResponse.message);
+					showAlertFailure(errorResponse.message)
 				} else if (response.status === 500) {
-					alert("Server error occurred while saving create form.");
+					showAlertFailure('Server error occurred while saving create form.')
 				}
 			}
 		});
@@ -513,15 +515,17 @@ $('.deleteFormBtn').on('click', function() {
 			success: function(response) {
 				console.log(response.message);
 				$(`#row-${uid}`).remove();
-				alert("Form data deleted successfully!!");
-				window.location.href = '/master-form';
+				showAlertSuccess('Form data deleted successfully!!')
+				setTimeout(() => {
+					window.location.href = '/master-form';
+				}, 4000);
 			},
 			error: function(response) {
 				if (response.status === 400) {
 					const errorResponse = JSON.parse(response.responseText);
-					alert(errorResponse.message);
+					showAlertFailure(errorResponse.message)
 				} else if (response.status === 500) {
-					alert("Server error occurred while deleting form data. Try again later.");
+					showAlertFailure('Server error occurred while deleting form data. Try again later.')
 				}
 			}
 		});
@@ -881,9 +885,9 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred while fetching form data.");
+				showAlertFailure('Server error occurred while fetching form data.')
 			}
 		}
 	});

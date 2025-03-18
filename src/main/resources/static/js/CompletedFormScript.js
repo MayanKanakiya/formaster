@@ -52,9 +52,9 @@ $(document).on("click", ".dateView", function() {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred while fetching form data.");
+				showAlertFailure("Server error occurred while fetching form data.")
 			}
 		}
 	});

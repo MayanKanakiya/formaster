@@ -53,7 +53,7 @@ function handleLogin(event) {
 				errorMsg.style.display = 'block';
 				document.querySelector("#msg .errors").textContent = errorResponse.message;
 			} else if (response.status === 500) {
-				alert("Server error occurred. Try again later.");
+				showAlertFailure('Server error occurred. Try again later.')
 			}
 		}
 	});

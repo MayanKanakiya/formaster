@@ -24,77 +24,77 @@ var header = $("meta[name='_csrf_header']").attr("content");
 
 function ClientSideValidation() {
 	if (mst_ufname.value.trim().length == 0) {
-		alert("Please enter first name");
+		showAlertFailure('Please enter first name');
 		return false;
 	}
 	if (!/^(?! )[A-Za-z]+( [A-Za-z]+)*$/.test(mst_ufname.value)) {
-		alert("Enter first name without any extra spaces..");
+		showAlertFailure('Enter first name without any extra spaces');
 		mst_ufname.value = '';
 		return false;
 	}
 	if (mst_ufname.value.trim().length <= 1) {
-		alert("First name more than 1 characters");
+		showAlertFailure('First name more than 1 characters');
 		return false;
 	}
 	if (mst_ulname.value.trim().length == 0) {
-		alert("Please enter last name");
+		showAlertFailure('Please enter last name');
 		return false;
 	}
 	if (!/^(?! )[A-Za-z]+( [A-Za-z]+)*$/.test(mst_ulname.value)) {
-		alert("Enter last name without any extra spaces..");
+		showAlertFailure('Enter last name without any extra spaces');
 		mst_ulname.value = '';
 		return false;
 	}
 	if (mst_ulname.value.trim().length <= 2) {
-		alert("Last name more than 2 characters");
+		showAlertFailure('Last name more than 2 characters');
 		return false;
 	}
 	if (email.value.trim().length == 0) {
-		alert("Please enter email")
+		showAlertFailure('Please enter email');
 		return false;
 	}
 	if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value)) {
-		alert("Please enter valid Email...")
+		showAlertFailure('Please enter valid Email');
 		return false;
 	}
 	if (cno.value.trim().length > 0) {
 		if (cno.value.trim().length < 10) {
-			alert("Contact number should be 10 digit");
+			showAlertFailure('Contact number should be 10 digit');
 			return false;
 		}
 	}
 	if (gender.value === "0") {
-		alert("Please select gender");
+		showAlertFailure('Please select gender');
 		return false;
 	}
 	if (validfrom.value.trim().length > 0) {
 		if (!/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.test(validfrom.value)) {
-			alert("Invalid date format. Please use DD/MM/YYYY.");
+			showAlertFailure('Invalid date format. Please use DD/MM/YYYY.');
 			validfrom.value = '';
 			return false;
 		}
 	}
 	if (validfrom.value.trim().length > 0) {
 		if (validto.value.trim().length == 0) {
-			alert("Please enter Valid to date")
+			showAlertFailure('Please enter Valid to date');
 			return false;
 		}
 	}
 	if (validto.value.trim().length > 0) {
 		if (!/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.test(validto.value)) {
-			alert("Invalid date format. Please use DD/MM/YYYY.");
+			showAlertFailure('Invalid date format. Please use DD/MM/YYYY.');
 			validto.value = '';
 			return false;
 		}
 	}
 	if (validto.value.trim().length > 0) {
 		if (validfrom.value.trim().length == 0) {
-			alert("Please enter Valid from date")
+			showAlertFailure('Please enter Valid from date');
 			return false;
 		}
 	}
 	if (roles.value === "0") {
-		alert("Please select user role");
+		showAlertFailure('Please select user role');
 		return false;
 	}
 	return true;
@@ -159,16 +159,18 @@ userSaveBtn.addEventListener("click", () => {
 					xhr.setRequestHeader(header, token);
 				},
 				success: function(response) {
-					alert(response.message);
+					showAlertSuccess(response.message);
 					clearInputFiled();
-					window.location.href = '/master-users';
+					setTimeout(() => {
+						window.location.href = '/master-users';
+					}, 4000);
 				},
 				error: function(response) {
 					if (response.status === 400) {
 						const errorResponse = JSON.parse(response.responseText);
-						alert(errorResponse.message);
+						showAlertFailure(errorResponse.message)
 					} else if (response.status === 500) {
-						alert("Server error occurred while processing user. Try again later.");
+						showAlertFailure('Server error occurred while processing user. Try again later.')
 					}
 				}
 			});
@@ -177,9 +179,9 @@ userSaveBtn.addEventListener("click", () => {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred. Try again later.");
+				showAlertFailure('Server error occurred. Try again later.')
 			}
 		}
 	});
@@ -191,7 +193,7 @@ userImg.addEventListener('change', () => {
 		const extFile = fileName.substr(idxDot).toLowerCase();
 
 		if (!["jpg", "jpeg", "png"].includes(extFile)) {
-			alert("Only jpg/jpeg and png files are allowed!");
+			showAlertFailure('Only jpg/jpeg and png files are allowed!')
 			userImg.value = '';
 		}
 	}
@@ -251,7 +253,7 @@ $(document).ready(function() {
 		today.setHours(0, 0, 0, 0);
 
 		if (fromDate.getTime() !== today.getTime()) {
-			alert("You must select today's date for 'Valid From'.");
+			showAlertFailure('You must select today date for Valid From');
 			$(this).val('');
 			return;
 		}
@@ -264,7 +266,7 @@ $(document).ready(function() {
 		const validTo = $(this).val().trim();
 
 		if (validFrom.length === 0) {
-			alert("Please enter 'Valid From' date first.");
+			showAlertFailure('Please enter Valid From date first')
 			$(this).val('');
 			return;
 		}
@@ -276,7 +278,7 @@ $(document).ready(function() {
 		const toDate = new Date(toYear, toMonth - 1, toDay);
 
 		if (toDate <= fromDate) {
-			alert("'Valid To' date must be a future date after 'Valid From'.");
+			showAlertFailure('Valid To date must be a future date after Valid From')
 			$(this).val('');
 		}
 	});
@@ -310,15 +312,17 @@ $('.deletebtn').on('click', function() {
 			success: function(response) {
 				console.log(response.message);
 				$(`#row-${uid}`).remove();
-				alert("User data deleted successfully!!");
-				window.location.href = '/master-users';
+				showAlertSuccess('User data deleted successfully!!')
+				setTimeout(() => {
+					window.location.href = '/master-users';
+				}, 4000);
 			},
 			error: function(response) {
 				if (response.status === 400) {
 					const errorResponse = JSON.parse(response.responseText);
-					alert(errorResponse.message);
+					showAlertFailure(errorResponse.message)
 				} else if (response.status === 500) {
-					alert("Server error occurred. Try again later.");
+					showAlertFailure('Server error occurred. Try again later.')
 				}
 			}
 		});
@@ -362,9 +366,9 @@ $('.editbtn').on('click', function() {
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
-				alert(errorResponse.message);
+				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				alert("Server error occurred while fetching user data.");
+				showAlertFailure('Server error occurred while fetching user data.')
 			}
 		}
 	});
@@ -396,17 +400,17 @@ searchbtn.addEventListener("click", () => {
 	var searchTxt = $("#searchTxt").val().trim();
 	var searchRole = $("#searchRole").val().toLowerCase();
 	if (searchTxt.length == 0) {
-		alert("Please enter search text");
+		showAlertFailure('Please enter search text')
 		return false;
 	}
 	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/
 		.test(searchTxt)) {
-		alert("Enter a valid search text without extra spaces at the beginning or end. Only one space is allowed between words.");
+		showAlertFailure('Enter a valid search text without extra spaces at the beginning or end. Only one space is allowed between words.')
 		searchTxt.val('');
 		return;
 	}
 	if (searchRole === "0") {
-		alert("Please select role.");
+		showAlertFailure('Please select role.')
 		return false;
 	}
 	var searchTxt = $("#searchTxt").val().trim();

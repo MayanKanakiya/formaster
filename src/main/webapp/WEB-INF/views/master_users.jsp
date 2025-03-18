@@ -157,8 +157,8 @@
 														id="searchbtn"><i class="fa fa-search mr-2"></i>Search</a>
 
 													<a
-														class="show-details-table btn btn-danger text-white btn-padding ml-1" id="searchReset"><i
-														class="fa fa-refresh mr-2"></i>Reset</a>
+														class="show-details-table btn btn-danger text-white btn-padding ml-1"
+														id="searchReset"><i class="fa fa-refresh mr-2"></i>Reset</a>
 												</div>
 											</div>
 										</div>
@@ -179,8 +179,8 @@
 									</div>
 									<div class="col-xl-4 col-lg-4 col-sm-4">
 										<a href="javascript:void(0)"
-											class="btn btn-warning waves-effect float-right btn-padding client_add_btn" id="addUserBtn"><i
-											class="fa fa-plus"></i> Add Users</a>
+											class="btn btn-warning waves-effect float-right btn-padding client_add_btn"
+											id="addUserBtn"><i class="fa fa-plus"></i> Add Users</a>
 									</div>
 								</div>
 							</div>
@@ -219,13 +219,17 @@
 																quot; role=&quot;tooltip&quot;
 																x-placement=&quot;right&quot;><div
 																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-header p-0border_radius6&quot;></h3>
+																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
 																</div>" data-title="<img
-																src='<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty()) ? udata.getImage(): "/assets/custom/images/noimage.png"%>' width='150'
-																height='150' class='border_radius6'>"
+																src='<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty())
+		? udata.getImage()
+		: "/assets/custom/images/noimage.png"%>'
+																width='150' height='150' class='border_radius6'>"
 																data-original-title="" title=""> <img
-																src="<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty()) ? udata.getImage(): "/assets/custom/images/noimage.png"%>" alt=""
-																class="img-radius avatar"> </a> <span><%=udata.getFname()%>
+																src="<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty())
+		? udata.getImage()
+		: "/assets/custom/images/noimage.png"%>"
+																alt="" class="img-radius avatar"> </a> <span><%=udata.getFname()%>
 																<%=udata.getLname()%> </span>
 														</h2>
 													</td>
@@ -303,7 +307,8 @@
 											style="opacity: 0; right: 0; position: absolute;">
 									</div>
 
-									<div class="btn btn-success text-white btn-padding mt-2 ml-1" id="removeImgBtn">
+									<div class="btn btn-success text-white btn-padding mt-2 ml-1"
+										id="removeImgBtn">
 										<i class="fa fa-trash mr-2"></i> Remove
 									</div>
 								</div>
@@ -320,7 +325,7 @@
 
 									<div class="row pl-2 pr-2 pt-1">
 										<div class="col-xl-3 col-lg-4 col-sm-4 col-xs-12 colmspadding">
-										<input type="hidden" class="form-control" id="hiddenuid">
+											<input type="hidden" class="form-control" id="hiddenuid">
 											<div class="form-group">
 												<label>First Name<span class="text-danger ml-1">*</span></label>
 												<input type="text" class="form-control" id="fname">
@@ -465,6 +470,8 @@
 
 	<script
 		src="assets/custom/plugins/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+	<script src="/assets/custom/plugins/jquery_toastr/jquery.toast.min.js"></script>
+	<script src="js/ToastScript.js"></script>
 
 	<script src="assets/custom/js/commonmodal.js"></script>
 	<script>
