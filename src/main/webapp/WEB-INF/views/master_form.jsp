@@ -373,23 +373,7 @@
 														</thead>
 
 														<tbody>
-															<!-- <tr>
-																<td>Q1</td>
-																<td>Emergency Power Systems & Lighting</td>
-																<td>Single choice</td>
-																<td>Yes</td>
-																<td class="text-center"><span data-toggle="modal"
-																	data-target=".addformquestion"><a
-																		href="javascript:void(0)" data-toggle="tooltip"
-																		data-placement="bottom" data-original-title="Edit"
-																		class="text-success fa-size"><i
-																			class="fa fa-pencil"></i></a></span> <span
-																	class="delete-user-alert"><a
-																		href="javascript:void(0)" class="text-danger fa-size"
-																		data-toggle="tooltip" data-placement="bottom"
-																		data-original-title="Delete"><i
-																			class="fa fa-trash"></i></a></span></td>
-															</tr> -->
+															
 														</tbody>
 													</table>
 												</div>

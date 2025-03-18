@@ -24,6 +24,9 @@ public interface MasterFormRepository extends JpaRepository<UserEntity, Integer>
 
 	@Query(value = "select id,fname,lname,email,cno,gender,validfrom,validto,urole,image,createdby,createdon,modifyby,modifyon,active from user_entity where 1=1 and isdelete=0", nativeQuery = true)
 	List<UserDTO> getAllUserData();
+	
+	@Query(value = "select id,fname,lname,email,cno,gender,validfrom,validto,urole,image,createdby,createdon,modifyby,modifyon,active from user_entity where id=?1 and isdelete=0", nativeQuery = true)
+	List<UserDTO> getUserDataById(int id);
 
 	@Modifying
 	@Transactional

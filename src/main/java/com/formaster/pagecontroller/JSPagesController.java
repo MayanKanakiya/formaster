@@ -93,7 +93,16 @@ public class JSPagesController {
 	}
 
 	@GetMapping("/profile")
-	public String profile() {
-		return "profile";
+	public String profile(Model model) {
+		try {
+			int createdby = (int) session.getAttribute("currentLogin");
+			List<UserDTO> userListById = formRepository.getUserDataById(createdby);
+			model.addAttribute("userListById", userListById);
+			return "profile";
+		}catch (Exception e) {
+			System.out.println("Error while fetching user data from the user_entity table" + e.getMessage());
+			return "profile";
+		}
+		
 	}
 }

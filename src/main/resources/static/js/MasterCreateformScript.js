@@ -1112,6 +1112,6 @@ function clearInputFiledCreateForm() {
 	textDes.value = '';
 	queTableTbody.empty();
 	if ($("#formquestion_datatable tbody").length > 0) {
-		$("#formquestion_datatable tbody").append("<tr><td valign='top' colspan='5' class='dataTables_empty'>No data available in table</td></tr>");
+		$("#formquestion_datatable tbody").append("<tr class='odd'><td valign='top' colspan='5' class='dataTables_empty'>No data available in table</td></tr>");
 	}
 }
