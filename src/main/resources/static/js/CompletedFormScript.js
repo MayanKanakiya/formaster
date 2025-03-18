@@ -15,6 +15,9 @@ $(document).on("click", ".dateView", function() {
 		},
 		success: function(response) {
 			console.log(response);
+			if ($("#all_question_preview .modal-body .questionAnsDivs").length > 0) {
+				$("#all_question_preview .modal-body .questionAnsDivs .card-body").remove();
+			}
 			response.forEach((row, index) => {
 				FormTitle.innerHTML = row[0];
 				FormDes.innerHTML = row[1];
@@ -43,7 +46,7 @@ $(document).on("click", ".dateView", function() {
 				              </div>
 				          </div>
 				      `;
-				      questionAsnwerDiv.append(rowDiv);
+				questionAsnwerDiv.append(rowDiv);
 			});
 		},
 		error: function(response) {

@@ -353,8 +353,8 @@ saveQueInDBTable.addEventListener("click", () => {
 		titleTxt.value = '';
 		return;
 	}
-	if (titleTxt.value.trim().length < 10) {
-		alert("Title text not more than 10 characters");
+	if (titleTxt.value.trim().length < 2) {
+		alert("Title text more then 2 characters");
 		return;
 	}
 	if (aliasNameTxt.value.trim().length == 0) {

@@ -14,8 +14,8 @@ public interface MstCreateformRepository extends JpaRepository<MstCreateformEnti
 	@Query(value = "select max(fid) from mst_createform_entity", nativeQuery = true)
 	Integer formId();
 
-	@Query(value = "select fid, titletxt,active from mst_createform_entity where isdelete=0", nativeQuery = true)
-	List<MstCreateformDTO> getAllFormData();
+	@Query(value = "select fid, titletxt,active from mst_createform_entity where isdelete=0 and createdby=?1;", nativeQuery = true)
+	List<MstCreateformDTO> getAllFormData(int uid);
 
 	@Modifying
 	@Transactional

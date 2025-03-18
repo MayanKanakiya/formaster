@@ -132,7 +132,7 @@
 												class="col-xl-2 col-lg-2 col-sm-4 col-xs-12 colmspadding">
 												<div class="form-group mb-0">
 													<label class="mb-1">Name</label> <input type="text"
-														class="form-control">
+														class="form-control" id="searchTxt">
 												</div>
 											</div>
 
@@ -141,10 +141,10 @@
 												<div class="form-group mb-0">
 													<label class="mb-1">Role</label> <select
 														class="selectpicker" data-style="lineheight12 bg-transfer"
-														data-live-search="true">
-														<option value="" selected="selected">Select</option>
-														<option value="1">Admin</option>
-														<option value="2">User</option>
+														data-live-search="true" id="searchRole">
+														<option value="0" selected="selected">Select</option>
+														<option value="Admin">Admin</option>
+														<option value="User">User</option>
 													</select>
 												</div>
 											</div>
@@ -157,7 +157,7 @@
 														id="searchbtn"><i class="fa fa-search mr-2"></i>Search</a>
 
 													<a
-														class="show-details-table btn btn-danger text-white btn-padding ml-1"><i
+														class="show-details-table btn btn-danger text-white btn-padding ml-1" id="searchReset"><i
 														class="fa fa-refresh mr-2"></i>Reset</a>
 												</div>
 											</div>

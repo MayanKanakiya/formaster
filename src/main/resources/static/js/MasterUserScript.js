@@ -15,6 +15,10 @@ const userSaveBtn = document.getElementById("userSaveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const hiddenuid = document.getElementById("hiddenuid");
 
+//Search criteria ID's
+const searchbtn = document.getElementById("searchbtn");
+const searchReset = document.getElementById("searchReset");
+
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -120,7 +124,7 @@ userSaveBtn.addEventListener("click", () => {
 			xhr.setRequestHeader(header, token);
 		},
 		success: function(response) {
-			console.log("User Master server side validation successful:", response.message);
+			console.log(response.message);
 			const userAddEditData = new FormData();
 			userAddEditData.append("id", hiddenuid.value.trim());
 			userAddEditData.append("fname", mst_ufname.value);
@@ -148,7 +152,6 @@ userSaveBtn.addEventListener("click", () => {
 			$.ajax({
 				url: apiUrl,
 				method: 'POST',
-				contentType: 'application/json',
 				data: userAddEditData,
 				processData: false,
 				contentType: false,
@@ -386,4 +389,44 @@ userImg.addEventListener("change", (event) => {
 removeImgBtn.addEventListener("click", () => {
 	userImg.value = "";
 	add_edit_userimg.src = "assets/images/users/default_user.png";
+});
+
+//Search criteria code
+searchbtn.addEventListener("click", () => {
+	var searchTxt = $("#searchTxt").val().trim();
+	var searchRole = $("#searchRole").val().toLowerCase();
+	if (searchTxt.length == 0) {
+		alert("Please enter search text");
+		return false;
+	}
+	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/
+		.test(searchTxt)) {
+		alert("Enter a valid search text without extra spaces at the beginning or end. Only one space is allowed between words.");
+		searchTxt.val('');
+		return;
+	}
+	if (searchRole === "0") {
+		alert("Please select role.");
+		return false;
+	}
+	var searchTxt = $("#searchTxt").val().trim();
+	var searchRole = $("#searchRole").val().toLowerCase();
+
+	$("#users_datatable tbody tr").each(function() {
+		var name = $(this).find("td:eq(0) span").text().toLowerCase();
+		var role = $(this).find("td:eq(6)").text().toLowerCase();
+
+		if ((name.includes(searchTxt.toLowerCase())) &&
+			(searchRole === "0" || role.includes(searchRole))) {
+			$(this).show();
+		} else {
+			$(this).hide();
+		}
+	});
+});
+searchReset.addEventListener("click", () => {
+	searchTxt.value = '';
+	searchRole.value = "0";
+	$('.selectpicker').selectpicker('refresh');
+	$("#users_datatable tbody tr").show();
 });

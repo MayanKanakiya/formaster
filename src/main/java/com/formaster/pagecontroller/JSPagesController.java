@@ -53,14 +53,14 @@ public class JSPagesController {
 	@GetMapping("/fill-forms")
 	public String fillForms(Model model) {
 		try {
-			List<MstCreateformDTO> notSubmitedFormList = answerFormRepository.getAllFormDataById();
+			int createdby = (int) session.getAttribute("currentLogin");
+			List<MstCreateformDTO> notSubmitedFormList = answerFormRepository.getAllFormDataById(createdby);
 			model.addAttribute("notSubmitedFormList", notSubmitedFormList);
 			return "fill_forms";
 		} catch (Exception e) {
 			System.out.println("Error while fetching not submited form data from the table" + e.getMessage());
 			return "fill_forms";
 		}
-
 	}
 
 	@GetMapping("/master-form")
@@ -68,7 +68,8 @@ public class JSPagesController {
 		try {
 			Integer id = createformRepository.formId();
 			id = (id != null) ? id + 1 : 1;
-			List<MstCreateformDTO> formDataList = createformRepository.getAllFormData();
+			int createdby = (int) session.getAttribute("currentLogin");
+			List<MstCreateformDTO> formDataList = createformRepository.getAllFormData(createdby);
 			model.addAttribute("id", id);
 			model.addAttribute("formDataList", formDataList);
 			return "master_form";
