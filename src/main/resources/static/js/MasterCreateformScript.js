@@ -1,6 +1,6 @@
 console.log("Master create form script running..")
 const questionTable = document.getElementById("formquestion_datatable");
-
+const queTableTbody = $("#formquestion_datatable tbody")
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -45,7 +45,7 @@ let editingRow = null;
 //Below object for only available data for full create form
 let formData;
 let allQueDataArray = [];
-
+let allEditsaveQueArray = [];
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
 		showAlertFailure('Please enter Question name');
@@ -273,12 +273,6 @@ saveBtnQueTable.addEventListener("click", () => {
 
 		queTableTbody.append(newRow);
 	}
-	allQueDataArray = [];
-	$("#formquestion_datatable tbody tr[data-quedata]").each(function() {
-		let queData = $(this).attr("data-quedata");
-		allQueDataArray.push(JSON.parse(queData));
-	});
-	console.log(allQueDataArray)
 	$('.modal').modal('hide');
 	clearInputFiledQueModal();
 	/*console.log(queData);*/
@@ -433,6 +427,13 @@ saveQueInDBTable.addEventListener("click", () => {
 		allQueDataArray.forEach(obj => {
 			delete obj.quelabel;
 		});
+		$("#formquestion_datatable tbody tr[data-quedata]").each(function() {
+			let queData = $(this).attr("data-quedata");
+			allEditsaveQueArray.push(JSON.parse(queData));
+		});
+		allEditsaveQueArray.forEach(obj => {
+			delete obj.quelabel;
+		});
 		formData = {
 			fid: hiddenId.value,
 			titletxt: titleTxt.value,
@@ -446,8 +447,9 @@ saveQueInDBTable.addEventListener("click", () => {
 			effectivedate: date_from.value,
 			textdes: textDes.value,
 			active: activeChk,
-			queData: allQueDataArray
+			queData: hiddenId.value.trim().length !== 0 ? allEditsaveQueArray : allQueDataArray
 		};
+
 		console.log(formData);
 		clearInputFiledCreateForm()
 		const url = hiddenId.value.trim().length == 0 ? "/saveForm" : "/updateForm";
@@ -610,38 +612,40 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 						active.checked = false;
 					}
 					textDes.value = formData.textdes;
-					const queTableTbody = $('#formquestion_datatable').DataTable();
+					const searchTableBody = $('#formquestion_datatable').DataTable();
+					searchTableBody.clear().draw();
 					if ($("#formquestion_datatable tbody tr").length > 0) {
 						$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 					}
 					allQueDataArray.push(...formData.queData);
+					console.log(allQueDataArray)
 					formData.queData.forEach((que, index) => {
-					    let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
-
-					    queTableTbody.row.add([
-					        queWithLabel.quelabel,
-					        que.queName,
-					        que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" :
-					        que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" :
-					        que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date",
-					        que.quereq == 1 ? "Yes" : "No",
-					        `<td class="text-center">
-					            <span data-toggle="modal" data-target=".addformquestion">
-					                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
-					                   data-original-title="Edit" class="text-success fa-size queTableEditBtn">
-					                   <i class="fa fa-pencil"></i>
-					                </a>
-					            </span>
-					            <span class="delete-user-alert">
-					                <a href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
-					                   data-toggle="tooltip" data-placement="bottom" data-original-title="Delete">
-					                   <i class="fa fa-trash"></i>
-					                </a>
-					            </span>
-					        </td>`
-					    ]).draw(false);
+						let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
+						searchTableBody.row.add([
+							queWithLabel.quelabel,
+							que.queName,
+							que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" :
+								que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" :
+									que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date",
+							que.quereq == 1 ? "Yes" : "No",
+							`<td class="text-center">
+										            <span data-toggle="modal" data-target=".addformquestion">
+										                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+										                   data-original-title="Edit" class="text-success fa-size queTableEditBtn">
+										                   <i class="fa fa-pencil"></i>
+										                </a>
+										            </span>
+										            <span class="delete-user-alert">
+										                <a href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
+										                   data-toggle="tooltip" data-placement="bottom" data-original-title="Delete">
+										                   <i class="fa fa-trash"></i>
+										                </a>
+										            </span>
+										        </td>`
+						]).draw(false);
 					});
 				}
+
 			}
 			/*Fetch data preview form questions*/
 			else {
