@@ -166,7 +166,7 @@ searchbtn.addEventListener("click", () => {
 																		class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
 																		${que.questions && que.questions.length > 0
 									? que.questions.map((choice, index) => `
-																		        <input type="text" name="singleTxt" class="form-control singleTxt"
+																		        <input type="text" name="singleTxt" maxlength="50" minlength="3" class="form-control singleTxt"
 																		            placeholder="${choice == '1' ? 'Enter Answer with all characters' :
 											choice == '2' ? 'Enter Answer with only characters' :
 												choice == '3' ? 'Enter Answer with only alphabets' :
@@ -206,7 +206,7 @@ searchbtn.addEventListener("click", () => {
 																class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
 																${que.questions && que.questions.length > 0
 									? que.questions.map((choice, index) => `
-																        <textarea class="form-control textareasize multiTxt" name="multiTxt" placeholder="${choice == '1' ? 'Enter Answer with all characters' :
+																        <textarea class="form-control textareasize multiTxt" maxlength="50" minlength="3" name="multiTxt" placeholder="${choice == '1' ? 'Enter Answer with all characters' :
 											choice == '2' ? 'Enter Answer with only characters' :
 												choice == '3' ? 'Enter Answer with only alphabets' :
 													choice == '4' ? 'Enter Answer with alphabet & number' : 'Enter Your Answer'

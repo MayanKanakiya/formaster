@@ -57,8 +57,8 @@ saveBtnQueTable.addEventListener("click", () => {
 		queName.value = '';
 		return;
 	}
-	if (queName.value.trim().length < 15) {
-		showAlertFailure('Question name more than 15 characters');
+	if (queName.value.trim().length < 5) {
+		showAlertFailure('Question name more than 5 characters');
 		return false;
 	}
 	if (queDes.value.trim().length == 0) {
@@ -71,8 +71,8 @@ saveBtnQueTable.addEventListener("click", () => {
 		queDes.value = '';
 		return;
 	}
-	if (queDes.value.trim().length < 15) {
-		showAlertFailure('Question description more than 15 characters');
+	if (queDes.value.trim().length < 5) {
+		showAlertFailure('Question description more than 5 characters');
 		return false;
 	}
 	if (queAnswerType.value === "0" || queAnswerType.value === "") {
@@ -158,10 +158,6 @@ saveBtnQueTable.addEventListener("click", () => {
 				return false;
 			} else if (inputField.length < 2) {
 				showAlertFailure(`${index + 1} Question not aleast 2 characters`);
-				isValid = false;
-				return false;
-			} else if (inputField.length > 15) {
-				showAlertFailure(`${index + 1} Question cannot have more than 15 characters`);
 				isValid = false;
 				return false;
 			}
@@ -614,14 +610,14 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 					textDes.value = formData.textdes;
 					const searchTableBody = $('#formquestion_datatable').DataTable();
 					searchTableBody.clear().draw();
-					if ($("#formquestion_datatable tbody tr").length > 0) {
+					/*if ($("#formquestion_datatable tbody tr").length > 0) {
 						$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
-					}
+					}*/
 					allQueDataArray.push(...formData.queData);
 					console.log(allQueDataArray)
 					formData.queData.forEach((que, index) => {
 						let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
-						searchTableBody.row.add([
+						let newRow = searchTableBody.row.add([
 							queWithLabel.quelabel,
 							que.queName,
 							que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" :
@@ -643,6 +639,7 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 										            </span>
 										        </td>`
 						]).draw(false);
+						$(newRow.node()).attr("data-quedata", JSON.stringify(queWithLabel));
 					});
 				}
 

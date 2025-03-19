@@ -15,7 +15,7 @@ function addMultiRow() {
          </td>
          <td class='border-0 p-1'>
              <div class='form-group mb-0'>
-                 <input type='text' class='form-control multiChoiceInput' placeholder='Enter an answer choice in English'>
+                 <input type='text' class='form-control multiChoiceInput' maxlength="15" placeholder='Enter an answer choice in English'>
              </div>
          </td>
          <td class='text-center border-0 p-0' width='3%'>

@@ -530,10 +530,9 @@
 			},
 			"dom" : '<"top"pif>rt<"clear">'
 		});
-
-		$("#searchbtn").click(function() {
+	/* 	$("#searchbtn").click(function() {
 			$("#searchcollapse").trigger('click');
-		});
+		}); */
 	</script>
 	<script src="js/MasterUserScript.js"></script>
 </body>

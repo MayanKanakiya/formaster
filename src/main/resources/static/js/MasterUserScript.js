@@ -399,6 +399,14 @@ removeImgBtn.addEventListener("click", () => {
 searchbtn.addEventListener("click", () => {
 	var searchTxt = $("#searchTxt").val().trim();
 	var searchRole = $("#searchRole").val().toLowerCase();
+
+	if (searchTxt.length == 0 && searchRole === "0") {
+		showAlertFailure('Please enter search text and select role')
+		$("#users_datatable tbody tr").each(function() {
+			$(this).show();
+		});
+		return false;
+	}
 	if (searchTxt.length == 0) {
 		showAlertFailure('Please enter search text')
 		return false;
