@@ -934,31 +934,6 @@
 			"dom" : '<"top"pif>rt<"clear">'
 		});
 
-		$('#formquestion_datatable')
-				.DataTable(
-						{
-							paging : true,
-							"bLengthChange" : false,
-							"columnDefs" : [ {
-								"targets" : 4,
-								"orderable" : false
-							} ],
-							"pageLength" : 10,
-							language : {
-								paginate : {
-									next : '<i class="fa fa-angle-double-right">',
-									previous : '<i class="fa fa-angle-double-left">'
-								}
-							},
-							dom : "<'row'<'col-xl-6 col-lg-6 col-sm-5'pi><'col-xl-5 col-lg-4 col-sm-5'f><'col-xl-1 col-lg-2 col-sm-2 colmspadding text-left'<'toolbar1'>>>"
-									+ "<'row'<'col-md-12'tr>>",
-							fnInitComplete : function() {
-								$('div.toolbar1')
-										.html(
-												'<a href="javascript:void(0)" data-toggle="modal" data-target=".formsorting" class="btn btn-warning btn-padding mb-1 mr-1"><i class="fa fa-sort"></i></a><a href="javascript:void(0)" data-toggle="modal" data-target=".addformquestion" class="btn btn-warning btn-padding mb-1"><i class="fa fa-plus"></i> Add</a>');
-							},
-						});
-
 		$("#searchbtn").click(function() {
 			$("#searchcollapse").trigger('click');
 		});

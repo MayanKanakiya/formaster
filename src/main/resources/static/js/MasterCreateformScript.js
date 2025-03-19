@@ -1,6 +1,5 @@
 console.log("Master create form script running..")
 const questionTable = document.getElementById("formquestion_datatable");
-const queTableTbody = $("#formquestion_datatable tbody")
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
@@ -46,6 +45,7 @@ let editingRow = null;
 //Below object for only available data for full create form
 let formData;
 let allQueDataArray = [];
+
 saveBtnQueTable.addEventListener("click", () => {
 	if (queName.value.trim().length == 0) {
 		showAlertFailure('Please enter Question name');
@@ -531,6 +531,31 @@ $('.deleteFormBtn').on('click', function() {
 		});
 	}
 });
+$(document).ready(function() {
+	$('#formquestion_datatable')
+		.DataTable({
+			paging: true,
+			"bLengthChange": false,
+			"columnDefs": [{
+				"targets": 4,
+				"orderable": false
+			}],
+			"pageLength": 10,
+			language: {
+				paginate: {
+					next: '<i class="fa fa-angle-double-right">',
+					previous: '<i class="fa fa-angle-double-left">'
+				}
+			},
+			dom: "<'row'<'col-xl-6 col-lg-6 col-sm-5'pi><'col-xl-5 col-lg-4 col-sm-5'f><'col-xl-1 col-lg-2 col-sm-2 colmspadding text-left'<'toolbar1'>>>"
+				+ "<'row'<'col-md-12'tr>>",
+			fnInitComplete: function() {
+				$('div.toolbar1')
+					.html(
+						'<a href="javascript:void(0)" data-toggle="modal" data-target=".formsorting" class="btn btn-warning btn-padding mb-1 mr-1"><i class="fa fa-sort"></i></a><a href="javascript:void(0)" data-toggle="modal" data-target=".addformquestion" class="btn btn-warning btn-padding mb-1"><i class="fa fa-plus"></i> Add</a>');
+			},
+		});
+});
 $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 	const uid = $(this).data('id');
 	let isEdit = $(this).hasClass("editFormBtn");
@@ -585,30 +610,36 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 						active.checked = false;
 					}
 					textDes.value = formData.textdes;
+					const queTableTbody = $('#formquestion_datatable').DataTable();
 					if ($("#formquestion_datatable tbody tr").length > 0) {
 						$("#formquestion_datatable tbody td.dataTables_empty:first").remove();
 					}
 					allQueDataArray.push(...formData.queData);
 					formData.queData.forEach((que, index) => {
-						let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
-						let row = `<tr data-quedata='${JSON.stringify(queWithLabel)}'>
-									<td>${queWithLabel.quelabel}</td>
-									<td>${que.queName}</td>
-									<td>${que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" : que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" : que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date"}</td>
-									<td>${que.quereq == 1 ? "Yes" : "No"}</td>
-									<td class="text-center"><span data-toggle="modal"
-										data-target=".addformquestion"><a
-											href="javascript:void(0)" data-toggle="tooltip"
-											data-placement="bottom" data-original-title="Edit"
-											class="text-success fa-size queTableEditBtn"><i
-												class="fa fa-pencil"></i></a></span> <span
-										class="delete-user-alert"><a
-											href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
-											data-toggle="tooltip" data-placement="bottom"
-											data-original-title="Delete"><i
-												class="fa fa-trash"></i></a></span></td>
-										</tr>`;
-						queTableTbody.append(row);
+					    let queWithLabel = { ...que, quelabel: `Q${index + 1}` };
+
+					    queTableTbody.row.add([
+					        queWithLabel.quelabel,
+					        que.queName,
+					        que.queType == 1 ? "Single Choice" : que.queType == 2 ? "Multi Choice" :
+					        que.queType == 3 ? "Single Textbox" : que.queType == 4 ? "Multiline Textbox" :
+					        que.queType == 5 ? "Single select dropdown" : que.queType == 6 ? "Multi select dropdown" : "Date",
+					        que.quereq == 1 ? "Yes" : "No",
+					        `<td class="text-center">
+					            <span data-toggle="modal" data-target=".addformquestion">
+					                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+					                   data-original-title="Edit" class="text-success fa-size queTableEditBtn">
+					                   <i class="fa fa-pencil"></i>
+					                </a>
+					            </span>
+					            <span class="delete-user-alert">
+					                <a href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
+					                   data-toggle="tooltip" data-placement="bottom" data-original-title="Delete">
+					                   <i class="fa fa-trash"></i>
+					                </a>
+					            </span>
+					        </td>`
+					    ]).draw(false);
 					});
 				}
 			}
