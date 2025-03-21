@@ -507,50 +507,31 @@ comPeriod.addEventListener('input', () => {
 });
 $('.delete-user-alert-form').on('click', function() {
 	const uid = $(this).data('id');
-	$.confirm({
-		title: 'Delete Record..!',
-		content: 'Please be sure before deleting record',
-		theme: 'material',
-		icon: 'fa fa-warning',
-		type: 'red',
-		buttons: {
-			delete: {
-				text: 'Delete',
-				btnClass: 'btn-red',
-				action: function() {
-					$.ajax({
-						url: `/deletefdata/${uid}`,
-						method: 'DELETE',
-						contentType: 'application/json',
-						beforeSend: function(xhr) {
-							xhr.setRequestHeader(header, token);
-						},
-						success: function(response) {
-							console.log(response.message);
-							$(`#row-${uid}`).remove();
-							showAlertSuccess('Form data deleted successfully!!')
-							setTimeout(() => {
-								window.location.href = '/master-form';
-							}, 4000);
-						},
-						error: function(response) {
-							if (response.status === 400) {
-								const errorResponse = JSON.parse(response.responseText);
-								showAlertFailure(errorResponse.message)
-							} else if (response.status === 500) {
-								showAlertFailure('Server error occurred while deleting form data. Try again later.')
-							}
-						}
-					});
-				}
+	showDeleteConfirmation(() => {
+		$.ajax({
+			url: `/deletefdata/${uid}`,
+			method: 'DELETE',
+			contentType: 'application/json',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
 			},
-			cancel: {
-				text: 'Cancel',
-				action: function() {
-					console.log("Delete canceled!");
+			success: function(response) {
+				console.log(response.message);
+				$(`#row-${uid}`).remove();
+				showAlertSuccess('Form data deleted successfully!!')
+				setTimeout(() => {
+					window.location.href = '/master-form';
+				}, 4000);
+			},
+			error: function(response) {
+				if (response.status === 400) {
+					const errorResponse = JSON.parse(response.responseText);
+					showAlertFailure(errorResponse.message)
+				} else if (response.status === 500) {
+					showAlertFailure('Server error occurred while deleting form data. Try again later.')
 				}
 			}
-		}
+		});
 	});
 });
 $(document).ready(function() {
@@ -958,45 +939,22 @@ $(document).on("hide.bs.modal", ".addformquestion", function() {
 
 $(document).on("click", ".delete-user-alert-que", function() {
 	let row = $(this).closest("tr");
-
-	$.confirm({
-		title: 'Delete Record..!',
-		content: 'Please be sure before deleting record',
-		theme: 'material',
-		icon: 'fa fa-warning',
-		type: 'red',
-		buttons: {
-			delete: {
-				text: 'Delete',
-				btnClass: 'btn-red',
-				action: function() {
-					row.remove();
-
-					$("#formquestion_datatable tbody tr").each(function(index) {
-						let dataAttr = $(this).attr("data-quedata");
-
-						if (!dataAttr) {
-							return;
-						}
-
-						try {
-							let queData = JSON.parse(dataAttr);
-							queData.quelabel = `Q${index + 1}`;
-							$(this).attr("data-quedata", JSON.stringify(queData));
-							$(this).find("td:first").text(`Q${index + 1}`);
-						} catch (error) {
-							console.error(`Invalid JSON in row ${index + 1}:`, error);
-						}
-					});
-				}
-			},
-			cancel: {
-				text: 'Cancel',
-				action: function() {
-					console.log("Delete canceled!");
-				}
+	showDeleteConfirmation(() => {
+		row.remove();
+		$("#formquestion_datatable tbody tr").each(function(index) {
+			let dataAttr = $(this).attr("data-quedata");
+			if (!dataAttr) {
+				return;
 			}
-		}
+			try {
+				let queData = JSON.parse(dataAttr);
+				queData.quelabel = `Q${index + 1}`;
+				$(this).attr("data-quedata", JSON.stringify(queData));
+				$(this).find("td:first").text(`Q${index + 1}`);
+			} catch (error) {
+				console.error(`Invalid JSON in row ${index + 1}:`, error);
+			}
+		});
 	});
 });
 

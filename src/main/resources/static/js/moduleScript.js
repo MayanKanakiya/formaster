@@ -6,7 +6,6 @@ const subcharacteristicDropdown = document.getElementById("subcharacteristicDrop
 const recurranceDropdown = document.getElementById("recurranceDropdown");
 const monthDropdown = document.getElementById("monthDropdown");
 
-
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 function populateFormDropdown() {

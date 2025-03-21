@@ -306,54 +306,35 @@ function clearInputFiled() {
 }
 $('.deletebtn').on('click', function() {
 	const uid = $(this).data('id');
-	$.confirm({
-		title: 'Delete Record..!',
-		content: 'Please be sure before deleting record',
-		theme: 'material',
-		icon: 'fa fa-warning',
-		type: 'red',
-		buttons: {
-			delete: {
-				text: 'Delete',
-				btnClass: 'btn-red',
-				action: function() {
-					$.ajax({
-						url: `/deleteudata/${uid}`,
-						method: 'DELETE',
-						contentType: 'application/json',
-						beforeSend: function(xhr) {
-							xhr.setRequestHeader(header, token);
-							$(".preloader").show();
-						},
-						success: function(response) {
-							console.log(response.message);
-							$(`#row-${uid}`).remove();
-							showAlertSuccess('User data deleted successfully!!')
-							setTimeout(() => {
-								window.location.href = '/master-users';
-							}, 4000);
-						},
-						error: function(response) {
-							if (response.status === 400) {
-								const errorResponse = JSON.parse(response.responseText);
-								showAlertFailure(errorResponse.message)
-							} else if (response.status === 500) {
-								showAlertFailure('Server error occurred. Try again later.')
-							}
-						},
-						complete: function() {
-							$(".preloader").hide();
-						}
-					});
+	showDeleteConfirmation(() => {
+		$.ajax({
+			url: `/deleteudata/${uid}`,
+			method: 'DELETE',
+			contentType: 'application/json',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
+				$(".preloader").show();
+			},
+			success: function(response) {
+				console.log(response.message);
+				$(`#row-${uid}`).remove();
+				showAlertSuccess('User data deleted successfully!!')
+				setTimeout(() => {
+					window.location.href = '/master-users';
+				}, 4000);
+			},
+			error: function(response) {
+				if (response.status === 400) {
+					const errorResponse = JSON.parse(response.responseText);
+					showAlertFailure(errorResponse.message)
+				} else if (response.status === 500) {
+					showAlertFailure('Server error occurred. Try again later.')
 				}
 			},
-			cancel: {
-				text: 'Cancel',
-				action: function() {
-					console.log("Delete canceled!");
-				}
+			complete: function() {
+				$(".preloader").hide();
 			}
-		}
+		});
 	});
 });
 $('.editbtn').on('click', function() {

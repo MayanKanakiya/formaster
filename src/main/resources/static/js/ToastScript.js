@@ -22,6 +22,32 @@ function showAlertFailure(message) {
 		className: 'custom-toast'
 	});
 }
+function showDeleteConfirmation(onConfirm) {
+    $.confirm({
+        title: 'Delete Record..!',
+        content: 'Please be sure before deleting record',
+        theme: 'material',
+        icon: 'fa fa-warning',
+        type: 'red',
+        buttons: {
+            delete: {
+                text: 'Delete',
+                btnClass: 'btn-red',
+                action: function() {
+                    if (typeof onConfirm === "function") {
+                        onConfirm();
+                    }
+                }
+            },
+            cancel: {
+                text: 'Cancel',
+                action: function() {
+                    console.log("Delete canceled!");
+                }
+            }
+        }
+    });
+}
 /*$.toast({
 	heading: 'Oh snap!',
 	text: 'Change a few things up and try submitting again.',
