@@ -152,7 +152,8 @@ saveBtnQueTable.addEventListener("click", () => {
 				showAlertFailure(`${index + 1} Question input field cannot be empty`);
 				isValid = false;
 				return false;
-			} else if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(inputField)) {
+			} else if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>+\-]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>+\-]+)*$/
+				.test(inputField)) {
 				showAlertFailure(`${index + 1} Question input field should not accept white spaces`);
 				isValid = false;
 				return false;
@@ -261,7 +262,7 @@ saveBtnQueTable.addEventListener("click", () => {
 							class="text-success fa-size queTableEditBtn"><i
 								class="fa fa-pencil"></i></a></span> <span
 						class="delete-user-alert"><a
-							href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
+							href="javascript:void(0)" class="text-danger fa-size delete-user-alert-que"
 							data-toggle="tooltip" data-placement="bottom"
 							data-original-title="Delete"><i
 								class="fa fa-trash"></i></a></span></td>
@@ -456,6 +457,7 @@ saveQueInDBTable.addEventListener("click", () => {
 			contentType: "application/json",
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader(header, token);
+				$(".preloader").show();
 			},
 			success: function(response) {
 				console.log(response)
@@ -471,6 +473,9 @@ saveQueInDBTable.addEventListener("click", () => {
 				} else if (response.status === 500) {
 					showAlertFailure('Server error occurred while saving create form.')
 				}
+			},
+			complete: function() {
+				$(".preloader").hide();
 			}
 		});
 	}
@@ -500,34 +505,53 @@ comPeriod.addEventListener('input', () => {
 		comPeriod.value = comPeriod.value.slice(0, -1);
 	}
 });
-$('.deleteFormBtn').on('click', function() {
+$('.delete-user-alert-form').on('click', function() {
 	const uid = $(this).data('id');
-	if (confirm("Are you sure want to delete data?")) {
-		$.ajax({
-			url: `/deletefdata/${uid}`,
-			method: 'DELETE',
-			contentType: 'application/json',
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
+	$.confirm({
+		title: 'Delete Record..!',
+		content: 'Please be sure before deleting record',
+		theme: 'material',
+		icon: 'fa fa-warning',
+		type: 'red',
+		buttons: {
+			delete: {
+				text: 'Delete',
+				btnClass: 'btn-red',
+				action: function() {
+					$.ajax({
+						url: `/deletefdata/${uid}`,
+						method: 'DELETE',
+						contentType: 'application/json',
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						success: function(response) {
+							console.log(response.message);
+							$(`#row-${uid}`).remove();
+							showAlertSuccess('Form data deleted successfully!!')
+							setTimeout(() => {
+								window.location.href = '/master-form';
+							}, 4000);
+						},
+						error: function(response) {
+							if (response.status === 400) {
+								const errorResponse = JSON.parse(response.responseText);
+								showAlertFailure(errorResponse.message)
+							} else if (response.status === 500) {
+								showAlertFailure('Server error occurred while deleting form data. Try again later.')
+							}
+						}
+					});
+				}
 			},
-			success: function(response) {
-				console.log(response.message);
-				$(`#row-${uid}`).remove();
-				showAlertSuccess('Form data deleted successfully!!')
-				setTimeout(() => {
-					window.location.href = '/master-form';
-				}, 4000);
-			},
-			error: function(response) {
-				if (response.status === 400) {
-					const errorResponse = JSON.parse(response.responseText);
-					showAlertFailure(errorResponse.message)
-				} else if (response.status === 500) {
-					showAlertFailure('Server error occurred while deleting form data. Try again later.')
+			cancel: {
+				text: 'Cancel',
+				action: function() {
+					console.log("Delete canceled!");
 				}
 			}
-		});
-	}
+		}
+	});
 });
 $(document).ready(function() {
 	$('#formquestion_datatable')
@@ -563,6 +587,7 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 		contentType: 'application/json',
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			console.log(response);
@@ -632,9 +657,9 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 										                </a>
 										            </span>
 										            <span class="delete-user-alert">
-										                <a href="javascript:void(0)" class="text-danger fa-size queTableDeleteBtn"
-										                   data-toggle="tooltip" data-placement="bottom" data-original-title="Delete">
-										                   <i class="fa fa-trash"></i>
+										                <a href="javascript:void(0)" class="text-danger fa-size delete-user-alert-que"
+										                   data-toggle="tooltip" data-placement="bottom"  data-original-title="Delete">
+										                   <i class="fa fa-trash" ></i>
 										                </a>
 										            </span>
 										        </td>`
@@ -921,24 +946,60 @@ $(document).on("click", ".editFormBtn, .viewFormBtn", function() {
 			} else if (response.status === 500) {
 				showAlertFailure('Server error occurred while fetching form data.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
 	});
 });
 $(document).on("hide.bs.modal", ".addformquestion", function() {
 	clearInputFiledQueModal();
 });
-$(document).on('click', '.queTableDeleteBtn', function() {
-	$(this).closest("tr").remove();
 
-	$("#formquestion_datatable tbody tr").each(function(index) {
-		let queData = JSON.parse($(this).attr("data-quedata"));
+$(document).on("click", ".delete-user-alert-que", function() {
+	let row = $(this).closest("tr");
 
-		queData.quelabel = `Q${index + 1}`;
+	$.confirm({
+		title: 'Delete Record..!',
+		content: 'Please be sure before deleting record',
+		theme: 'material',
+		icon: 'fa fa-warning',
+		type: 'red',
+		buttons: {
+			delete: {
+				text: 'Delete',
+				btnClass: 'btn-red',
+				action: function() {
+					row.remove();
 
-		$(this).attr("data-quedata", JSON.stringify(queData));
-		$(this).find("td:first").text(`Q${index + 1}`);
+					$("#formquestion_datatable tbody tr").each(function(index) {
+						let dataAttr = $(this).attr("data-quedata");
+
+						if (!dataAttr) {
+							return;
+						}
+
+						try {
+							let queData = JSON.parse(dataAttr);
+							queData.quelabel = `Q${index + 1}`;
+							$(this).attr("data-quedata", JSON.stringify(queData));
+							$(this).find("td:first").text(`Q${index + 1}`);
+						} catch (error) {
+							console.error(`Invalid JSON in row ${index + 1}:`, error);
+						}
+					});
+				}
+			},
+			cancel: {
+				text: 'Cancel',
+				action: function() {
+					console.log("Delete canceled!");
+				}
+			}
+		}
 	});
 });
+
 $(document).on('click', '.queTableEditBtn', function() {
 	editingRow = $(this).closest("tr");
 	let queEditData = JSON.parse(editingRow.attr("data-quedata"));

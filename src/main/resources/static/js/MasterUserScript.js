@@ -157,10 +157,12 @@ userSaveBtn.addEventListener("click", () => {
 				contentType: false,
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader(header, token);
+					$(".preloader").show();
 				},
 				success: function(response) {
 					showAlertSuccess(response.message);
 					clearInputFiled();
+
 					setTimeout(() => {
 						window.location.href = '/master-users';
 					}, 4000);
@@ -172,6 +174,9 @@ userSaveBtn.addEventListener("click", () => {
 					} else if (response.status === 500) {
 						showAlertFailure('Server error occurred while processing user. Try again later.')
 					}
+				},
+				complete: function() {
+					$(".preloader").hide();
 				}
 			});
 
@@ -301,32 +306,55 @@ function clearInputFiled() {
 }
 $('.deletebtn').on('click', function() {
 	const uid = $(this).data('id');
-	if (confirm("Are you sure want to delete data?")) {
-		$.ajax({
-			url: `/deleteudata/${uid}`,
-			method: 'DELETE',
-			contentType: 'application/json',
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
+	$.confirm({
+		title: 'Delete Record..!',
+		content: 'Please be sure before deleting record',
+		theme: 'material',
+		icon: 'fa fa-warning',
+		type: 'red',
+		buttons: {
+			delete: {
+				text: 'Delete',
+				btnClass: 'btn-red',
+				action: function() {
+					$.ajax({
+						url: `/deleteudata/${uid}`,
+						method: 'DELETE',
+						contentType: 'application/json',
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader(header, token);
+							$(".preloader").show();
+						},
+						success: function(response) {
+							console.log(response.message);
+							$(`#row-${uid}`).remove();
+							showAlertSuccess('User data deleted successfully!!')
+							setTimeout(() => {
+								window.location.href = '/master-users';
+							}, 4000);
+						},
+						error: function(response) {
+							if (response.status === 400) {
+								const errorResponse = JSON.parse(response.responseText);
+								showAlertFailure(errorResponse.message)
+							} else if (response.status === 500) {
+								showAlertFailure('Server error occurred. Try again later.')
+							}
+						},
+						complete: function() {
+							$(".preloader").hide();
+						}
+					});
+				}
 			},
-			success: function(response) {
-				console.log(response.message);
-				$(`#row-${uid}`).remove();
-				showAlertSuccess('User data deleted successfully!!')
-				setTimeout(() => {
-					window.location.href = '/master-users';
-				}, 4000);
-			},
-			error: function(response) {
-				if (response.status === 400) {
-					const errorResponse = JSON.parse(response.responseText);
-					showAlertFailure(errorResponse.message)
-				} else if (response.status === 500) {
-					showAlertFailure('Server error occurred. Try again later.')
+			cancel: {
+				text: 'Cancel',
+				action: function() {
+					console.log("Delete canceled!");
 				}
 			}
-		});
-	}
+		}
+	});
 });
 $('.editbtn').on('click', function() {
 	const uid = $(this).data('id');
@@ -336,6 +364,7 @@ $('.editbtn').on('click', function() {
 		contentType: 'application/json',
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			console.log(response);
@@ -370,7 +399,11 @@ $('.editbtn').on('click', function() {
 			} else if (response.status === 500) {
 				showAlertFailure('Server error occurred while fetching user data.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
+
 	});
 });
 addUserBtn.addEventListener("click", () => {

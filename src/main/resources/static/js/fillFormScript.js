@@ -20,6 +20,7 @@ searchbtn.addEventListener("click", () => {
 			contentType: 'application/json',
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader(header, token);
+				$(".preloader").show();
 			},
 			success: function(response) {
 				console.log(response);
@@ -361,6 +362,9 @@ searchbtn.addEventListener("click", () => {
 				} else if (response.status === 500) {
 					showAlertFailure('Server error occurred while fetching form data.')
 				}
+			},
+			complete: function() {
+				$(".preloader").hide();
 			}
 		});
 	}
@@ -556,10 +560,11 @@ $(document).on("click", "#submitBtn", function() {
 		contentType: "application/json",
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			console.log(response)
-			showAlertSuccess('response.message')
+			showAlertSuccess(response.message)
 			setTimeout(() => {
 				window.location.href = "/fill-forms";
 			}, 4000);
@@ -571,6 +576,9 @@ $(document).on("click", "#submitBtn", function() {
 			} else if (response.status === 500) {
 				showAlertFailure('Server error occurred while saving create form.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
 	});
 });

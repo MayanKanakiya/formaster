@@ -15,6 +15,7 @@ function populateFormDropdown() {
 		method: 'POST',
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			/*console.log(response.modules);
@@ -52,6 +53,9 @@ function populateFormDropdown() {
 			} else if (response.status === 500) {
 				showAlertFailure('Server error occurred populate module names into dropdown box.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
 	});
 }
@@ -78,6 +82,7 @@ function charDropdown(selectedModuleName) {
 		data: { moduleName: selectedModuleName },
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			/*console.log(response)*/
@@ -106,6 +111,9 @@ function charDropdown(selectedModuleName) {
 			} else if (response.status === 500) {
 				showAlertFailure('Server error occurred populate characteristic name into dropdown box.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
 	});
 }
@@ -116,6 +124,7 @@ function subCharDropdown(selectedSubCharacteristicName) {
 		data: { characteristicName: selectedSubCharacteristicName },
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			/*console.log(response)*/
@@ -143,6 +152,9 @@ function subCharDropdown(selectedSubCharacteristicName) {
 			} else if (response.status === 500) {
 				showAlertFailure('Server error occurred populate subcharacteristic name into dropdown box.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
 	});
 }

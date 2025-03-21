@@ -161,7 +161,7 @@
 																class="fa fa-eye"></i></a></span> <!-- delete-user-alert --> <span
 														class=""><a href="javascript:void(0)"
 															data-id="<%=formdto.getFid()%>"
-															class="text-danger fa-size deleteFormBtn"
+															class="text-danger fa-size delete-user-alert-form"
 															data-toggle="tooltip" data-placement="bottom"
 															data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
 													</td>
@@ -892,7 +892,7 @@
 			clearBtn : true
 		});
 
-		$('.delete-user-alert').on('click', function() {
+ 		/*$('.delete-user-alert').on('click', function() {
 			$.confirm({
 				title : 'Delete Record..!',
 				content : 'Please be sure before deleting record',
@@ -908,7 +908,7 @@
 					}
 				}
 			});
-		});
+		}); */
 
 		$('#form_datatable').DataTable({
 			destroy : true,

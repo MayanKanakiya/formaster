@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaster.mstform.anwerform.AnswerFormRepository;
 import com.formaster.mstform.formsubmit.FormSubmitEntity;
 import com.formaster.mstform.formsubmit.FormSubmitRepository;
 import com.formaster.mstform.queform.QueFormRepository;
@@ -34,6 +35,9 @@ public class MstCreateformServiceImp implements MstCreateformService {
 
 	@Autowired
 	FormSubmitRepository formSubmitRepository;
+
+	@Autowired
+	AnswerFormRepository answerFormRepository;
 
 	@Autowired
 	private HttpSession session;
@@ -178,6 +182,12 @@ public class MstCreateformServiceImp implements MstCreateformService {
 				return qData;
 			}).collect(Collectors.toList());
 			queRepository.saveAll(questions);
+//			// Form Submit
+//			FormSubmitEntity fSubmitEntity = new FormSubmitEntity();
+//			fSubmitEntity.setFid(id);
+//			fSubmitEntity.setIssubmited(0);
+//			formSubmitRepository.save(fSubmitEntity);
+
 			dto.addMessage("200", "Form data updated successfully!!");
 			return dto;
 		} catch (Exception e) {

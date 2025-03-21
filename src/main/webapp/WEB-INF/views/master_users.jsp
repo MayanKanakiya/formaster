@@ -215,11 +215,10 @@
 															<a href="javascript:void(0)" data-toggle="popover"
 																data-trigger="hover" data-html="true"
 																data-placement="right"
-																data-template="<div class=&quot;popover fade bs-popover-right&
-																quot; role=&quot;tooltip&quot;
-																x-placement=&quot;right&quot;><div
-																	class=&quot;arrow&quot;></div>
-																<h3 class=&quot;popover-headerp-0border_radius6&quot;></h3>
+																data-template="<div class='popover fade bs-popover-right' role='tooltip';
+																x-placement='right'>
+																<div class='arrow'></div>
+																<h3 class='popover-header p-0 border_radius6'></h3>
 																</div>" data-title="<img
 																src='<%=(udata.getImage() != null && !udata.getImage().trim().isEmpty())
 		? udata.getImage()

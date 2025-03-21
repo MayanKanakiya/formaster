@@ -12,6 +12,7 @@ $(document).on("click", ".dateView", function() {
 		contentType: 'application/json',
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			$(".preloader").show();
 		},
 		success: function(response) {
 			console.log(response);
@@ -56,6 +57,9 @@ $(document).on("click", ".dateView", function() {
 			} else if (response.status === 500) {
 				showAlertFailure("Server error occurred while fetching form data.")
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
 		}
 	});
 });
