@@ -22,31 +22,42 @@ function showAlertFailure(message) {
 		className: 'custom-toast'
 	});
 }
+function showAlertWarning(message) {
+	$.toast({
+		heading: 'Warning',
+		text: message,
+		position: 'top-right',
+		loaderBg: '#da8609',
+		icon: 'warning',
+		hideAfter: 3000,
+		stack: 1
+	});
+}
 function showDeleteConfirmation(onConfirm) {
-    $.confirm({
-        title: 'Delete Record..!',
-        content: 'Please be sure before deleting record',
-        theme: 'material',
-        icon: 'fa fa-warning',
-        type: 'red',
-        buttons: {
-            delete: {
-                text: 'Delete',
-                btnClass: 'btn-red',
-                action: function() {
-                    if (typeof onConfirm === "function") {
-                        onConfirm();
-                    }
-                }
-            },
-            cancel: {
-                text: 'Cancel',
-                action: function() {
-                    console.log("Delete canceled!");
-                }
-            }
-        }
-    });
+	$.confirm({
+		title: 'Delete Record..!',
+		content: 'Please be sure before deleting record',
+		theme: 'material',
+		icon: 'fa fa-warning',
+		type: 'red',
+		buttons: {
+			delete: {
+				text: 'Delete',
+				btnClass: 'btn-red',
+				action: function() {
+					if (typeof onConfirm === "function") {
+						onConfirm();
+					}
+				}
+			},
+			cancel: {
+				text: 'Cancel',
+				action: function() {
+					console.log("Delete canceled!");
+				}
+			}
+		}
+	});
 }
 /*$.toast({
 	heading: 'Oh snap!',

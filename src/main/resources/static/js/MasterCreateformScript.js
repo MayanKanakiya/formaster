@@ -270,6 +270,11 @@ saveBtnQueTable.addEventListener("click", () => {
 
 		queTableTbody.append(newRow);
 	}
+	allQueDataArray = [];
+	$("#formquestion_datatable tbody tr[data-quedata]").each(function() {
+		let queData = $(this).attr("data-quedata");
+		allQueDataArray.push(JSON.parse(queData));
+	});
 	$('.modal').modal('hide');
 	clearInputFiledQueModal();
 	/*console.log(queData);*/

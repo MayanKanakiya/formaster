@@ -66,12 +66,12 @@ addFormBtn.addEventListener("click", () => {
 	characteristicDropdown.innerHTML = "";
 	subcharacteristicDropdown.innerHTML = "";
 	clearInputFiledCreateForm();
-	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
+	showAlertWarning("Please don't reload page while creating form otherwise you lose your data.");
 	populateFormDropdown();
 });
 $('.editFormBtn').on('click', function() {
 	formId.value = '';
-	/*alert("Please don't reload page while creating form otherwise you lose your data.")*/
+	showAlertWarning("Please don't reload page while creating form otherwise you lose your data.")
 	populateFormDropdown();
 });
 function charDropdown(selectedModuleName) {

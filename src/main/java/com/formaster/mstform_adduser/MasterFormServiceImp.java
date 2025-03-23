@@ -329,15 +329,33 @@ public class MasterFormServiceImp implements MasterFormService {
 				}
 
 			}
-			if (formRepository.updateUdata(capitalizeFirst(dto.getFname().trim().toLowerCase()),
-					capitalizeFirst(dto.getLname().trim().toLowerCase()), dto.getEmail().trim().toLowerCase(),
-					dto.getCno(), dto.getGender(), dto.getValidfrom(), dto.getValidto(), dto.getUrole(), imageFileName,
-					modifyby, new Timestamp(System.currentTimeMillis()), id) > 0) {
-				dto.addMessage("200", "User data updated successfully!!");
-				return dto;
+			if (formRepository.updateEmailSent(dto.getEmail().trim().toLowerCase(), id) == 1) {
+				String pass = passGenerate.generateRandomPassword(12);
+				String hashedPassword = passGenerate.hashPassword(pass);
+				if (formRepository.updateUdataWithSendEmail(capitalizeFirst(dto.getFname().trim().toLowerCase()),
+						capitalizeFirst(dto.getLname().trim().toLowerCase()), dto.getEmail().trim().toLowerCase(),
+						dto.getCno(), dto.getGender(), dto.getValidfrom(), dto.getValidto(), dto.getUrole(),
+						imageFileName, modifyby, new Timestamp(System.currentTimeMillis()), hashedPassword, id) > 0) {
+					emailService.sendEmail(dto.getEmail().trim().toLowerCase(), "ForMaster : your password",
+							"Your password is :" + pass);
+					dto.addMessage("200", "User data updated successfully, Your new password is send in your new mail");
+					return dto;
+				} else {
+					dto.addMessage("400", "Error while updating user data");
+					return dto;
+				}
 			} else {
-				dto.addMessage("400", "Error while updating user data");
-				return dto;
+				if (formRepository.updateUdata(capitalizeFirst(dto.getFname().trim().toLowerCase()),
+						capitalizeFirst(dto.getLname().trim().toLowerCase()), dto.getEmail().trim().toLowerCase(),
+						dto.getCno(), dto.getGender(), dto.getValidfrom(), dto.getValidto(), dto.getUrole(),
+						imageFileName, modifyby, new Timestamp(System.currentTimeMillis()), id) > 0) {
+
+					dto.addMessage("200", "User data updated successfully!!");
+					return dto;
+				} else {
+					dto.addMessage("400", "Error while updating user data");
+					return dto;
+				}
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
