@@ -307,7 +307,7 @@
 															<label>Compliance Period <span
 																class="text-danger">*</span></label> <input type="text"
 																class="form-control" placeholder="In Months"
-																id="comPeriod">
+																id="comPeriod" maxlength="2">
 														</div>
 													</div>
 

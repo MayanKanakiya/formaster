@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaster.mstform.anwerform.AnswerFormRepository;
-import com.formaster.mstform.formsubmit.FormSubmitEntity;
 import com.formaster.mstform.formsubmit.FormSubmitRepository;
 import com.formaster.mstform.queform.QueFormRepository;
 import com.formaster.mstform.queform.QueformDTO;
@@ -94,11 +93,6 @@ public class MstCreateformServiceImp implements MstCreateformService {
 			}).collect(Collectors.toList());
 			queRepository.saveAll(questions);
 
-			// Form Submit
-			FormSubmitEntity fSubmitEntity = new FormSubmitEntity();
-			fSubmitEntity.setFid(id);
-			fSubmitEntity.setSubmitedby(createdby);
-			formSubmitRepository.save(fSubmitEntity);
 			dto.addMessage("200", "Form is save in our database");
 			return dto;
 		} catch (Exception e) {

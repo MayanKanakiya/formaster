@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.formaster.mstform.formsubmit.FormSubmitEntity;
 import com.formaster.mstform.formsubmit.FormSubmitRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,7 +39,11 @@ public class AnswerFormServiceImp implements AnswerFormService {
 					fid = answer.getFid();
 					answerFormRepository.save(answerFormEntity);
 				}
-				formSubmitRepository.setFormSubmit(fid, createdby);
+				FormSubmitEntity fSubmitEntity = new FormSubmitEntity();
+				fSubmitEntity.setFid(fid);
+				fSubmitEntity.setSubmitedby(createdby);
+				fSubmitEntity.setIssubmited(1);
+				formSubmitRepository.save(fSubmitEntity);
 			}
 
 			dto.addMessage("200", "Answer is save in our database");

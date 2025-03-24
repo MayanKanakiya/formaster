@@ -198,6 +198,7 @@ public class MasterFormServiceImp implements MasterFormService {
 	public UserDTO AddUser(UserDTO dto, MultipartFile imageFile) {
 		// try-catch for checking duplication email
 		try {
+			AddUserJValid(dto);
 			if (formRepository.duplicateEmail(dto.getEmail().trim().toLowerCase()) > 0) {
 				dto.addMessage("400", "Email are already exists, try new email.");
 				return dto;
@@ -262,6 +263,7 @@ public class MasterFormServiceImp implements MasterFormService {
 			return dto;
 		}
 	}
+	
 
 	@Override
 	public List<UserDTO> fetchUserDataById(int id) {
@@ -303,6 +305,7 @@ public class MasterFormServiceImp implements MasterFormService {
 	@Override
 	public UserDTO updateUserData(UserDTO dto, int id, MultipartFile imageFile) {
 		try {
+			AddUserJValid(dto);
 			int modifyby = (int) session.getAttribute("currentLogin");
 			String imageFileName = null;
 

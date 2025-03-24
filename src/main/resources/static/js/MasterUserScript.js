@@ -104,92 +104,69 @@ userSaveBtn.addEventListener("click", () => {
 	if (!ClientSideValidation()) {
 		return;
 	}
-	const userAddJData = {
-		fname: mst_ufname.value,
-		lname: mst_ulname.value,
-		email: email.value,
-		cno: cno.value,
-		gender: gender.value,
-		validfrom: validfrom.value,
-		validto: validto.value,
-		urole: roles.value,
-		image: userImg.value
+	const userAddEditData = new FormData();
+	userAddEditData.append("id", hiddenuid.value.trim());
+	userAddEditData.append("fname", mst_ufname.value);
+	userAddEditData.append("lname", mst_ulname.value);
+	userAddEditData.append("email", email.value);
+	userAddEditData.append("cno", cno.value);
+	userAddEditData.append("gender", gender.value);
+	userAddEditData.append("validfrom", validfrom.value);
+	userAddEditData.append("validto", validto.value);
+	userAddEditData.append("urole", roles.value);
+
+	if (userImg.files.length > 0) {
+		userAddEditData.append("imageFile", userImg.files[0]);
+	} else if (userImg.files.length === 0 && hiddenuid.value.trim().length === 0) {
+		userAddEditData.append("imageFile", "");
+	} else {
+		let imgSrc = add_edit_userimg.src;
+		if (imgSrc.includes("assets/images/users/default_user.png")) {
+			userAddEditData.append("imageFile", "");
+		}
 	}
+
+	const apiUrl = hiddenuid.value.trim().length == 0 ? '/addUserMst' : '/updateUserMst';
+
 	$.ajax({
-		url: '/userMstJValid',
+		url: apiUrl,
 		method: 'POST',
-		contentType: 'application/json',
-		data: JSON.stringify(userAddJData),
+		data: userAddEditData,
+		processData: false,
+		contentType: false,
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(header, token);
+			/*$(".preloader").show();*/
 		},
 		success: function(response) {
-			console.log(response.message);
-			const userAddEditData = new FormData();
-			userAddEditData.append("id", hiddenuid.value.trim());
-			userAddEditData.append("fname", mst_ufname.value);
-			userAddEditData.append("lname", mst_ulname.value);
-			userAddEditData.append("email", email.value);
-			userAddEditData.append("cno", cno.value);
-			userAddEditData.append("gender", gender.value);
-			userAddEditData.append("validfrom", validfrom.value);
-			userAddEditData.append("validto", validto.value);
-			userAddEditData.append("urole", roles.value);
-
-			if (userImg.files.length > 0) {
-				userAddEditData.append("imageFile", userImg.files[0]);
-			} else if (userImg.files.length === 0 && hiddenuid.value.trim().length === 0) {
-				userAddEditData.append("imageFile", "");
-			} else {
-				let imgSrc = add_edit_userimg.src;
-				if (imgSrc.includes("assets/images/users/default_user.png")) {
-					userAddEditData.append("imageFile", "");
-				}
-			}
-
-			const apiUrl = hiddenuid.value.trim().length == 0 ? '/addUserMst' : '/updateUserMst';
-
-			$.ajax({
-				url: apiUrl,
-				method: 'POST',
-				data: userAddEditData,
-				processData: false,
-				contentType: false,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader(header, token);
-					$(".preloader").show();
-				},
-				success: function(response) {
-					showAlertSuccess(response.message);
-					clearInputFiled();
-
-					setTimeout(() => {
-						window.location.href = '/master-users';
-					}, 4000);
-				},
-				error: function(response) {
-					if (response.status === 400) {
-						const errorResponse = JSON.parse(response.responseText);
-						showAlertFailure(errorResponse.message)
-					} else if (response.status === 500) {
-						showAlertFailure('Server error occurred while processing user. Try again later.')
-					}
-				},
-				complete: function() {
-					$(".preloader").hide();
-				}
-			});
-
+			clearInputFiled();
+			localStorage.setItem('successMessage', response.message);
+			window.location.href = '/master-users';
 		},
 		error: function(response) {
 			if (response.status === 400) {
 				const errorResponse = JSON.parse(response.responseText);
 				showAlertFailure(errorResponse.message)
 			} else if (response.status === 500) {
-				showAlertFailure('Server error occurred. Try again later.')
+				showAlertFailure('Server error occurred while processing user. Try again later.')
 			}
+		},
+		complete: function() {
+			$(".preloader").hide();
+			/*	$('#portfolio_details').css('display', 'block');
+				$('#portfolio_add_detail').css('display', 'none');*/
 		}
 	});
+});
+document.addEventListener("DOMContentLoaded", function () {
+    let message = localStorage.getItem('successMessage');
+
+    if (message) {
+        setTimeout(() => {
+            showAlertSuccess(message);
+            localStorage.removeItem('successMessage');
+        }, 1000);
+    }
 });
 userImg.addEventListener('change', () => {
 	if (userImg.files.length > 0) {

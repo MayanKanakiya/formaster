@@ -51,9 +51,8 @@ saveBtnQueTable.addEventListener("click", () => {
 		showAlertFailure('Please enter Question name');
 		return;
 	}
-	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+(?:\s[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/
-		.test(queName.value)) {
-		showAlertFailure('Enter a valid question name without extra spaces at the beginning or end. Only one space is allowed between words.');
+	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z]+(?:\s[A-Za-z]+)*$/.test(queName.value)) {
+		showAlertFailure('Allow only characters and only one space is allowed between words.');
 		queName.value = '';
 		return;
 	}
@@ -344,7 +343,7 @@ saveQueInDBTable.addEventListener("click", () => {
 		showAlertFailure('Please enter form title');
 		return;
 	}
-	if (!/^(?! )[A-Za-z0-9!@#$%^&*(),.?":{}|<>]+( [A-Za-z0-9!@#$%^&*(),.?":{}|<>]+)*$/.test(titleTxt.value)) {
+	if (!/^(?!\s)(?!.*\s{2,})[A-Za-z]+(?:\s[A-Za-z]+)*$/.test(titleTxt.value)) {
 		showAlertFailure('Enter a valid title text without extra spaces at the beginning or end. Only one space is allowed between words.');
 		titleTxt.value = '';
 		return;
@@ -488,6 +487,9 @@ saveQueInDBTable.addEventListener("click", () => {
 titleTxt.addEventListener("input", () => {
 	if (titleTxt.value.trim().length > 15) {
 		titleTxt.value = titleTxt.value.slice(0, 15);
+	}
+	if (!/^[A-Za-z ]+$/.test(titleTxt.value)) {
+		titleTxt.value = titleTxt.value.slice(0, -1);
 	}
 });
 aliasNameTxt.addEventListener("input", () => {

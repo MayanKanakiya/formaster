@@ -167,7 +167,7 @@ searchbtn.addEventListener("click", () => {
 																		class="col-xl-7 col-lg-12 col-sm-12 col-xs-12 colmspadding">
 																		${que.questions && que.questions.length > 0
 									? que.questions.map((choice, index) => `
-																		        <input type="text" name="singleTxt" maxlength="50" minlength="3" class="form-control singleTxt"
+																		        <input type="text" class="form-control singleTxt" name="singleTxt" maxlength="50" minlength="3"
 																		            placeholder="${choice == '1' ? 'Enter Answer with all characters' :
 											choice == '2' ? 'Enter Answer with only characters' :
 												choice == '3' ? 'Enter Answer with only alphabets' :
@@ -387,7 +387,7 @@ resetDropdown.addEventListener("click", () => {
 $(document).on("click", "#submitBtn", function() {
 	/*console.log("Answer Array with values:", answerArray);*/
 	let storedAnswers = [];
-
+	console.log(answerArray)
 	for (let i = 0; i < answerArray.length; i++) {
 		let obj = { quelabel: answerArray[i].quelabel, answer: "", fid: fillFormDropdown.value };
 
@@ -435,8 +435,10 @@ $(document).on("click", "#submitBtn", function() {
 			obj.answer = selectedCheckboxes.join(", ");
 		}
 		else if (answerArray[i].queType == "3") {
-
 			let questionContainer = document.getElementById(`question-${i}`);
+			if (!questionContainer) {
+				return false;
+			}
 			let textInputs = questionContainer.querySelectorAll(".singleTxt");
 			let textValue;
 
