@@ -17,6 +17,7 @@ import com.formaster.loginuser.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
 
+/*@Component*/
 @Service
 public class MasterFormServiceImp implements MasterFormService {
 
@@ -263,7 +264,6 @@ public class MasterFormServiceImp implements MasterFormService {
 			return dto;
 		}
 	}
-	
 
 	@Override
 	public List<UserDTO> fetchUserDataById(int id) {

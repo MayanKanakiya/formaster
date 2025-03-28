@@ -254,7 +254,7 @@ saveBtnQueTable.addEventListener("click", () => {
 					<td>${queData.queName}</td>
 					<td>${queData.queType == 1 ? "Single Choice" : queData.queType == 2 ? "Multi Choice" : queData.queType == 3 ? "Single Textbox" : queData.queType == 4 ? "Multiline Textbox" : queData.queType == 5 ? "Single select dropdown" : queData.queType == 6 ? "Multi select dropdown" : "Date"}</td>
 					<td>${queData.quereq == 1 ? "Yes" : "No"}</td>
-					<td class="text-center"><span data-toggle="modal"
+					<td><span data-toggle="modal"
 						data-target=".addformquestion"><a
 							href="javascript:void(0)" data-toggle="tooltip"
 							data-placement="bottom" data-original-title="Edit"

@@ -51,5 +51,4 @@ public class MstCreateformEntity {
 	private int active;
 	@Column(nullable = false, length = 8, columnDefinition = "int default 0")
 	private int isdelete;
-
 }

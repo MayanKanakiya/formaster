@@ -29,6 +29,11 @@ public class JSPagesController {
 
 	@Autowired
 	FormSubmitRepository formSubmitRepository;
+	
+	/*
+	 * public JSPagesController(FormSubmitRepository formSubmitRepository) {
+	 * this.formSubmitRepository = formSubmitRepository; }
+	 */
 
 	@Autowired
 	private HttpSession session;

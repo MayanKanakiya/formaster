@@ -2,14 +2,18 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.2'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'war'
 }
-
+bootWar {
+    archiveBaseName = 'my-app'
+    archiveVersion = '1.0'
+}
 group = 'com.formaster'
 version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(22)
 	}
 }
 
@@ -18,34 +22,48 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot Web Starter (Required for Servlets)
     implementation 'org.springframework.boot:spring-boot-starter-web'
-	/*Spring security*/
+
+    // Spring Security (Optional, but you have it)
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'	
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-/*JPA*/
-dependencies{
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.data:spring-data-jpa'
-}
-/*Database: Postgresql*/
-dependencies{
-	implementation 'org.postgresql:postgresql'
-	implementation 'org.hibernate:hibernate-core:6.5.2.Final'
-}
-/*Lombok*/
-dependencies {
+
+    // JSP Support: Tomcat Jasper (Required for JSP)
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+    // JSP Support: Jakarta Servlet API (Spring Boot 3+ requires Jakarta EE)
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+    // JSTL Support (Required for JSP with JSTL tags)
+    implementation 'javax.servlet:jstl:1.2'
+
+    // Database: PostgreSQL
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.hibernate:hibernate-core:6.5.2.Final'
+
+    // JPA Support
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.data:spring-data-jpa'
+
+    // Lombok (For reducing boilerplate code)
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+
+    // Mail Service (If needed)
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Development Tools (For Hot Reload)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+// Enable JUnit Platform for Testing
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
