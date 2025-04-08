@@ -22,6 +22,7 @@ public class AnswerFormDTO {
 	private int active;
 	private int isdelete;
 	private int fid;
+	private int urole;
 	private List<AnswerFormDTO> answersList;
 	private Map<String, String> message = new HashMap<>();
 

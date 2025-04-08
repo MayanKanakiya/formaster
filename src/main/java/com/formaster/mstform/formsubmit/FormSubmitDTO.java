@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class FormSubmitDTO {
 	private int submitedby;
 	private int fid;
 	private Timestamp submitedon;
+	private int urole;
 	private Map<String, String> message = new HashMap<>();
 
 	public Map<String, String> getMessage() {

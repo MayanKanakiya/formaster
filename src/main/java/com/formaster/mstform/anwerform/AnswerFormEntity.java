@@ -34,6 +34,8 @@ public class AnswerFormEntity {
 	@Column(nullable = false, length = 8)
 	private int active;
 	@Column(nullable = false, length = 8, columnDefinition = "int default 0")
+	private int urole;
+	@Column(nullable = false, length = 8, columnDefinition = "int default 0")
 	private int isdelete;
-	
+
 }

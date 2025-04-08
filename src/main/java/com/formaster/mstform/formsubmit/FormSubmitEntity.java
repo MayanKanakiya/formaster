@@ -23,6 +23,8 @@ public class FormSubmitEntity {
 	private int issubmited;
 	@Column(nullable = false, length = 8)
 	private int fid;
+	@Column(nullable = false, length = 8, columnDefinition = "int default 0")
+	private int urole;
 	@CreationTimestamp
 	private Timestamp submitedon;
 }

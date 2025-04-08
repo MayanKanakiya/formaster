@@ -28,6 +28,7 @@ public class AnswerFormServiceImp implements AnswerFormService {
 	public AnswerFormDTO saveAnswer(AnswerFormDTO dto) {
 		try {
 			int createdby = (int) session.getAttribute("currentLogin");
+			int role = (int) session.getAttribute("userRole");
 			List<AnswerFormDTO> answerList = dto.getAnswersList();
 			int fid = 0;
 			if (answerList != null) {
@@ -36,6 +37,7 @@ public class AnswerFormServiceImp implements AnswerFormService {
 					answerFormEntity.setQuelabel(answer.getQuelabel());
 					answerFormEntity.setAnswers(answer.getAnswer());
 					answerFormEntity.setCreatedby(createdby);
+					answerFormEntity.setUrole(role);
 					fid = answer.getFid();
 					answerFormRepository.save(answerFormEntity);
 				}
@@ -43,6 +45,7 @@ public class AnswerFormServiceImp implements AnswerFormService {
 				fSubmitEntity.setFid(fid);
 				fSubmitEntity.setSubmitedby(createdby);
 				fSubmitEntity.setIssubmited(1);
+				fSubmitEntity.setUrole(role);
 				formSubmitRepository.save(fSubmitEntity);
 			}
 
